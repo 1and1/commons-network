@@ -505,7 +505,7 @@ public class NetworkTest {
     private static List<IP> toIps(Network network) {
         List<IP> list = new ArrayList<>();
         Iterator<IP> iterator = network.iterator();
-        iterator.forEachRemaining(ip -> list.add(ip));
+        iterator.forEachRemaining(list::add);
         return list;
     }
 
