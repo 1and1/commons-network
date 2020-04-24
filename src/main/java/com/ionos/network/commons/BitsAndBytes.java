@@ -35,7 +35,7 @@ final class BitsAndBytes {
         final int high = data.length << BIT_SHIFT_BYTE;
         int result = -1;
         for (int i = high - 1; i >= 0; i--) {
-            if ((data[(high - 1 - i) >> BIT_SHIFT_BYTE]
+            if ((data[(high - 1 - i) >> BIT_SHIFT_BYTE] //NOSONAR
                     & 1 << (i & BIT_MASK_BYTE)) != 0) {
                 result = i;
                 break;
@@ -58,7 +58,7 @@ final class BitsAndBytes {
         final int high = data.length << BIT_SHIFT_BYTE;
         int result = -1;
         for (int i = 0; i < high; i++) {
-            if ((data[(high - 1 - i) >> BIT_SHIFT_BYTE]
+            if ((data[(high - 1 - i) >> BIT_SHIFT_BYTE] //NOSONAR
                     & 1 << (i & BIT_MASK_BYTE)) != 0) {
                 result = i;
                 break;
