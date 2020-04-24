@@ -12,8 +12,8 @@ A library of IP network representation classes, like
 
 ## Prerequisites
 
-* `Java 8`
-* Maven
+* Java 8 or later
+* Maven 3.6 or later
  
 Usage
 ============
