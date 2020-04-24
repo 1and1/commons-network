@@ -1,7 +1,7 @@
 Network Commons
 ============
 [![Travis CI](https://travis-ci.org/1and1/commons-network.svg?branch=master)](https://travis-ci.org/1and1/commons-network)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ionos/commons-network/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ionos/commons-network) 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.oneandone/commons-network/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.oneandone/commons-network)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 A library of IP network representation classes, like
@@ -20,7 +20,7 @@ You can include commons-network as a Maven dependency from [Maven Central]().
 
 ```xml
 <dependency>
-    <groupId>com.ionos</groupId>
+    <groupId>com.oneandone</groupId>
     <artifactId>commons-network</artifactId>
     <version>0.9.0</version>
 </dependency>
