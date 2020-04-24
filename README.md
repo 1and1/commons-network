@@ -16,7 +16,7 @@ A library of IP network representation classes, like
  
 Usage
 ============
-You can include the `SNMPMAN` as a Maven dependency from [Maven Central]().
+You can include commons-network as a Maven dependency from [Maven Central]().
 
 ```xml
 <dependency>
