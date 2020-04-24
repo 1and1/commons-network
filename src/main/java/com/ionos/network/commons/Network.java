@@ -343,12 +343,12 @@ public final class Network implements Iterable<IP> {
         // go thru the IPs and add the biggest possible network.
         while (cur.compareTo(inEndIP) <= 0
                 && (last == null || last.compareTo(cur) < 0)) {
-            int currentBit = getLowestBitSet(cur.getBytes());
+            int currentBit = BitsAndBytes.getLowestBitSet(cur.getBytes());
 
             if (currentBit == -1) {
                 currentBit = adrBits;
             }
-            final int ipCountHigh = getHighestBitSet(ipcount);
+            final int ipCountHigh = BitsAndBytes.getHighestBitSet(ipcount);
             if (ipCountHigh != -1 && currentBit > ipCountHigh) {
                 // too high, need to add something else
                 currentBit = ipCountHigh;
@@ -359,8 +359,8 @@ public final class Network implements Iterable<IP> {
             // book keeping work
             if (currentBit < adrBits) {
                 final int byteOfs = (adrBits - currentBit - 1)
-                        >> BIT_SHIFT_BYTE;
-                final int bitOfs = currentBit & BIT_MASK_BYTE;
+                        >> BitsAndBytes.BIT_SHIFT_BYTE;
+                final int bitOfs = currentBit & BitsAndBytes.BIT_MASK_BYTE;
                 last = cur;
                 increment[byteOfs] |= (1 << bitOfs);
                 cur = cur.add(increment);
@@ -378,51 +378,6 @@ public final class Network implements Iterable<IP> {
             }
         }
 
-        return result;
-    }
-
-    /**
-     * Get the highest bit set.
-     *
-     * @param data the array to find the highest bit set in.
-     *             The first byte starts with the most significant bit.
-     * @return the highest bit number (starting with 0),
-     * or -1 if <code>data</code> has no bit set.
-     * @see Integer#highestOneBit(int)
-     */
-    private static int getHighestBitSet(final byte[] data) {
-        final int high = data.length << BIT_SHIFT_BYTE;
-        int result = -1;
-        for (int i = high - 1; i >= 0; i--) {
-            if ((data[(high - 1 - i) >> BIT_SHIFT_BYTE]
-                    & 1 << (i & BIT_MASK_BYTE)) != 0) {
-                result = i;
-                break;
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Get the lowest bit set.
-     *
-     * @param data the array to find the lowest bit set in.
-     *             The first byte starts with
-     *             the most significant bit.
-     * @return the lowest set bit number (starting with 0),
-     * or -1 if <code>data</code> has no bit set.
-     * @see Integer#lowestOneBit(int)
-     */
-    private static int getLowestBitSet(final byte[] data) {
-        final int high = data.length << BIT_SHIFT_BYTE;
-        int result = -1;
-        for (int i = 0; i < high; i++) {
-            if ((data[(high - 1 - i) >> BIT_SHIFT_BYTE]
-                    & 1 << (i & BIT_MASK_BYTE)) != 0) {
-                result = i;
-                break;
-            }
-        }
         return result;
     }
 
@@ -581,13 +536,6 @@ public final class Network implements Iterable<IP> {
 
     }
 
-    /** Bits to mask to get the modulo of 8. */
-    private static final int BIT_MASK_BYTE = 0x07;
-
-    /** Bits to shift to divide by 8. */
-    private static final int BIT_SHIFT_BYTE = 3;
-
-
     /**
      * Split the network up into smaller parts.
      *
@@ -615,8 +563,8 @@ public final class Network implements Iterable<IP> {
         byte[] incrementBytes = new byte[ipVersion.getAddressBytes()];
         int byteOfs = incrementBytes.length
                 - 1
-                - ((ipVersion.getAddressBits() - length) >> BIT_SHIFT_BYTE);
-        int bitOfs = (ipVersion.getAddressBits() - length) & BIT_MASK_BYTE;
+                - ((ipVersion.getAddressBits() - length) >> BitsAndBytes.BIT_SHIFT_BYTE);
+        int bitOfs = (ipVersion.getAddressBits() - length) & BitsAndBytes.BIT_MASK_BYTE;
         incrementBytes[byteOfs] = (byte) (1 << bitOfs);
 
         List<Network> resultCollection =
