@@ -27,10 +27,3 @@ You can include commons-network as a Maven dependency from [Maven Central](https
 </dependency>
 ```
 The JavaDoc documentation can be found [here](http://api.sfuhrm.de/commons-network/com/ionos/network/commons/package-summary.html).
-
-Contributors Guide
-============
-
-* This project should be kept as simple as possible by trying to avoid any dependencies.
-* The test coverage should stay above 80%. It was hard to get there :)
-* Feel free to add yourself to the `pom.xml` in the contributors section for every contribution
