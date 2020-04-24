@@ -24,7 +24,7 @@ public final class IPParser implements AddressParser<IP> {
 
     /** Exception message for the right side of an address
      * being malformed. */
-    private static final String RIGHT_SIGHT_MALFORMED_ERROR =
+    private static final String RIGHT_SIDE_MALFORMED_ERROR =
             "Right side '%s' malformed";
 
     static {
@@ -181,7 +181,7 @@ public final class IPParser implements AddressParser<IP> {
         }
         if (!IPV6_PART_PATTERN.matcher(rightV6Side).matches()) {
             throw new IllegalArgumentException(
-                    String.format(RIGHT_SIGHT_MALFORMED_ERROR, rightV6Side));
+                    String.format(RIGHT_SIDE_MALFORMED_ERROR, rightV6Side));
         }
         byte[] leftV6Components = parseIPv6Variant1(leftV6Side);
         byte[] rightV6Components = parseIPv6Variant1(rightV6Side);
@@ -278,7 +278,7 @@ public final class IPParser implements AddressParser<IP> {
         }
         if (!IPV6_PART_PATTERN.matcher(rightSide).matches()) {
             throw new IllegalArgumentException(
-                    String.format(RIGHT_SIGHT_MALFORMED_ERROR, rightSide));
+                    String.format(RIGHT_SIDE_MALFORMED_ERROR, rightSide));
         }
         byte[] leftComponents = parseIPv6Variant1(leftSide);
         byte[] rightComponents = parseIPv6Variant1(rightSide);
