@@ -5,7 +5,7 @@ package com.ionos.network.commons;
  * Objects of the MAC class are immutable!
  *
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  **/
 public final class MAC extends AbstractAddress implements Address {
 

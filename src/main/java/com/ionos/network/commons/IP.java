@@ -21,7 +21,7 @@ import static com.ionos.network.commons.BitsAndBytes.BITS_PER_BYTE;
  * @see java.net.InetAddress
  * @see IPVersion
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  **/
 public final class IP extends AbstractAddress implements Address, Serializable {
 

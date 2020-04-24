@@ -7,7 +7,7 @@ import static com.ionos.network.commons.BitsAndBytes.BYTE_MASK;
 
 /** A machine- or node-address of some kind.
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  * */
 public interface Address {
 

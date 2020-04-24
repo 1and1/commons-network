@@ -8,7 +8,7 @@ import static com.ionos.network.commons.BitsAndBytes.BYTE_MASK;
 /**
  * Abstract address is the base class that contains the bytes of the address.
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  * */
 abstract class AbstractAddress implements Comparable<AbstractAddress>,
         Address, Serializable {

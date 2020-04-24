@@ -11,7 +11,7 @@ import static com.ionos.network.commons.BitsAndBytes.BITS_PER_BYTE;
  * @see <a href="https://bit.ly/2yHzt5u">
  *     Converting 48-Bit MAC Addresses to IPv6 Modified EUI-64 Identifiers</a>
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  **/
 public final class EUI64 {
 

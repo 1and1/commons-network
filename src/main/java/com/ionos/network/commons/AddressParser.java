@@ -4,7 +4,7 @@ package com.ionos.network.commons;
  * @param <T> the address type that is being returned by the
  * {@link #parse(String)} method.
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  * */
 public interface AddressParser<T extends Address> {
 

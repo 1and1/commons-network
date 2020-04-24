@@ -6,7 +6,7 @@ import java.io.IOException;
  * @param <T> the address class this class offers format functionality for.
  * @see #format(Address)
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  **/
 abstract class AbstractAddressFormat<T extends Address>
         implements AddressFormat<T> {

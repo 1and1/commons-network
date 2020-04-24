@@ -4,7 +4,7 @@ package com.ionos.network.commons;
  * The IP version used in {@link IP}.
  *
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  **/
 public enum IPVersion {
 

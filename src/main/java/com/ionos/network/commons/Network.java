@@ -33,7 +33,7 @@ import static com.ionos.network.commons.BitsAndBytes.BITS_PER_BYTE;
  *
  * Objects of the Network class are immutable!
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  **/
 public final class Network implements Iterable<IP> {
 

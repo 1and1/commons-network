@@ -6,7 +6,7 @@ import java.io.IOException;
  * @param <T> the concrete type of address that is being passed
  *           to {@link #format(Address)}.
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  **/
 public interface AddressFormat<T extends Address> {
 

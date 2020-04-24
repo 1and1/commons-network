@@ -6,7 +6,7 @@ import static com.ionos.network.commons.BitsAndBytes.BITS_PER_BYTE;
  * Parses an IP address from text notation.
  * @see IP
  * @author Stephan Fuhrmann
- * @version 2.0
+ *
  **/
 public final class MACParser implements AddressParser<MAC> {
 
