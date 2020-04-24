@@ -1,9 +1,9 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
-import static com.ionos.network.commons.BitsAndBytes.BYTE_MASK;
+import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 
 /** A machine- or node-address of some kind.
  * @author Stephan Fuhrmann

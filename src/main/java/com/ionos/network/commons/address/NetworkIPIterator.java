@@ -1,4 +1,4 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

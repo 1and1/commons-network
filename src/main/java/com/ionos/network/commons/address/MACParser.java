@@ -1,6 +1,6 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
-import static com.ionos.network.commons.BitsAndBytes.BITS_PER_BYTE;
+import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
 
 /**
  * Parses an IP address from text notation.

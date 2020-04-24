@@ -1,4 +1,4 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static com.ionos.network.commons.BitsAndBytes.BYTE_MASK;
-import static com.ionos.network.commons.BitsAndBytes.BITS_PER_BYTE;
+import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
+import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
 
 /**
  * An immutable IP network that consists of a IP prefix and a prefix length.

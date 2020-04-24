@@ -1,5 +1,8 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
+import com.ionos.network.commons.address.MAC;
+import com.ionos.network.commons.address.MACFormats;
+import com.ionos.network.commons.address.MACParser;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -7,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
  * @author Stephan Fuhrmann
  * */
 public class MACParserTest {
-	
+
     @Test
     public void testCreationByString() {
         final MAC mac = MACParser.INSTANCE.parse("6C:88:14:6F:D8:91");

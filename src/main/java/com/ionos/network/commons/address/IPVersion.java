@@ -1,4 +1,4 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 /**
  * The IP version used in {@link IP}.

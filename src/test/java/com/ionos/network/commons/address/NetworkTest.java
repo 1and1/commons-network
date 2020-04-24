@@ -1,5 +1,8 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
+import com.ionos.network.commons.address.IP;
+import com.ionos.network.commons.address.IPVersion;
+import com.ionos.network.commons.address.Network;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

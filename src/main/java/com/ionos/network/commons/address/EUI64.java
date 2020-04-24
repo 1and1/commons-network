@@ -1,8 +1,8 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 
 import java.util.Objects;
-import static com.ionos.network.commons.BitsAndBytes.BITS_PER_BYTE;
+import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
 
 /**
  * Utility class for converting a MAC address into an IPv6 Address using the

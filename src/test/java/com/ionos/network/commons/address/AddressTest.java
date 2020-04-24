@@ -1,5 +1,7 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
+import com.ionos.network.commons.address.Address;
+import com.ionos.network.commons.address.IP;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

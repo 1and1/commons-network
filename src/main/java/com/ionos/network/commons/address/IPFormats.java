@@ -1,9 +1,9 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 import java.io.IOException;
 
-import static com.ionos.network.commons.BitsAndBytes.BYTE_MASK;
-import static com.ionos.network.commons.BitsAndBytes.BITS_PER_BYTE;
+import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
+import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
 
 /**
  * Text formatting alternatives for IP address in multiple notations.

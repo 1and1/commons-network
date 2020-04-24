@@ -1,4 +1,4 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 /**
  * The Media Access Control address of a network interface.

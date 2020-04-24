@@ -1,4 +1,4 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 /** Internal constants and utility methods for the package.
  * @author Stephan Fuhrmann

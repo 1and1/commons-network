@@ -1,4 +1,4 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 /** Parses addresses to machine readable form.
  * @param <T> the address type that is being returned by the

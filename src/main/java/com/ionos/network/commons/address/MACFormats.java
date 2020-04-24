@@ -1,7 +1,7 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 import java.io.IOException;
-import static com.ionos.network.commons.BitsAndBytes.BYTE_MASK;
+import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 
 /**
  * Formats a MAC address to text form in multiple notations.

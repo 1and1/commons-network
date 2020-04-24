@@ -1,9 +1,9 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import static com.ionos.network.commons.BitsAndBytes.BYTE_MASK;
-import static com.ionos.network.commons.BitsAndBytes.BITS_PER_BYTE;
+import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
+import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
 
 /**
  * Parses an IP address from text notation.

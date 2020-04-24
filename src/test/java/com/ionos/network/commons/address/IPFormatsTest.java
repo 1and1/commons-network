@@ -1,5 +1,8 @@
-package com.ionos.network.commons;
+package com.ionos.network.commons.address;
 
+import com.ionos.network.commons.address.AddressFormat;
+import com.ionos.network.commons.address.IP;
+import com.ionos.network.commons.address.IPFormats;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,14 +17,14 @@ public class IPFormatsTest {
         final IP ip = new IP("0.0.0.0");
         assertEquals("0.0.0.0", formatter.format(ip));
     }
-    
+
     @Test
     public void testDOTTED_DECIMALwithIPv4AndAll255() {
         final AddressFormat<IP> formatter = IPFormats.DOTTED_DECIMAL;
         final IP ip = new IP("255.255.255.255");
         assertEquals("255.255.255.255", formatter.format(ip));
     }
-    
+
     @Test
     public void testDOTTED_DECIMALwithIPv6AndAllZero() {
         final AddressFormat<IP> formatter = IPFormats.DOTTED_DECIMAL;
@@ -29,21 +32,21 @@ public class IPFormatsTest {
         final IP ip = new IP("::");
         assertEquals("0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0", formatter.format(ip));
     }
-    
+
     @Test
     public void testCOLON_SEPARATED_ZEROED_HEXTETSwithIPv6AndMiscNumber() {
         final AddressFormat<IP> formatter = IPFormats.COLON_SEPARATED_ZEROED_HEXTETS;
         final IP ip = new IP("1234:5678:9abc:2345:3456:5678:0123:2345");
         assertEquals("1234:5678:9abc:2345:3456:5678:0123:2345", formatter.format(ip));
-    }    
-    
+    }
+
     @Test
     public void testCOLON_SEPARATED_ZEROED_HEXTETSwithIPv6AndAllZero() {
         final AddressFormat<IP> formatter = IPFormats.COLON_SEPARATED_ZEROED_HEXTETS;
         final IP ip = new IP("::");
         assertEquals("0000:0000:0000:0000:0000:0000:0000:0000", formatter.format(ip));
     }
-    
+
     @Test
     public void testRFC_5952() {
         final AddressFormat<IP> formatter = IPFormats.RFC_5952;
@@ -75,7 +78,7 @@ public class IPFormatsTest {
         assertEquals("2001:db8::1:0:0:1",
                 formatter.format(new IP("2001:db8:0:0:1:0:0:1")));
     }
-    
+
     @Test
     public void testCOLON_SEPARATED_ZEROED_HEXTETS() {
         final AddressFormat<IP> formatter = IPFormats.COLON_SEPARATED_ZEROED_HEXTETS;
