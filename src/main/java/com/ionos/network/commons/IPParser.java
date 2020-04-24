@@ -51,7 +51,7 @@ public final class IPParser implements AddressParser<IP> {
     /** The group number of the IPv4 group in {@link #IPV6_PATTERN_TYPE_3}. */
     private static final int IPV6_PATTERN_TYPE_3_IPV4_GROUP = 5;
 
-    /** The singleton instance for parsing MAC addresses. */
+    /** The singleton instance for parsing IP addresses. */
     public static final AddressParser<IP> INSTANCE;
 
     /**
