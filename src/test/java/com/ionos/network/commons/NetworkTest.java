@@ -1,6 +1,7 @@
 package com.ionos.network.commons;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -484,7 +485,9 @@ public class NetworkTest {
         assertEquals(256, network.stream().count());
     }
 
+    // this test is disabled since in Java 8 this can take very long
     @Test
+    @Disabled
     public void testStreamWithBigCount() {
         Network network = new Network(new IP("::"), 64);
         assertEquals(Long.MAX_VALUE, network.stream().count());
