@@ -3,7 +3,7 @@ Network Commons
 [![Travis CI](https://travis-ci.org/1and1/commons-network.svg?branch=master)](https://travis-ci.org/1and1/commons-network)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.oneandone/commons-network/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.oneandone/commons-network)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![JavaDoc](https://javadoc-badge.appspot.com/com.oneandone/commons-network.svg?label=javadoc)](http://api.sfuhrm.de/commons-network/com/ionos/network/commons/package-summary.html)
+[![javadoc](https://javadoc.io/badge2/com.oneandone/commons-network/javadoc.svg)](https://javadoc.io/doc/com.oneandone/commons-network)
 
 A library of IP network representation classes, like
 * IP (IPv4, IPv6),
