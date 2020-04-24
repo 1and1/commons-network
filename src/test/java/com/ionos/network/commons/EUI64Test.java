@@ -1,11 +1,11 @@
 package com.ionos.network.commons;
 
-import org.junit.Test;
-
 import java.lang.reflect.Constructor;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class EUI64Test {
 
@@ -24,23 +24,29 @@ public class EUI64Test {
         assertEquals(new IP("f380:0:ffff:0:6e88:14ff:fe6f:d891"), ip);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testConversionWithNoMac() {
-        final IP prefix = new IP("f380:0:ffff:0:0:0:0:0");
-        EUI64.convertMac(null, prefix);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            final IP prefix = new IP("f380:0:ffff:0:0:0:0:0");
+            EUI64.convertMac(null, prefix);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testConversionWithNoPrefix() {
-        final MAC mac = new MAC("6C:88:14:6F:D8:91");
-        EUI64.convertMac(mac, null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            final MAC mac = new MAC("6C:88:14:6F:D8:91");
+            EUI64.convertMac(mac, null);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConversionWithIPv4Prefix() {
-        final MAC mac = new MAC("6C:88:14:6F:D8:91");
-        final IP prefix = new IP("127.0.0.1");
-        EUI64.convertMac(mac, prefix);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            final MAC mac = new MAC("6C:88:14:6F:D8:91");
+            final IP prefix = new IP("127.0.0.1");
+            EUI64.convertMac(mac, prefix);
+        });
     }
 
     @Test

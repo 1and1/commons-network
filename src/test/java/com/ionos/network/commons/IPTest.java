@@ -1,14 +1,16 @@
 package com.ionos.network.commons;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.net.InetAddress;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * Test cases for {@link IP}.
- * @version 1.0
  */
 public class IPTest {
 
@@ -43,9 +45,11 @@ public class IPTest {
         assertEquals(new IP("36.168.1.2"), new IP("192.168.1.2").add(new byte[]{100, 0, 0, 0}));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testAddArrayWithOverLongArray() {
-        new IP("192.168.1.1").add(new byte[]{0,0,0,0,0,0,0});
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new IP("192.168.1.1").add(new byte[]{0, 0, 0, 0, 0, 0, 0});
+        });
     }
 
     @Test
@@ -80,9 +84,11 @@ public class IPTest {
         assertEquals(+1, new IP("255.255.0.0").compareTo(new IP("192.168.1.1")));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructIllegalIP() {
-        new IP(new byte[]{0});
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new IP(new byte[]{0});
+        });
     }
 
     @Test
@@ -91,19 +97,25 @@ public class IPTest {
         assertEquals(IPVersion.IPv6, ip.getIPVersion());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testGetNullIP() {
-        new IP((String)null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new IP((String) null);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetIllegalIP4ByLength() {
-    	new IP("192.168.0.0.0");
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                new IP("192.168.0.0.0");
+            });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetIllegalIP4ByBounds() {
-    	new IP("256.168.0.0");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new IP("256.168.0.0");
+        });
     }
 
     @Test

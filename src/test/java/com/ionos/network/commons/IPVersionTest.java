@@ -1,12 +1,11 @@
 package com.ionos.network.commons;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IPVersionTest {
 
-    @org.junit.Test
+    @Test
     public void testGetAddressBits() {
         assertEquals(4 * 8, IPVersion.IPv4.getAddressBits());
         assertEquals(16 * 8, IPVersion.IPv6.getAddressBits());

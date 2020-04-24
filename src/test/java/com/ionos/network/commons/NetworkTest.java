@@ -1,11 +1,25 @@
 package com.ionos.network.commons;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
@@ -433,20 +447,26 @@ public class NetworkTest {
         assertEquals(network2, network1);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testGetSubnetMaskWithIllegalVersion() {
-        Network.getSubnetMask(null, 24);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Network.getSubnetMask(null, 24);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testGetInverseSubnetMaskWithIllegalVersion() {
-        Network.getInverseSubnetMask(null, 24);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Network.getInverseSubnetMask(null, 24);
+        });
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testIteratorWithIllegalRemove() {
-        Network network = new Network(new IP("192.168.0.0"), 24);
-        network.iterator().remove();
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            Network network = new Network(new IP("192.168.0.0"), 24);
+            network.iterator().remove();
+        });
     }
 
     @Test

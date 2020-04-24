@@ -1,8 +1,10 @@
 package com.ionos.network.commons;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class MACTest {
 
@@ -53,14 +55,18 @@ public class MACTest {
         assertEquals("00:00:00:00:00:00", mac5.toString());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCreationWithIllegalLength() {
-        new MAC(new byte[]{0});
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new MAC(new byte[]{0});
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCreateWithUnknownString() {
-        new MAC("foobar this is never a MAC");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new MAC("foobar this is never a MAC");
+        });
     }
 
     @Test
