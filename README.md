@@ -8,9 +8,9 @@ Network Commons
 
 
 A library of IP network representation classes, like
-* IP (IPv4, IPv6),
+* IP address (IPv4, IPv6),
 * MAC address,
-* IP network.
+* IP network using the CIDR method ([Classless Inter-Domain Routing](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)).
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ You can include commons-network as a Maven dependency from [Maven Central](https
 <dependency>
     <groupId>com.oneandone</groupId>
     <artifactId>commons-network</artifactId>
-    <version>0.9.2</version>
+    <version>0.9.3</version>
 </dependency>
 ```
-The JavaDoc documentation can be found here: [![javadoc](https://javadoc.io/badge2/com.oneandone/commons-network/javadoc.svg)]
+The JavaDoc documentation can be found [here](https://javadoc.io/doc/com.oneandone/commons-network).
