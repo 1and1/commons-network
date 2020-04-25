@@ -181,11 +181,11 @@ public final class Network implements Iterable<IP> {
     }
 
     /** Constructs a new network from a network prefix and a network mask.
-     * @param ipPrefix the network prefix to use. Example {@code 192.168.0.0}.
-     * @param netMask the network mask to use. Example {@code 255.255.0.0}.
+     * @param networkAddress the network prefix to use. Example {@code 192.168.0.0}.
+     * @param networkMask the network mask to use. Example {@code 255.255.0.0}.
      * */
-    public Network(final IP ipPrefix, final IP netMask) {
-        this(ipPrefix, getPrefix(netMask));
+    public Network(final IP networkAddress, final IP networkMask) {
+        this(networkAddress, getPrefix(networkMask));
     }
 
     /**
