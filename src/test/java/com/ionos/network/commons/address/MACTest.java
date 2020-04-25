@@ -41,16 +41,16 @@ public class MACTest {
     @Test
     public void testToString() {
         final MAC mac1 = new MAC("6C:88:14:6F:D8:91");
-        assertEquals("6C:88:14:6F:D8:91", mac1.toString());
+        assertEquals("6c:88:14:6f:d8:91", mac1.toString());
 
         final MAC mac2 = new MAC("00:00:14:6F:D8:91");
-        assertEquals("00:00:14:6F:D8:91", mac2.toString());
+        assertEquals("00:00:14:6f:d8:91", mac2.toString());
 
         final MAC mac3 = new MAC("14:6F:00:00:D8:91");
-        assertEquals("14:6F:00:00:D8:91", mac3.toString());
+        assertEquals("14:6f:00:00:d8:91", mac3.toString());
 
         final MAC mac4 = new MAC("14:6F:D8:91:00:00");
-        assertEquals("14:6F:D8:91:00:00", mac4.toString());
+        assertEquals("14:6f:d8:91:00:00", mac4.toString());
 
         final MAC mac5 = new MAC("00:00:00:00:00:00");
         assertEquals("00:00:00:00:00:00", mac5.toString());

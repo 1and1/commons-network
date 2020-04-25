@@ -24,13 +24,13 @@ public class MACFormatsTest {
     @Test
     public void testCOLON_SPARATED_HEX_FORMAT() {
     	final AddressFormat<MAC> formatter = MACFormats.COLON_SEPARATED_HEX_FORMAT;
-        assertEquals("6C:88:14:6F:D8:91", formatter.format(MAC1));
+        assertEquals("6c:88:14:6f:d8:91", formatter.format(MAC1));
 
-        assertEquals("00:00:14:6F:D8:91", formatter.format(MAC2));
+        assertEquals("00:00:14:6f:d8:91", formatter.format(MAC2));
 
-        assertEquals("14:6F:00:00:D8:91", formatter.format(MAC3));
+        assertEquals("14:6f:00:00:d8:91", formatter.format(MAC3));
 
-        assertEquals("14:6F:D8:91:00:00", formatter.format(MAC4));
+        assertEquals("14:6f:d8:91:00:00", formatter.format(MAC4));
 
         assertEquals("00:00:00:00:00:00", formatter.format(MAC5));
     }

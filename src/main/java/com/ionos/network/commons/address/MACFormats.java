@@ -39,9 +39,9 @@ public final class MACFormats {
                         if (i != 0) {
                             toAppendTo.append(':');
                         }
-                        // create hex string with leading zeroes
-                        toAppendTo.append(String.format("%02X", val)
-                                .toUpperCase());
+
+                        toAppendTo.append(BitsAndBytes.toHexDigit(val >>> 4 & 0x0f));
+                        toAppendTo.append(BitsAndBytes.toHexDigit(val & 0x0f));
                     }
 
                     return toAppendTo;
@@ -68,9 +68,9 @@ public final class MACFormats {
                         if (i != 0 && (i & 1) == 0) {
                             toAppendTo.append('.');
                         }
-                        // create hex string with leading zeroes
-                        toAppendTo.append(String.format("%02X", val)
-                                .toLowerCase());
+
+                        toAppendTo.append(BitsAndBytes.toHexDigit(val >>> 4 & 0x0f));
+                        toAppendTo.append(BitsAndBytes.toHexDigit(val & 0x0f));
                     }
 
                     return toAppendTo;

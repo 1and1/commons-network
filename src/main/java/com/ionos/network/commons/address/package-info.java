@@ -14,13 +14,14 @@
  *     A Media-Access-Control address.</li>
  * </ul>
  *
- * There are classes for formatting the addresses into multiple forms:
+ * There are classes for formatting the addresses into multiple string representations:
  * <ul>
  *     <li>{@link com.ionos.network.commons.address.IPFormats}:
  *     Multiple formatters for IP addresses.</li>
  *     <li>{@link com.ionos.network.commons.address.MACFormats}:
  *     Multiple formatters for MAC addresses.</li>
  * </ul>
+ * All hexadecimal characters are lower-case in this library.
  *
  * There are classes for parsing Strings into addresses:
  * <ul>

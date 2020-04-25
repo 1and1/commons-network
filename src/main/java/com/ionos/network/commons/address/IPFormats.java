@@ -3,7 +3,8 @@ package com.ionos.network.commons.address;
 import java.io.IOException;
 
 import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
-import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
+import static com.ionos.network.commons.address.BitsAndBytes.appendHex;
+import static com.ionos.network.commons.address.BitsAndBytes.appendHexWithLeadingZeros;
 
 /**
  * Text formatting alternatives for IP address in multiple notations.
@@ -89,9 +90,7 @@ public final class IPFormats {
                         if (i > 0) {
                             toAppendTo.append(':');
                         }
-                        int val = ((address[i] & BYTE_MASK) << BITS_PER_BYTE)
-                                | (address[i + 1] & BYTE_MASK);
-                        toAppendTo.append(String.format("%04x", val));
+                        appendHexWithLeadingZeros(toAppendTo, address[i], address[i + 1]);
                     }
                     return toAppendTo;
                 }
@@ -198,19 +197,4 @@ public final class IPFormats {
                         return toAppendTo;
                     }
             };
-
-    /** Appends two bytes to an Appendable as hex.
-     * @param to the Appendable to append to.
-     * @param upper the most significant byte.
-     * @param lower the least significant byte.
-     * @throws IOException when appending to the Appendable has a problem.
-     * */
-    private static void appendHex(final Appendable to,
-                                  final byte upper,
-                                  final byte lower)
-            throws IOException {
-        int val = ((upper & BYTE_MASK) << BITS_PER_BYTE)
-                | (lower & BYTE_MASK);
-        to.append(Integer.toHexString(val));
-    }
 }

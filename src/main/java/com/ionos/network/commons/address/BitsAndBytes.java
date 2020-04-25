@@ -1,5 +1,6 @@
 package com.ionos.network.commons.address;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 /** Internal constants and utility methods for the package.
@@ -77,5 +78,63 @@ final class BitsAndBytes {
             }
         }
         return result;
+    }
+
+    /** Appends two bytes to an Appendable as hex.
+     * There are leading zeros appended.
+     * @param to the Appendable to append to.
+     * @param upper the most significant byte.
+     * @param lower the least significant byte.
+     * @throws IOException when appending to the Appendable has a problem.
+     * */
+    static void appendHexWithLeadingZeros(final Appendable to,
+                                          final byte upper,
+                                          final byte lower)
+            throws IOException {
+        to.append(BitsAndBytes.toHexDigit(upper >>> 4 & 0x0f));
+        to.append(BitsAndBytes.toHexDigit(upper & 0x0f));
+        to.append(BitsAndBytes.toHexDigit(lower >>> 4 & 0x0f));
+        to.append(BitsAndBytes.toHexDigit(lower & 0x0f));
+    }
+
+    /** Appends two bytes to an Appendable as hex.
+     * There are no leading zeros appended.
+     * @param to the Appendable to append to.
+     * @param upper the most significant byte.
+     * @param lower the least significant byte.
+     * @throws IOException when appending to the Appendable has a problem.
+     * */
+    static void appendHex(final Appendable to,
+                          final byte upper,
+                          final byte lower)
+            throws IOException {
+        boolean leading = false;
+        if (upper >>> 4 != 0) {
+            to.append(BitsAndBytes.toHexDigit(upper >>> 4 & 0x0f));
+            leading = true;
+        }
+        if (leading || upper != 0) {
+            to.append(BitsAndBytes.toHexDigit(upper & 0x0f));
+            leading = true;
+        }
+        if (leading || lower >>> 4 != 0) {
+            to.append(BitsAndBytes.toHexDigit(lower >>> 4 & 0x0f));
+        }
+        to.append(BitsAndBytes.toHexDigit(lower & 0x0f));
+    }
+
+    /** Convert the passed in value to a hex digit.
+     * @param value a value between 0 and 15 (inclusive).
+     * @return a character between '0' and '9' or 'a and 'f'.
+     * */
+    static char toHexDigit(int value) {
+        if (value >= 0 && value <= 9) {
+            return (char)('0' + value);
+        } else if (value >= 10 && value <= 15) {
+            return (char)('a' - 10 + value);
+        } else {
+            throw new IllegalArgumentException("Value "
+                    + value + " can not be mapped to hex");
+        }
     }
 }

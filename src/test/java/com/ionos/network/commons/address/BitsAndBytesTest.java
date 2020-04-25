@@ -1,7 +1,10 @@
 package com.ionos.network.commons.address;
 
 import com.ionos.network.commons.address.BitsAndBytes;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -106,5 +109,85 @@ public class BitsAndBytesTest {
         array[1] = (byte)0xff;
         int actual = BitsAndBytes.getHighestBitSet(array);
         assertEquals(15, actual);
+    }
+
+    @Test
+    public void toHexDigitWith0() {
+        char actual = BitsAndBytes.toHexDigit(0);
+        assertEquals('0', actual);
+    }
+
+    @Test
+    public void toHexDigitWith9() {
+        char actual = BitsAndBytes.toHexDigit(9);
+        assertEquals('9', actual);
+    }
+
+    @Test
+    public void toHexDigitWith10() {
+        char actual = BitsAndBytes.toHexDigit(10);
+        assertEquals('a', actual);
+    }
+
+    @Test
+    public void toHexDigitWith15() {
+        char actual = BitsAndBytes.toHexDigit(15);
+        assertEquals('f', actual);
+    }
+
+    @Test
+    public void toHexDigitWithNegative() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            char actual = BitsAndBytes.toHexDigit(-1);
+        });
+    }
+
+    @Test
+    public void toHexDigitWith16() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            char actual = BitsAndBytes.toHexDigit(16);
+        });
+    }
+
+    @Test
+    public void appendHexWith0() throws IOException {
+        StringBuilder actual = new StringBuilder();
+        BitsAndBytes.appendHex(actual, (byte)0, (byte)0);
+        assertEquals("0", actual.toString());
+    }
+
+    @Test
+    public void appendHexWith100() throws IOException {
+        StringBuilder actual = new StringBuilder();
+        BitsAndBytes.appendHex(actual, (byte)1, (byte)0);
+        assertEquals("100", actual.toString());
+    }
+
+    @Test
+    public void appendHexWith1FF() throws IOException {
+        StringBuilder actual = new StringBuilder();
+        BitsAndBytes.appendHex(actual, (byte)1, (byte)255);
+        assertEquals("1ff", actual.toString());
+    }
+
+    @Test
+    public void appendHexWithLeadingZerosWith0() throws IOException {
+        StringBuilder actual = new StringBuilder();
+        BitsAndBytes.appendHexWithLeadingZeros(actual, (byte)0, (byte)0);
+        assertEquals("0000", actual.toString());
+    }
+
+    @Test
+    public void appendHexWithLeadingZerosWith0102() throws IOException {
+        StringBuilder actual = new StringBuilder();
+        BitsAndBytes.appendHexWithLeadingZeros(actual, (byte)1, (byte)2);
+        assertEquals("0102", actual.toString());
+    }
+
+    @Test
+    public void appendHexWithLeadingZerosith1FF() throws IOException {
+        StringBuilder actual = new StringBuilder();
+        BitsAndBytes.appendHexWithLeadingZeros(actual, (byte)1, (byte)255);
+        assertEquals("01ff", actual.toString());
     }
 }
