@@ -36,10 +36,10 @@ class NetworkIPSpliterator implements Spliterator<IP> {
 
     @Override
     public Spliterator<IP> trySplit() {
-        if (network.getNetworkSize()
+        if (network.getPrefix()
                 < network.getIPVersion().getAddressBits()) {
             List<Network> split =
-                    network.split(network.getNetworkSize() + 1);
+                    network.split(network.getPrefix() + 1);
 
             if (split.size() != 2) {
                 throw new IllegalStateException();
@@ -61,7 +61,7 @@ class NetworkIPSpliterator implements Spliterator<IP> {
     @Override
     public long estimateSize() {
         int networkBits = network.getIPVersion().getAddressBits()
-                - network.getNetworkSize();
+                - network.getPrefix();
         if (networkBits < BIT_SIZE_LONG) {
             return 1 << networkBits;
         } else {

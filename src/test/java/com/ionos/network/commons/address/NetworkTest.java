@@ -1,8 +1,5 @@
 package com.ionos.network.commons.address;
 
-import com.ionos.network.commons.address.IP;
-import com.ionos.network.commons.address.IPVersion;
-import com.ionos.network.commons.address.Network;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -40,7 +37,7 @@ public class NetworkTest {
         final Network n3 = new Network(new IP("192.168.0.42"), new IP("255.255.255.0"));
         assertEquals("192.168.0.0", n3.getAddress().toString());
         assertEquals("192.168.0.255", n3.getAddressEnd().toString());
-        assertEquals(24, n3.getNetworkSize());
+        assertEquals(24, n3.getPrefix());
 
         try {
             new Network("192.168.0.42");
@@ -429,7 +426,7 @@ public class NetworkTest {
     public void testNetworkConstructBySize() {
         Network network = new Network(new IP("192.168.0.0"), 24);
         assertEquals(new IP("192.168.0.0"), network.getAddress());
-        assertEquals(24, network.getNetworkSize());
+        assertEquals(24, network.getPrefix());
     }
 
     @Test
@@ -476,7 +473,7 @@ public class NetworkTest {
     @Test
     public void testGetters() {
         Network network = new Network(new IP("192.168.1.2"), 24);
-        assertEquals(24, network.getNetworkSize());
+        assertEquals(24, network.getPrefix());
         assertEquals(new IP("192.168.1.0"), network.getAddress());
         assertEquals(new IP("192.168.1.255"), network.getAddressEnd());
         assertEquals(new IP("255.255.255.0"), network.getSubnetMask());

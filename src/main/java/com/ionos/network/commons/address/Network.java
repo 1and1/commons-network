@@ -24,7 +24,7 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
  * <ul>
  * <li>{@code 1.2.3.0} is the first IP in the network, the network address
  * (returned by {@link #getAddress()} ()})</li>
- * <li>{@code 24} is the network size (returned by {@link #getNetworkSize()})
+ * <li>{@code 24} is the network size (returned by {@link #getPrefix()})
  * and used as index in all static get* methods</li>
  * <li>{@code 255.255.255.0} is the subnet mask for this network returned
  * by {@link #getSubnetMask()}</li>
@@ -67,7 +67,7 @@ public final class Network implements Iterable<IP> {
                 if (startIpComparison != 0) {
                     return startIpComparison;
                 }
-                return network1.getNetworkSize() - network2.getNetworkSize();
+                return network1.getPrefix() - network2.getPrefix();
             };
 
     /**
@@ -83,7 +83,7 @@ public final class Network implements Iterable<IP> {
     };
 
     /** The prefix size in bits. */
-    private final int networkSize;
+    private final int prefix;
 
     /**
      * First IP in the network.
@@ -117,16 +117,16 @@ public final class Network implements Iterable<IP> {
             throw new IllegalArgumentException(
                     "illegal network size " + inNetworkSize);
         }
-        this.networkSize = inNetworkSize;
+        this.prefix = inNetworkSize;
 
         final NetworkMaskData maskData =
-                getNetworkMaskData(inIP.getIPVersion())[this.networkSize];
+                getNetworkMaskData(inIP.getIPVersion())[this.prefix];
 
         this.ipAddress = inIP.and(
                 maskData.subnetMask
                         .getBytes());
 
-        if (this.networkSize == 0) {
+        if (this.prefix == 0) {
             this.ipEnd = inIP.getIPVersion().getMaximumAddress();
         } else {
             this.ipEnd = this.ipAddress.add(
@@ -397,7 +397,7 @@ public final class Network implements Iterable<IP> {
         // sort the networks by their size. this way we only need
         // to compare O(n*lg n) times
         Arrays.sort(nets,
-                (o1, o2) -> o2.getNetworkSize() - o1.getNetworkSize());
+                (o1, o2) -> o2.getPrefix() - o1.getPrefix());
 
         for (int i = 0; i < nets.length; i++) {
             boolean contained = false;
@@ -443,11 +443,11 @@ public final class Network implements Iterable<IP> {
             Network left = result.get(i);
             Network right = result.get(i + 1);
 
-            if (left.getNetworkSize() != right.getNetworkSize()) {
+            if (left.getPrefix() != right.getPrefix()) {
                 continue;
             }
             Network joint = new Network(left.getAddress(),
-                    left.getNetworkSize() - 1);
+                    left.getPrefix() - 1);
             if (joint.contains(left) && joint.contains(right)) {
                 result.remove(i + 1);
                 result.remove(i);
@@ -468,7 +468,7 @@ public final class Network implements Iterable<IP> {
      * @return the network mask of {@code this} network as an {@link IP} object
      */
     public IP getSubnetMask() {
-        return getSubnetMask(getAddress().getIPVersion(), getNetworkSize());
+        return getSubnetMask(getAddress().getIPVersion(), getPrefix());
     }
 
     /**
@@ -478,8 +478,8 @@ public final class Network implements Iterable<IP> {
      * for {@code 1.2.3.4/24}
      * returns 24.
      */
-    public int getNetworkSize() {
-        return networkSize;
+    public int getPrefix() {
+        return prefix;
     }
 
     /**
@@ -551,7 +551,7 @@ public final class Network implements Iterable<IP> {
         // +++ stfu 2007-10-30: this should return an iterator instead
         IPVersion ipVersion = getIPVersion();
 
-        if (networkSize > length) {
+        if (prefix > length) {
             throw new IllegalArgumentException(
                     "Splitting not allowed to bigger networks");
         }
@@ -559,7 +559,7 @@ public final class Network implements Iterable<IP> {
             throw new IllegalArgumentException(
                     "Too big for this kind of address type");
         }
-        int iterateBitLength = length - networkSize;
+        int iterateBitLength = length - prefix;
         byte[] incrementBytes = new byte[ipVersion.getAddressBytes()];
         int byteOfs = incrementBytes.length
                 - 1
@@ -620,12 +620,12 @@ public final class Network implements Iterable<IP> {
 
     @Override
     public int hashCode() {
-        return ipAddress.hashCode() ^ (networkSize << BITS_PER_BYTE);
+        return ipAddress.hashCode() ^ (prefix << BITS_PER_BYTE);
     }
 
     @Override
     public String toString() {
-        return ipAddress.toString() + "/" + networkSize;
+        return ipAddress.toString() + "/" + prefix;
     }
 
     /** Pre-calculated network masks for one {@link IPVersion} flavor. */
