@@ -1,10 +1,11 @@
 language: java
 matrix:
   include:
-  - jdk: openjdk8
   - jdk: openjdk10
   - jdk: openjdk11
   - jdk: openjdk12
+#  - jdk: openjdk8
+# JDK 8 is needing long time for the NetworkTest
 
 os:
   - linux
