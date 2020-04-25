@@ -25,7 +25,7 @@ You can include commons-network as a Maven dependency from [Maven Central](https
 <dependency>
     <groupId>com.oneandone</groupId>
     <artifactId>commons-network</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.2</version>
 </dependency>
 ```
-The JavaDoc documentation can be found [here](http://api.sfuhrm.de/commons-network/com/ionos/network/commons/package-summary.html).
+The JavaDoc documentation can be found here: [![javadoc](https://javadoc.io/badge2/com.oneandone/commons-network/javadoc.svg)]
