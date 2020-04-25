@@ -26,32 +26,20 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
 public final class IP extends AbstractAddress implements Address, Serializable {
 
     /** The IPv4 address 0.0.0.0. */
-    public static final IP IPV4_ALL_ZERO = new IP(new byte[]{0, 0, 0, 0});
+    public static final IP IPV4_ALL_ZERO =
+            new IP(BitsAndBytes.newArrayOf(4, (byte)0));
 
     /** The IPv4 address 255.255.255.255. */
     public static final IP IPV4_ALL_ONE =
-            new IP(new byte[]{
-                    (byte) 255,
-                    (byte) 255,
-                    (byte) 255,
-                    (byte) 255});
+            new IP(BitsAndBytes.newArrayOf(4, (byte)255));
 
     /** The IPv6 address 0::0. */
     public static final IP IPV6_ALL_ZERO =
-            new IP(new byte[]{
-                    0, 0, 0, 0,
-                    0, 0, 0, 0,
-                    0, 0, 0, 0,
-                    0, 0, 0, 0});
+            new IP(BitsAndBytes.newArrayOf(16, (byte)0));
 
     /** The IPv6 address ffff:...:ffff. */
-    public static final IP IPV6_ALL_ONE = new IP(
-            new byte[]{
-                    (byte) 255, (byte) 255, (byte) 255, (byte) 255,
-                    (byte) 255, (byte) 255, (byte) 255, (byte) 255,
-                    (byte) 255, (byte) 255, (byte) 255, (byte) 255,
-                    (byte) 255, (byte) 255, (byte) 255, (byte) 255
-            });
+    public static final IP IPV6_ALL_ONE =
+            new IP(BitsAndBytes.newArrayOf(16, (byte)255));
 
     /** The version number of this class. */
     private static final long serialVersionUID = 5334743380391791729L;

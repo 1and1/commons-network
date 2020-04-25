@@ -1,5 +1,7 @@
 package com.ionos.network.commons.address;
 
+import java.util.Arrays;
+
 /** Internal constants and utility methods for the package.
  * @author Stephan Fuhrmann
  *
@@ -21,6 +23,16 @@ final class BitsAndBytes {
 
     /** Bits to shift to divide by 8. */
     static final int BIT_SHIFT_BYTE = 3;
+
+    /** Creates a new result with the given length and fill byte.
+     * @param length the length of the desired array.
+     * @param fill the value to fill every element with.
+     * */
+    static byte[] newArrayOf(int length, byte fill) {
+        byte[] result = new byte[length];
+        Arrays.fill(result, fill);
+        return result;
+    }
 
     /**
      * Get the highest bit set.

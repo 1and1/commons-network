@@ -3,9 +3,21 @@ package com.ionos.network.commons.address;
 import com.ionos.network.commons.address.BitsAndBytes;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BitsAndBytesTest {
+
+    @Test
+    public void newArrayOf() {
+        byte[] actual = BitsAndBytes.newArrayOf(3, (byte)12);
+        byte[] expected = new byte[3];
+        expected[0] = (byte)12;
+        expected[1] = (byte)12;
+        expected[2] = (byte)12;
+        assertArrayEquals(expected, actual);
+    }
+
     @Test
     public void getLowestBitSetWithZeroArray() {
         BitsAndBytes.getLowestBitSet(new byte[0]);
