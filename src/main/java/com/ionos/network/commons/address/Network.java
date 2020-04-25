@@ -149,7 +149,7 @@ public final class Network implements Iterable<IP> {
      * */
     private static IP networkPartOf(final String networkWithPrefix) {
         Objects.requireNonNull(networkWithPrefix, "network is null");
-        final int index = networkWithPrefix.indexOf("/");
+        final int index = networkWithPrefix.indexOf('/');
         if (index == -1) {
             throw new IllegalArgumentException(
                     "no '/' found in network '" + networkWithPrefix + "'");
@@ -165,7 +165,7 @@ public final class Network implements Iterable<IP> {
      * */
     private static int prefixPartOf(final String networkWithPrefix) {
         Objects.requireNonNull(networkWithPrefix, "network is null");
-        final int index = networkWithPrefix.indexOf("/");
+        final int index = networkWithPrefix.indexOf('/');
         if (index == -1) {
             throw new IllegalArgumentException(
                     "no '/' found in network '" + networkWithPrefix + "'");
