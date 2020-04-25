@@ -24,7 +24,7 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
  * <ul>
  * <li>{@code 1.2.3.0} is the first IP in the network, the network address
  * (returned by {@link #getAddress()} ()})</li>
- * <li>{@code 24} is the network size (returned by {@link #getPrefix()})
+ * <li>{@code 24} is the network prefix length (returned by {@link #getPrefix()})
  * and used as index in all static get* methods</li>
  * <li>{@code 255.255.255.0} is the subnet mask for this network returned
  * by {@link #getSubnetMask()}</li>
@@ -104,20 +104,20 @@ public final class Network implements Iterable<IP> {
     /**
      * Creates an instance.
      * @param inIP the network address of the network.
-     * @param inNetworkSize the prefix size of the network in number of bits.
+     * @param inPrefix the prefix size of the network in number of bits.
      * @throws NullPointerException if the ip is {@code null}.
      * @throws IllegalArgumentException if the prefix size
      * does not match the IP protocol version.
      */
     public Network(final IP inIP,
-                   final int inNetworkSize) {
+                   final int inPrefix) {
         Objects.requireNonNull(inIP, "ip is null");
-        if (inNetworkSize > inIP.getIPVersion().getAddressBits()
-                || inNetworkSize < 0) {
+        if (inPrefix > inIP.getIPVersion().getAddressBits()
+                || inPrefix < 0) {
             throw new IllegalArgumentException(
-                    "illegal network size " + inNetworkSize);
+                    "illegal network prefix " + inPrefix);
         }
-        this.prefix = inNetworkSize;
+        this.prefix = inPrefix;
 
         final NetworkMaskData maskData =
                 getNetworkMaskData(inIP.getIPVersion())[this.prefix];
@@ -170,12 +170,12 @@ public final class Network implements Iterable<IP> {
             throw new IllegalArgumentException(
                     "no '/' found in network '" + networkWithPrefix + "'");
         }
-        final String sNetworkSize = networkWithPrefix.substring(index + 1);
+        final String sPrefix = networkWithPrefix.substring(index + 1);
         try {
-            return Integer.parseInt(sNetworkSize);
+            return Integer.parseInt(sPrefix);
         } catch (NumberFormatException nfe) {
             throw new IllegalArgumentException(
-                    "could not parse '" + sNetworkSize + "'");
+                    "could not parse prefix '" + sPrefix + "'");
         }
 
     }
@@ -185,7 +185,7 @@ public final class Network implements Iterable<IP> {
      * @param netMask the network mask to use. Example {@code 255.255.0.0}.
      * */
     public Network(final IP ipPrefix, final IP netMask) {
-        this(ipPrefix, getNetworkSize(netMask));
+        this(ipPrefix, getPrefix(netMask));
     }
 
     /**
@@ -242,7 +242,7 @@ public final class Network implements Iterable<IP> {
      * @return the prefix size in bits.
      * @throws IllegalArgumentException if it's not a legal netMask
      */
-    public static int getNetworkSize(final IP netMask) {
+    public static int getPrefix(final IP netMask) {
         final NetworkMaskData[] data =
                 getNetworkMaskData(netMask.getIPVersion());
         for (int i = 0; i < data.length; i++) {
@@ -251,7 +251,7 @@ public final class Network implements Iterable<IP> {
             }
         }
         throw new IllegalArgumentException("Netmask "
-                + netMask + " is no legal netMask");
+                + netMask + " is no legal CIDR netMask");
     }
 
     /** Get the network mask buffer array for this IP version.
