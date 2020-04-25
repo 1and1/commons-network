@@ -163,7 +163,7 @@ public final class IPFormats {
 
     /** IP formatter in system id notation as used in IS-IS, like
      * {@code 00 10 01 00 10 01}.
-     * Only makes sense for {@link IPVersion#IPv4}.
+     * Only makes sense for {@link IPVersion#IPV4}.
      * */
     public static final AddressFormat<IP> SYSTEM_ID_NOTATION =
             new AbstractAddressFormat<IP>() {

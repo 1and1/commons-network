@@ -84,11 +84,11 @@ public final class IP extends AbstractAddress implements Address, Serializable {
      * @return the IP version of this address.
      */
     public IPVersion getIPVersion() {
-        if (address.length == IPVersion.IPv4.getAddressBytes()) {
-            return IPVersion.IPv4;
+        if (address.length == IPVersion.IPV4.getAddressBytes()) {
+            return IPVersion.IPV4;
         }
-        if (address.length == IPVersion.IPv6.getAddressBytes()) {
-            return IPVersion.IPv6;
+        if (address.length == IPVersion.IPV6.getAddressBytes()) {
+            return IPVersion.IPV6;
         }
         throw new IllegalStateException("Address length of "
                 + address.length + " bytes is illegal");
@@ -217,9 +217,9 @@ public final class IP extends AbstractAddress implements Address, Serializable {
     /**
      * Returns the IP representation of the form <code>a.b.c.d</code>
      * or <code>a:b:c:d:e:f:g:h</code>.
-     * @see IPFormats#DOTTED_DECIMAL for {@link IPVersion#IPv4}
+     * @see IPFormats#DOTTED_DECIMAL for {@link IPVersion#IPV4}
      * @see IPFormats#COLON_SEPARATED_HEXTETS
-     * for {@link IPVersion#IPv6}
+     * for {@link IPVersion#IPV6}
      */
     @Override
     public String toString() {

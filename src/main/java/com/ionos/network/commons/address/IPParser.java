@@ -132,7 +132,7 @@ public final class IPParser implements AddressParser<IP> {
         // ipv6 address of the short form?
         // abcd:abcd::abcd:abcd:abcd:abcd
         int idxDoubleColon = str.indexOf("::");
-        int idxDot = str.indexOf(".");
+        int idxDot = str.indexOf('.');
         if (idxDoubleColon != -1 && idxDot == -1) {
             return parseIPv6Variant2(str, idxDoubleColon);
         }
@@ -165,8 +165,8 @@ public final class IPParser implements AddressParser<IP> {
         boolean hasLastColon = lastColon != idxDoubleColon
                 && lastColon != idxDoubleColon + 1;
 
-        final int v4len = IPVersion.IPv4.getAddressBytes();
-        final int v6len = IPVersion.IPv6.getAddressBytes();
+        final int v4len = IPVersion.IPV4.getAddressBytes();
+        final int v6len = IPVersion.IPV6.getAddressBytes();
         final int v6partLen = v6len - v4len;
         String leftV6Side = str.substring(0, idxDoubleColon);
         String rightV6Side = "";
@@ -191,7 +191,7 @@ public final class IPParser implements AddressParser<IP> {
                 || rightV6Components.length >= v6partLen
                 || leftV6Components.length + rightV6Components.length
                         >= v6partLen
-                || v4Components.length != IPVersion.IPv4.getAddressBytes()) {
+                || v4Components.length != IPVersion.IPV4.getAddressBytes()) {
             throw new IllegalArgumentException(
                     "Malformed address '" + str + "'");
         }
@@ -232,18 +232,18 @@ public final class IPParser implements AddressParser<IP> {
             byte[] v4Components = parseDecV4Array(v4part);
 
             if (v6Components.length
-                    != IPVersion.IPv6.getAddressBytes()
-                            - IPVersion.IPv4.getAddressBytes()) {
+                    != IPVersion.IPV6.getAddressBytes()
+                            - IPVersion.IPV4.getAddressBytes()) {
                 throw new IllegalArgumentException(
                         "IPv6 part has illegal component count "
                                 + v6Components.length);
             }
-            if (v4Components.length != IPVersion.IPv4.getAddressBytes()) {
+            if (v4Components.length != IPVersion.IPV4.getAddressBytes()) {
                 throw new IllegalArgumentException(
                         "IPv4 part has illegal component count "
                                 + v4Components.length);
             }
-            byte[] adr = new byte[IPVersion.IPv6.getAddressBytes()];
+            byte[] adr = new byte[IPVersion.IPV6.getAddressBytes()];
 
             System.arraycopy(v6Components,
                     0,
@@ -283,14 +283,14 @@ public final class IPParser implements AddressParser<IP> {
         byte[] leftComponents = parseIPv6Variant1(leftSide);
         byte[] rightComponents = parseIPv6Variant1(rightSide);
 
-        int rightOffset = IPVersion.IPv6.getAddressBytes()
+        int rightOffset = IPVersion.IPV6.getAddressBytes()
                 - rightComponents.length;
 
         if (leftComponents.length + rightComponents.length
-                >= IPVersion.IPv6.getAddressBytes()) {
+                >= IPVersion.IPV6.getAddressBytes()) {
             throw new IllegalArgumentException("Too long address " + str);
         }
-        byte[] adr = new byte[IPVersion.IPv6.getAddressBytes()];
+        byte[] adr = new byte[IPVersion.IPV6.getAddressBytes()];
 
         System.arraycopy(leftComponents, 0, adr, 0, leftComponents.length);
         System.arraycopy(rightComponents, 0, adr, rightOffset,
@@ -304,7 +304,7 @@ public final class IPParser implements AddressParser<IP> {
      * @return the parsed address as a byte array.
      * */
     private byte[] parseDottedIPv4(final Matcher m) {
-        byte[] adr = new byte[IPVersion.IPv4.getAddressBytes()];
+        byte[] adr = new byte[IPVersion.IPV4.getAddressBytes()];
         for (int i = 0; i < adr.length; i++) {
             int val = Integer.parseInt(m.group(i + 1));
 
@@ -342,7 +342,7 @@ public final class IPParser implements AddressParser<IP> {
             components = new String[0];
         }
 
-        if (components.length > IPVersion.IPv6.getAddressBytes() / 2) {
+        if (components.length > IPVersion.IPV6.getAddressBytes() / 2) {
             throw new IllegalArgumentException("Too many components");
         }
         byte[] result = new byte[components.length * 2];
@@ -376,10 +376,10 @@ public final class IPParser implements AddressParser<IP> {
         } else {
             components = new String[0];
         }
-        if (components.length > IPVersion.IPv4.getAddressBytes()) {
+        if (components.length > IPVersion.IPV4.getAddressBytes()) {
             throw new IllegalArgumentException("Too many components");
         }
-        if (components.length < IPVersion.IPv4.getAddressBytes()) {
+        if (components.length < IPVersion.IPV4.getAddressBytes()) {
             throw new IllegalArgumentException("Too few components");
         }
         byte[] result = new byte[components.length];

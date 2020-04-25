@@ -9,10 +9,10 @@ package com.ionos.network.commons.address;
 public enum IPVersion {
 
     /** The IP version 4. */
-    IPv4(4),
+    IPV4(4),
 
     /** The IP version 6. */
-    IPv6(16);
+    IPV6(16);
 
     /** The address length in bytes. */
     private final int addressBytes;
@@ -56,9 +56,9 @@ public enum IPVersion {
      */
     public IP getMinimumAddress() {
         switch (this) {
-            case IPv4:
+            case IPV4:
             return IP.IPV4_ALL_ZERO;
-        case IPv6:
+        case IPV6:
             return IP.IPV6_ALL_ZERO;
         default:
             throw new IllegalStateException();
@@ -73,9 +73,9 @@ public enum IPVersion {
      */
     public IP getMaximumAddress() {
         switch (this) {
-        case IPv4:
+        case IPV4:
             return IP.IPV4_ALL_ONE;
-        case IPv6:
+        case IPV6:
             return IP.IPV6_ALL_ONE;
         default:
             throw new IllegalStateException();

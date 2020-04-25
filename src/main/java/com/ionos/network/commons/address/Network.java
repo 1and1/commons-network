@@ -45,17 +45,17 @@ public final class Network implements Iterable<IP> {
 
     static {
         IP_V4_NETWORK_MASK_DATA = new NetworkMaskData[
-                IPVersion.IPv4.getAddressBits() + 1];
-        for (int i = 0; i <= IPVersion.IPv4.getAddressBits(); i++) {
+                IPVersion.IPV4.getAddressBits() + 1];
+        for (int i = 0; i <= IPVersion.IPV4.getAddressBits(); i++) {
             IP_V4_NETWORK_MASK_DATA[i] =
-                    new NetworkMaskData(IPVersion.IPv4, i);
+                    new NetworkMaskData(IPVersion.IPV4, i);
         }
 
         IP_V6_NETWORK_MASK_DATA = new NetworkMaskData[
-                IPVersion.IPv6.getAddressBits() + 1];
-        for (int i = 0; i <= IPVersion.IPv6.getAddressBits(); i++) {
+                IPVersion.IPV6.getAddressBits() + 1];
+        for (int i = 0; i <= IPVersion.IPV6.getAddressBits(); i++) {
             IP_V6_NETWORK_MASK_DATA[i] =
-                    new NetworkMaskData(IPVersion.IPv6, i);
+                    new NetworkMaskData(IPVersion.IPV6, i);
         }
     }
 
@@ -200,7 +200,7 @@ public final class Network implements Iterable<IP> {
      */
     public static boolean isRFC1918(final IP ip) {
         boolean result = false;
-        if (ip != null && ip.getIPVersion() == IPVersion.IPv4) {
+        if (ip != null && ip.getIPVersion() == IPVersion.IPV4) {
             for (final Network privateNetwork : RFC_1918_NETWORKS) {
                 if (privateNetwork.contains(ip)) {
                     result = true;
@@ -262,9 +262,9 @@ public final class Network implements Iterable<IP> {
             final IPVersion version) {
         Objects.requireNonNull(version, "the ip version may not be null");
         switch (version) {
-            case IPv4:
+            case IPV4:
                 return IP_V4_NETWORK_MASK_DATA;
-            case IPv6:
+            case IPV6:
                 return IP_V6_NETWORK_MASK_DATA;
             default:
                 throw new IllegalStateException();

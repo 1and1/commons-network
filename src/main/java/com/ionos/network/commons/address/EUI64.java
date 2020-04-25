@@ -87,12 +87,12 @@ public final class EUI64 {
     public static IP convertMac(final MAC mac, final IP prefix) {
         Objects.requireNonNull(mac, "mac may not be null");
         Objects.requireNonNull(prefix, "prefix may not be null");
-        if (prefix.getIPVersion() != IPVersion.IPv6) {
+        if (prefix.getIPVersion() != IPVersion.IPV6) {
             throw new IllegalArgumentException(
                     "prefix must be an IPv6 address");
         }
 
-        final byte[] result = new byte[IPVersion.IPv6.getAddressBytes()];
+        final byte[] result = new byte[IPVersion.IPV6.getAddressBytes()];
 
         // first copy the prefix (bytes 0..7)
         final byte[] network = prefix.getBytes();

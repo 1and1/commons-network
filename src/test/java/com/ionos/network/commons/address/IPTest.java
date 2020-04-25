@@ -1,8 +1,5 @@
 package com.ionos.network.commons.address;
 
-import com.ionos.network.commons.address.IP;
-import com.ionos.network.commons.address.IPFormats;
-import com.ionos.network.commons.address.IPVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -97,7 +94,7 @@ public class IPTest {
     @Test
     public void testGetIPv6Version() {
         IP ip = new IP("2001:7f8::9be8:0:1");
-        assertEquals(IPVersion.IPv6, ip.getIPVersion());
+        assertEquals(IPVersion.IPV6, ip.getIPVersion());
     }
 
     @Test
