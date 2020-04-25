@@ -8,9 +8,9 @@ Network Commons
 
 
 A library of IP network representation classes, like
-* IP (IPv4, IPv6),
+* IP address (IPv4, IPv6),
 * MAC address,
-* IP network.
+* IP network using the CIDR method ([Classless Inter-Domain Routing](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)).
 
 ## Prerequisites
 
