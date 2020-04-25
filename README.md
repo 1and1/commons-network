@@ -28,4 +28,4 @@ You can include commons-network as a Maven dependency from [Maven Central](https
     <version>0.9.3</version>
 </dependency>
 ```
-The JavaDoc documentation can be found here: [![javadoc](https://javadoc.io/badge2/com.oneandone/commons-network/javadoc.svg)](https://javadoc.io/doc/com.oneandone/commons-network)
+The JavaDoc documentation can be found [here](https://javadoc.io/doc/com.oneandone/commons-network).
