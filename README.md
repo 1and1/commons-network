@@ -21,6 +21,8 @@ Usage
 ============
 You can include commons-network as a Maven dependency from [Maven Central](https://mvnrepository.com/artifact/com.oneandone/commons-network).
 
+## Maven dependency
+
 ```xml
 <dependency>
     <groupId>com.oneandone</groupId>
@@ -28,6 +30,9 @@ You can include commons-network as a Maven dependency from [Maven Central](https
     <version>0.9.4</version>
 </dependency>
 ```
+
+## Documentation of provided classes and methods
+
 The JavaDoc documentation can be found [here](https://javadoc.io/doc/com.oneandone/commons-network).
 
 ## Versions
