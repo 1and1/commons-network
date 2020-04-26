@@ -95,11 +95,11 @@ public final class EUI64 {
         final byte[] result = new byte[IPVersion.IPV6.getAddressBytes()];
 
         // first copy the prefix (bytes 0..7)
-        final byte[] network = prefix.getBytes();
+        final byte[] network = prefix.address;
         System.arraycopy(network, 0, result, EUI_PREFIX_OFFSET, PREFIX_LENGTH);
 
         // copy MAC bytes
-        final byte[] macBytes = mac.getBytes();
+        final byte[] macBytes = mac.address;
 
         // then copy the suffix (bytes 8..15)
         System.arraycopy(macBytes,

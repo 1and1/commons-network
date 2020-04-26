@@ -124,14 +124,14 @@ public final class Network implements Iterable<IP> {
 
         this.ipAddress = inIP.and(
                 maskData.subnetMask
-                        .getBytes());
+                        .address);
 
         if (this.prefix == 0) {
             this.ipEnd = inIP.getIPVersion().getMaximumAddress();
         } else {
             this.ipEnd = this.ipAddress.add(
                     maskData.inverseSubnetMask
-                            .getBytes());
+                    .address);
         }
     }
 
@@ -330,9 +330,9 @@ public final class Network implements Iterable<IP> {
         // two complement negation: this is (- startIP)
         final IP firstNegated = inStartIP.invert().add(1);
         // example: for a.b.c.0-a.b.c.255 we now have 0.0.0.255
-        final IP net = endIPExclusive.add(firstNegated.getBytes());
+        final IP net = endIPExclusive.add(firstNegated.address);
         // the ip count as a byte array integer. For our example, this is 256.
-        byte[] ipcount = net.getBytes();
+        byte[] ipcount = net.address;
         // the increment byte array for adding the just processed network
         final byte[] increment = new byte[ipcount.length];
 
@@ -343,7 +343,7 @@ public final class Network implements Iterable<IP> {
         // go thru the IPs and add the biggest possible network.
         while (cur.compareTo(inEndIP) <= 0
                 && (last == null || last.compareTo(cur) < 0)) {
-            int currentBit = BitsAndBytes.getLowestBitSet(cur.getBytes());
+            int currentBit = BitsAndBytes.getLowestBitSet(cur.address);
 
             if (currentBit == -1) {
                 currentBit = adrBits;
@@ -369,10 +369,10 @@ public final class Network implements Iterable<IP> {
                 // two complement negation: this is (- startIP)
                 final IP curNegated = cur.invert().add(1);
                 // example: for a.b.c.0-a.b.c.255 we now have 0.0.0.255
-                IP curNetnet = endIPExclusive.add(curNegated.getBytes());
+                IP curNetnet = endIPExclusive.add(curNegated.address);
                 // the ip count as a byte array integer.
                 // For our example, this is 256.
-                ipcount = curNetnet.getBytes();
+                ipcount = curNetnet.address;
             } else {
                 break;
             }

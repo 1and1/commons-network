@@ -31,7 +31,7 @@ public final class IPFormats {
                         final IP ip,
                         final A toAppendTo)
                         throws IOException {
-                    final byte[] address = ip.getBytes();
+                    final byte[] address = ip.address;
                     // decimals with dot separators
                     for (int i = 0; i < address.length; i++) {
                         if (i > 0) {
@@ -57,7 +57,7 @@ public final class IPFormats {
                         final IP ip,
                         final A toAppendTo)
                         throws IOException {
-                    final byte[] address = ip.getBytes();
+                    final byte[] address = ip.address;
                     // everything else goes HEX with word components
                     for (int i = 0; i < address.length; i += 2) {
                         if (i > 0) {
@@ -84,7 +84,7 @@ public final class IPFormats {
                         final IP ip,
                         final A toAppendTo)
                         throws IOException {
-                    final byte[] address = ip.getBytes();
+                    final byte[] address = ip.address;
                     // everything else goes HEX with word components
                     for (int i = 0; i < address.length; i += 2) {
                         if (i > 0) {
@@ -111,7 +111,7 @@ public final class IPFormats {
                         final IP ip,
                         final A toAppendTo)
                         throws IOException {
-                    final byte[] address = ip.getBytes();
+                    final byte[] address = ip.address;
                     // offset of longest 0-run
                     int maxOfs = -1;
                     // length of longest 0-run
@@ -172,7 +172,7 @@ public final class IPFormats {
                             final IP ip,
                             final A toAppendTo)
                             throws IOException {
-                        final byte[] address = ip.getBytes();
+                        final byte[] address = ip.address;
                         int count = 0;
 
                         for (byte b : address) {

@@ -32,7 +32,7 @@ public final class MACFormats {
                         final MAC mac,
                         final A toAppendTo)
                         throws IOException {
-                    final byte[] address = mac.getBytes();
+                    final byte[] address = mac.address;
 
                     for (int i = 0; i < address.length; i++) {
                         int val = address[i] & BYTE_MASK;
@@ -61,7 +61,7 @@ public final class MACFormats {
                         final MAC mac,
                         final A toAppendTo)
                         throws IOException {
-                    final byte[] address = mac.getBytes();
+                    final byte[] address = mac.address;
                     for (int i = 0; i < address.length; i++) {
                         int val = address[i] & BYTE_MASK;
                         // only before digits 2 and 4
