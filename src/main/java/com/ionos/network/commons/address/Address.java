@@ -30,9 +30,6 @@ public interface Address {
                 byte[] o1Address = o1.getBytes();
                 byte[] o2Address = o2.getBytes();
 
-                if (Arrays.equals(o1Address, o2Address)) {
-                    return 0;
-                }
                 for (int i = 0; i < o1Address.length; i++) {
                     int v1 = o1Address[i] & BYTE_MASK;
                     int v2 = o2Address[i] & BYTE_MASK;
