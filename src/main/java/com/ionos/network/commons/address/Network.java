@@ -42,6 +42,8 @@ public final class Network implements Iterable<IP>, Serializable {
     /** The version number of this class. */
     private static final long serialVersionUID = 123816891688169L;
 
+    private static final String ERROR_IP_VERSION_NOT_NULL = "the ip version may not be null";
+
     /** Pre-calculated network masks for IPv4. */
     private static final NetworkMaskData[] IP_V4_NETWORK_MASK_DATA;
 
@@ -227,7 +229,7 @@ public final class Network implements Iterable<IP>, Serializable {
      * @return the network mask as an IP.
      */
     public static IP getSubnetMask(final IPVersion version, final int prefix) {
-        Objects.requireNonNull(version, "the ip version may not be null");
+        Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
         return getNetworkMaskData(version, prefix).subnetMask;
     }
 
@@ -240,7 +242,7 @@ public final class Network implements Iterable<IP>, Serializable {
      */
     public static IP getInverseSubnetMask(final IPVersion version,
                                           final int prefix) {
-        Objects.requireNonNull(version, "the ip version may not be null");
+        Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
         return getNetworkMaskData(version, prefix).inverseSubnetMask;
     }
 
@@ -269,7 +271,7 @@ public final class Network implements Iterable<IP>, Serializable {
      * */
     private static NetworkMaskData[] getNetworkMaskData(
             final IPVersion version) {
-        Objects.requireNonNull(version, "the ip version may not be null");
+        Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
         switch (version) {
             case IPV4:
                 return IP_V4_NETWORK_MASK_DATA;
@@ -288,7 +290,7 @@ public final class Network implements Iterable<IP>, Serializable {
     private static NetworkMaskData getNetworkMaskData(
             final IPVersion version,
             final int prefixBits) {
-        Objects.requireNonNull(version, "the ip version may not be null");
+        Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
         if (prefixBits < 0 || prefixBits > version.getAddressBits()) {
             throw new IllegalArgumentException("Prefix is illegal: "
                     + prefixBits);
