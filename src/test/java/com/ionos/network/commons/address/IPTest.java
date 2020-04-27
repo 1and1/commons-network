@@ -138,7 +138,7 @@ public class IPTest {
         IP ip2 = new IP("192.168.0.2");
 
         assertNotEquals(ip1, ip2);
-        assertNotEquals(ip1, null);
+        assertNotEquals(null, ip1);
     }
 
     @Test
@@ -154,7 +154,7 @@ public class IPTest {
     public void testEqualsWithOtherClass() {
         IP ip1 = new IP("192.168.0.1");
 
-        assertNotEquals(ip1, "foobar");
+        assertNotEquals("foobar", ip1);
     }
 
     @Test
