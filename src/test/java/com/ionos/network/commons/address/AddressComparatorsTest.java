@@ -22,7 +22,7 @@ public class AddressComparatorsTest {
         assertEquals(0, AddressComparators.UNSIGNED_BYTE_COMPARATOR.compare(first, first));
     }
 
-    private class TestAddress implements Address {
+    private static class TestAddress implements Address {
 
         @Override
         public byte[] getBytes() {

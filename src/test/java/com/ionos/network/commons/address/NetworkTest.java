@@ -477,16 +477,12 @@ public class NetworkTest {
 
     @Test
     public void testGetSubnetMaskWithIllegalVersion() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Network.getSubnetMask(null, 24);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> Network.getSubnetMask(null, 24));
     }
 
     @Test
     public void testGetInverseSubnetMaskWithIllegalVersion() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Network.getInverseSubnetMask(null, 24);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> Network.getInverseSubnetMask(null, 24));
     }
 
     @Test

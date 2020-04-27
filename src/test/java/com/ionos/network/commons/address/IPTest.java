@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -56,9 +55,9 @@ public class IPTest {
 
     @Test
     public void testAddArrayWithOverLongArray() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new IP("192.168.1.1").add(new byte[]{0, 0, 0, 0, 0, 0, 0});
-        });
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new IP("192.168.1.1")
+                        .add(new byte[]{0, 0, 0, 0, 0, 0, 0}));
     }
 
     @Test
@@ -95,9 +94,8 @@ public class IPTest {
 
     @Test
     public void testConstructIllegalIP() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new IP(new byte[]{0});
-        });
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new IP(new byte[]{0}));
     }
 
     @Test
@@ -108,23 +106,20 @@ public class IPTest {
 
     @Test
     public void testGetNullIP() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new IP((String) null);
-        });
+        Assertions.assertThrows(NullPointerException.class,
+                () -> new IP((String) null));
     }
 
     @Test
     public void testGetIllegalIP4ByLength() {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> {
-                new IP("192.168.0.0.0");
-            });
+            Assertions.assertThrows(IllegalArgumentException.class,
+                    () -> new IP("192.168.0.0.0"));
     }
 
     @Test
     public void testGetIllegalIP4ByBounds() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new IP("256.168.0.0");
-        });
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new IP("256.168.0.0"));
     }
 
     @Test
@@ -187,7 +182,7 @@ public class IPTest {
     public void testSerialize() throws IOException {
         byte[] data;
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);) {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)) {
             objectOutputStream.writeObject(new IP("192.168.0.1"));
             objectOutputStream.close();
             data = byteArrayOutputStream.toByteArray();
@@ -201,7 +196,7 @@ public class IPTest {
     public void testDeserialize() throws IOException, ClassNotFoundException {
         try (
                 InputStream inputStream = Files.newInputStream(Paths.get("src/test/resources/ip_192.168.0.1"));
-                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);) {
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
             IP ip = (IP)objectInputStream.readObject();
             assertEquals(new IP("192.168.0.1"), ip);
         }

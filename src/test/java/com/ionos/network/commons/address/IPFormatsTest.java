@@ -5,8 +5,6 @@ import com.ionos.network.commons.address.IP;
 import com.ionos.network.commons.address.IPFormats;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /** JUnit test for {@link IPFormats}.

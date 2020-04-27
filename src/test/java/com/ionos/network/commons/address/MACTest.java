@@ -68,16 +68,14 @@ public class MACTest {
 
     @Test
     public void testCreationWithIllegalLength() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new MAC(new byte[]{0});
-        });
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new MAC(new byte[]{0}));
     }
 
     @Test
     public void testCreateWithUnknownString() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new MAC("foobar this is never a MAC");
-        });
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new MAC("foobar this is never a MAC"));
     }
 
     @Test
@@ -110,7 +108,7 @@ public class MACTest {
     public void testSerialize() throws IOException {
         byte[] data;
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);) {
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)) {
             objectOutputStream.writeObject(new MAC("11:22:33:44:55:66"));
             objectOutputStream.close();
             data = byteArrayOutputStream.toByteArray();
@@ -124,7 +122,7 @@ public class MACTest {
     public void testDeserialize() throws IOException, ClassNotFoundException {
         try (
                 InputStream inputStream = Files.newInputStream(Paths.get("src/test/resources/mac_11_22_33_44_55_66"));
-                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);) {
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
             MAC mac = (MAC)objectInputStream.readObject();
             assertEquals(new MAC("11:22:33:44:55:66"), mac);
         }
