@@ -60,7 +60,8 @@ public final class IP extends AbstractAddress implements Address, Serializable {
      */
     public IP(final byte[] inAddress) {
         super(inAddress);
-        if (inAddress.length != IPV4_BYTES && inAddress.length != IPV6_BYTES) {
+        if (inAddress.length !=  IPVersion.IPV4.getAddressBytes()
+                && inAddress.length != IPVersion.IPV6.getAddressBytes()) {
             throw new IllegalArgumentException(
                     "IP addresses must be of 4 or 16 bytes long. "
                             + "Your address has " + inAddress.length

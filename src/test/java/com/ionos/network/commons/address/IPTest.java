@@ -162,8 +162,8 @@ public class IPTest {
         IP ip1 = new IP("192.168.0.1");
         IP ip2 = new IP("2001:7f8::9be8:0:1");
 
-        assertEquals(-1, ip1.compareTo(ip2));
-        assertEquals(1, ip2.compareTo(ip1));
+        assertEquals(1, ip1.compareTo(ip2));
+        assertEquals(-1, ip2.compareTo(ip1));
     }
 
     @Test

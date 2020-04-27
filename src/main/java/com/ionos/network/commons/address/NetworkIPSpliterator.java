@@ -77,6 +77,6 @@ class NetworkIPSpliterator implements Spliterator<IP> {
 
     @Override
     public Comparator<? super IP> getComparator() {
-        return Address.COMPONENT_COMPARATOR;
+        return AddressComparators.UNSIGNED_BYTE_COMPARATOR;
     }
 }

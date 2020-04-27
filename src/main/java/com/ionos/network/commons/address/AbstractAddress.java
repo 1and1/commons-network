@@ -3,8 +3,6 @@ package com.ionos.network.commons.address;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
-
 /**
  * Abstract address is the base class that contains the bytes of the address.
  * @author Stephan Fuhrmann
@@ -61,22 +59,6 @@ abstract class AbstractAddress implements Comparable<AbstractAddress>,
      */
     @Override
     public int compareTo(final AbstractAddress other) {
-        if (other.address.length != address.length) {
-            if (address.length < other.address.length) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
-        for (int i = 0; i < address.length; i++) {
-            int v1 = address[i] & BYTE_MASK;
-            int v2 = other.address[i] & BYTE_MASK;
-            if (v1 < v2) {
-                return -1;
-            } else if (v1 > v2) {
-                return 1;
-            }
-        }
-        return 0;
+        return AddressComparators.UNSIGNED_BYTE_COMPARATOR.compare(this, other);
     }
 }

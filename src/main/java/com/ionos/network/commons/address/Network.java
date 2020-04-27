@@ -17,7 +17,7 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
 import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 
 /**
- * An immutable IP network that consists of a IP prefix and a prefix length.
+ * An IP network that consists of a IP prefix and a prefix length.
  * <br>
  * Example: 1.2.3.4/24
  * <br>
@@ -33,7 +33,6 @@ import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
  *
  * Objects of the Network class are immutable!
  * @author Stephan Fuhrmann
- *
  **/
 public final class Network implements Iterable<IP> {
 

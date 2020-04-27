@@ -10,7 +10,6 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
  * Parses an IP address from text notation.
  * @see IP
  * @author Stephan Fuhrmann
- *
  **/
 public final class IPParser implements AddressParser<IP> {
 

@@ -8,7 +8,6 @@ import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
  * @see MAC
  * @see AddressFormat
  * @author Stephan Fuhrmann
- *
  * */
 public final class MACFormats {
 

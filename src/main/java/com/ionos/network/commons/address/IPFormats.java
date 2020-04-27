@@ -11,7 +11,6 @@ import static com.ionos.network.commons.address.BitsAndBytes.appendHexWithLeadin
  * @see IP
  * @see AddressFormat
  * @author Stephan Fuhrmann
- *
  **/
 public final class IPFormats {
 
