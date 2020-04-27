@@ -1,5 +1,6 @@
 package com.ionos.network.commons.address;
 
+import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -104,9 +105,7 @@ public final class IPParser implements AddressParser<IP> {
 
     @Override
     public byte[] parseAsBytes(final String str) {
-        if (str == null) {
-            throw new NullPointerException("str is null");
-        }
+        Objects.requireNonNull(str, "Argument must not be null");
         if (str.length() == 0) {
             throw new IllegalArgumentException(
                     "given string has a zero length");

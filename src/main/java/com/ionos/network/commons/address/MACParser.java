@@ -1,5 +1,7 @@
 package com.ionos.network.commons.address;
 
+import java.util.Objects;
+
 import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
 
 /**
@@ -38,13 +40,12 @@ public final class MACParser implements AddressParser<MAC> {
      *                   ({@code 00:00:00:00:00:00}) or CISCO
      *                   triple short form ({@code 0000.0000.0000}).
      * @return the byte array representing the MAC address.
+     * @throws NullPointerException if macAddress is {@code null}.
+     * @throws IllegalArgumentException if macAddress format does not match a known format.
      */
     @Override
     public byte[] parseAsBytes(final String macAddress) {
-        if (macAddress == null) {
-            throw new NullPointerException("str is null");
-        }
-
+        Objects.requireNonNull(macAddress, "Argument must not be null");
         if (macAddress.length() == 0) {
             throw new IllegalArgumentException(
                     "given string has a zero length");
