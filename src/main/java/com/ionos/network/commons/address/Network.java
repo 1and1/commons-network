@@ -524,16 +524,27 @@ public final class Network implements Iterable<IP> {
     /**
      * Tests whether the given IP address is contained in this {@link Network}.
      *
-     * @param ip address to test
-     * @return <code>true</code> if this network contains the given IP
+     * @param ip the ip address to test.
+     * @return {@code true} if this network contains the given IP, {@code false} otherwise. Networks
+     * do not contain ip addresses of different versions (IPV4 vs. IPV6).
+     * This method will return {@code false} in such a case.
      */
     public boolean contains(final IP ip) {
         Objects.requireNonNull(ip, "IP is null");
-        return getIPVersion()
-                .equals(ip.getIPVersion())
-                && (ip.compareTo(getAddress()) >= 0)
-                && (ip.compareTo(getAddressEnd()) <= 0);
+        byte[] netMask = getSubnetMask().address;
+        byte[] ipBytes = ip.address;
+        byte[] networkBytes = getAddress().address;
 
+        if (ip.address.length != netMask.length) {
+            return false;
+        }
+
+        for (int i=0; i < ip.address.length; i++) {
+            if ((ipBytes[i] & netMask[i]) != (networkBytes[i] & netMask[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

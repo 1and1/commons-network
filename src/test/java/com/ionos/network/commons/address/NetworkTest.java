@@ -89,15 +89,27 @@ public class NetworkTest {
     @Test
     public void testContains() {
         final Network n1 = new Network(new IP("192.168.0.42"), 24);
+        final Network n2 = new Network(new IP("192.168.0.42"), 31);
         final IP ip1 = new IP("192.168.0.0");
         final IP ip2 = new IP("192.168.0.255");
         final IP ip3 = new IP("192.168.1.0");
         final IP ip4 = new IP("192.168.2.255");
+        final IP ip5 = new IP("192.168.0.42");
+        final IP ip6 = new IP("192.168.0.43");
 
         assertTrue(n1.contains(ip1));
         assertTrue(n1.contains(ip2));
         assertFalse(n1.contains(ip3));
         assertFalse(n1.contains(ip4));
+        assertTrue(n1.contains(ip5));
+        assertTrue(n1.contains(ip6));
+
+        assertFalse(n2.contains(ip1));
+        assertFalse(n2.contains(ip2));
+        assertFalse(n2.contains(ip3));
+        assertFalse(n2.contains(ip4));
+        assertTrue(n2.contains(ip5));
+        assertTrue(n2.contains(ip6));
     }
 
     @Test
@@ -105,6 +117,13 @@ public class NetworkTest {
         final Network n1 = new Network(new IP("192.168.0.42"), (byte) 32);
         final IP ip1 = new IP("192.168.0.42");
         assertTrue(n1.contains(ip1));
+    }
+
+    @Test
+    public void testContainsDifferentVersion() {
+        final Network n1 = new Network(new IP("::"), (byte) 0);
+        final IP ip1 = new IP("192.168.0.42");
+        assertFalse(n1.contains(ip1));
     }
 
     @Test
