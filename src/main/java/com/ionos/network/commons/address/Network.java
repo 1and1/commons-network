@@ -485,7 +485,7 @@ public final class Network implements Iterable<IP> {
     /**
      * Get the start IP of {@code this} network.
      *
-     * @return the start IP
+     * @return the start IP of this network (inclusive).
      */
     public IP getAddress() {
         return ipAddress;
@@ -494,7 +494,7 @@ public final class Network implements Iterable<IP> {
     /**
      * Returns the last IP of {@code this} network.
      *
-     * @return the last IP
+     * @return the last IP of this network (inclusive).
      */
     public IP getAddressEnd() {
         return ipEnd;
