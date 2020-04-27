@@ -115,7 +115,7 @@ public final class IPParser implements AddressParser<IP> {
         // form: 123.13.123.12
         Matcher m = IPV4_PATTERN.matcher(str);
         if (m.matches()) {
-            return parseDottedIPv4(m);
+            return parseDecV4Array(str);
         }
 
         // rfc4291 variant 1
@@ -294,25 +294,6 @@ public final class IPParser implements AddressParser<IP> {
         System.arraycopy(leftComponents, 0, adr, 0, leftComponents.length);
         System.arraycopy(rightComponents, 0, adr, rightOffset,
                 rightComponents.length);
-
-        return adr;
-    }
-
-    /** Parses an address in the form {@code 123.234.111.1}.
-     * @param m the matcher that is matching an IPv4 address.
-     * @return the parsed address as a byte array.
-     * */
-    private byte[] parseDottedIPv4(final Matcher m) {
-        byte[] adr = new byte[IPVersion.IPV4.getAddressBytes()];
-        for (int i = 0; i < adr.length; i++) {
-            int val = Integer.parseInt(m.group(i + 1));
-
-            if (val < 0 || val > BYTE_MASK) {
-                throw new IllegalArgumentException(
-                        String.format(OUT_OF_RANGE_ERROR, val));
-            }
-            adr[i] = (byte) val;
-        }
 
         return adr;
     }
