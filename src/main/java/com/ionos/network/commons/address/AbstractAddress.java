@@ -1,5 +1,8 @@
 package com.ionos.network.commons.address;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -11,9 +14,12 @@ import java.util.Arrays;
 abstract class AbstractAddress implements Comparable<AbstractAddress>,
         Address, Serializable {
 
+    /** The version number of this class. */
+    static final long serialVersionUID = 41414698085765672L;
+
     /** The bytes representing the address.
      * */
-    protected final byte[] address;
+    protected byte[] address;
 
     /**
      * Creates a new address from the address bytes.
@@ -60,5 +66,19 @@ abstract class AbstractAddress implements Comparable<AbstractAddress>,
     @Override
     public int compareTo(final AbstractAddress other) {
         return AddressComparators.UNSIGNED_BYTE_COMPARATOR.compare(this, other);
+    }
+
+    /** Custom serialization for writing an address. */
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.writeInt(address.length);
+        s.write(address);
+    }
+
+    /** Custom deserialization for reading an address. */
+    private void readObject(ObjectInputStream s) throws IOException {
+        int length = s.readInt();
+        byte[] data = new byte[length];
+        s.readFully(data);
+        address = data;
     }
 }

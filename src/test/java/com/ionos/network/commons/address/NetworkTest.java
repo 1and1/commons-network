@@ -4,6 +4,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,6 +25,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -553,5 +561,29 @@ public class NetworkTest {
     public void testToStringWithIPv6() {
         Network network = new Network(new IP("::"), 20);
         assertEquals("0:0:0:0:0:0:0:0/20", network.toString());
+    }
+
+    @Test
+    public void testSerialize() throws IOException {
+        byte[] data;
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);) {
+            objectOutputStream.writeObject(new Network("192.168.24.0/24"));
+            objectOutputStream.close();
+            data = byteArrayOutputStream.toByteArray();
+        }
+
+        assertNotNull(data);
+        assertNotEquals(0, data.length);
+    }
+
+    @Test
+    public void testDeserialize() throws IOException, ClassNotFoundException {
+        try (
+                InputStream inputStream = Files.newInputStream(Paths.get("src/test/resources/net_192.168.24.0_24"));
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);) {
+            Network network = (Network)objectInputStream.readObject();
+            assertEquals(new Network("192.168.24.0/24"), network);
+        }
     }
 }

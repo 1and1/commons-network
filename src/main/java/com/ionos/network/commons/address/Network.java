@@ -1,5 +1,9 @@
 package com.ionos.network.commons.address;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,7 +38,9 @@ import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
  * Objects of the Network class are immutable!
  * @author Stephan Fuhrmann
  **/
-public final class Network implements Iterable<IP> {
+public final class Network implements Iterable<IP>, Serializable {
+    /** The version number of this class. */
+    private static final long serialVersionUID = 123816891688169L;
 
     /** Pre-calculated network masks for IPv4. */
     private static final NetworkMaskData[] IP_V4_NETWORK_MASK_DATA;
@@ -82,7 +88,7 @@ public final class Network implements Iterable<IP> {
     };
 
     /** The prefix size in bits. */
-    private final int prefix;
+    private int prefix;
 
     /**
      * First IP in the network.
@@ -90,7 +96,7 @@ public final class Network implements Iterable<IP> {
      * @see #ipEnd
      * @see #getAddress()
      */
-    private final IP ipAddress;
+    private IP ipAddress;
 
     /**
      * Last IP in the network.
@@ -98,7 +104,7 @@ public final class Network implements Iterable<IP> {
      * @see #ipAddress
      * @see #getAddressEnd()
      */
-    private final IP ipEnd;
+    private IP ipEnd;
 
     /**
      * Creates an instance.
@@ -125,12 +131,16 @@ public final class Network implements Iterable<IP> {
                 maskData.subnetMask
                         .address);
 
-        if (this.prefix == 0) {
-            this.ipEnd = inIP.getIPVersion().getMaximumAddress();
+        this.ipEnd = ipEndFor(ipAddress, prefix);
+    }
+
+    private static IP ipEndFor(IP startAddress, int prefix) {
+        if (prefix == 0) {
+            return startAddress.getIPVersion().getMaximumAddress();
         } else {
-            this.ipEnd = this.ipAddress.add(
-                    maskData.inverseSubnetMask
-                    .address);
+            return startAddress.add(
+                    getNetworkMaskData(startAddress.getIPVersion())[prefix].inverseSubnetMask
+                            .address);
         }
     }
 
@@ -705,5 +715,23 @@ public final class Network implements Iterable<IP> {
                 data[i] ^= BYTE_MASK;
             }
         }
+    }
+
+    /** Custom serialization for writing an address. */
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.writeInt(ipAddress.address.length);
+        s.write(ipAddress.address);
+        s.writeInt(prefix);
+    }
+
+    /** Custom deserialization for reading an address. */
+    private void readObject(ObjectInputStream s) throws IOException {
+        int length = s.readInt();
+        byte[] data = new byte[length];
+        s.readFully(data);
+
+        ipAddress = new IP(data);
+        prefix = s.readInt();
+        ipEnd = ipEndFor(ipAddress, prefix);
     }
 }

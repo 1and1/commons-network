@@ -3,9 +3,19 @@ package com.ionos.network.commons.address;
 import com.ionos.network.commons.address.MAC;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MACTest {
 
@@ -94,5 +104,29 @@ public class MACTest {
         final MAC mac1 = new MAC("6C:88:14:6F:D8:91");
         final MAC mac2 = new MAC("6C:88:23:6F:D8:91");
         assertNotEquals(mac1, mac2);
+    }
+
+    @Test
+    public void testSerialize() throws IOException {
+        byte[] data;
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);) {
+            objectOutputStream.writeObject(new MAC("11:22:33:44:55:66"));
+            objectOutputStream.close();
+            data = byteArrayOutputStream.toByteArray();
+        }
+
+        assertNotNull(data);
+        assertNotEquals(0, data.length);
+    }
+
+    @Test
+    public void testDeserialize() throws IOException, ClassNotFoundException {
+        try (
+                InputStream inputStream = Files.newInputStream(Paths.get("src/test/resources/mac_11_22_33_44_55_66"));
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);) {
+            MAC mac = (MAC)objectInputStream.readObject();
+            assertEquals(new MAC("11:22:33:44:55:66"), mac);
+        }
     }
 }

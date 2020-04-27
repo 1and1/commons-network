@@ -1,5 +1,7 @@
 package com.ionos.network.commons.address;
 
+import java.io.Serializable;
+
 /**
  * The Media Access Control address of a network interface.
  * Objects of the MAC class are immutable!
@@ -7,7 +9,9 @@ package com.ionos.network.commons.address;
  * @author Stephan Fuhrmann
  *
  **/
-public final class MAC extends AbstractAddress implements Address {
+public final class MAC extends AbstractAddress implements Address, Serializable {
+    /** The version number of this class. */
+    private static final long serialVersionUID = 7743380391792341L;
 
     /** The number of bytes in a MAC address. May change! */
     protected static final int MAC_LENGTH = 6;

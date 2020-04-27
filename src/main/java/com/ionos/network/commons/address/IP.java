@@ -24,6 +24,8 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
  *
  **/
 public final class IP extends AbstractAddress implements Address, Serializable {
+    /** The version number of this class. */
+    private static final long serialVersionUID = 5338854380391791729L;
 
     /** The IPv4 address 0.0.0.0. */
     public static final IP IPV4_ALL_ZERO =
@@ -40,9 +42,6 @@ public final class IP extends AbstractAddress implements Address, Serializable {
     /** The IPv6 address ffff:...:ffff. */
     public static final IP IPV6_ALL_ONE =
             new IP(BitsAndBytes.newArrayOf(16, (byte)255));
-
-    /** The version number of this class. */
-    private static final long serialVersionUID = 5334743380391791729L;
 
     /**
      * The number of bytes in an IPv4 address.

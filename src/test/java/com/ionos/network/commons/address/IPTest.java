@@ -3,11 +3,20 @@ package com.ionos.network.commons.address;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test cases for {@link IP}.
@@ -172,5 +181,29 @@ public class IPTest {
         InetAddress inetAddress = ip1.toInetAddress();
 
         assertArrayEquals(inetAddress.getAddress(), ip1.getBytes());
+    }
+
+    @Test
+    public void testSerialize() throws IOException {
+        byte[] data;
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);) {
+            objectOutputStream.writeObject(new IP("192.168.0.1"));
+            objectOutputStream.close();
+            data = byteArrayOutputStream.toByteArray();
+        }
+
+        assertNotNull(data);
+        assertNotEquals(0, data.length);
+    }
+
+    @Test
+    public void testDeserialize() throws IOException, ClassNotFoundException {
+        try (
+                InputStream inputStream = Files.newInputStream(Paths.get("src/test/resources/ip_192.168.0.1"));
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);) {
+            IP ip = (IP)objectInputStream.readObject();
+            assertEquals(new IP("192.168.0.1"), ip);
+        }
     }
 }
