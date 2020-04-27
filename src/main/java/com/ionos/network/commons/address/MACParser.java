@@ -1,6 +1,7 @@
 package com.ionos.network.commons.address;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
 
@@ -13,6 +14,18 @@ public final class MACParser implements AddressParser<MAC> {
 
     /** The singleton instance for parsing MAC addresses. */
     public static final AddressParser<MAC> INSTANCE = new MACParser();
+
+    /** Regex to recognize format {@code 00:11:22:33:44:55}.
+     * @see MACFormats#COLON_SEPARATED_HEX_FORMAT
+     * */
+    private static final Pattern COLON_SEPARATED_HEX_FORMAT =
+            Pattern.compile("[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}");
+
+    /** Regex to recognize format {@code 0011.2233.4455}.
+     * @see MACFormats#CISCO_CUSTOM_FORMAT
+     * */
+    private static final Pattern CISCO_CUSTOM_FORMAT =
+            Pattern.compile("[0-9a-fA-F]{1,4}(\\.[0-9a-fA-F]{1,4}){2}");
 
     /** Private constructor. No instance allowed. */
     private MACParser() {
@@ -52,7 +65,7 @@ public final class MACParser implements AddressParser<MAC> {
         }
 
         // single byte form: 00:00:00:00:00:00
-        if (macAddress.matches("[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}")) {
+        if (COLON_SEPARATED_HEX_FORMAT.matcher(macAddress).matches()) {
             final byte[] mac = new byte[MAC.MAC_LENGTH];
             final String[] octets = macAddress.split(":");
 
@@ -64,7 +77,7 @@ public final class MACParser implements AddressParser<MAC> {
         }
 
         // two byte cisco form: 0000.0000.0000
-        if (macAddress.matches("[0-9a-fA-F]{1,4}(\\.[0-9a-fA-F]{1,4}){2}")) {
+        if (CISCO_CUSTOM_FORMAT.matcher(macAddress).matches()) {
             final byte[] mac = new byte[MAC.MAC_LENGTH];
             final String[] words = macAddress.split("\\.");
 
