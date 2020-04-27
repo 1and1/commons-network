@@ -517,8 +517,25 @@ public final class Network implements Iterable<IP> {
      */
     public boolean contains(final Network network) {
         Objects.requireNonNull(network, "Network is null");
-        return network.getAddress().compareTo(getAddress()) >= 0
-                && network.getAddressEnd().compareTo(getAddressEnd()) <= 0;
+        byte[] thisNetMask = getSubnetMask().address;
+        byte[] thisNetworkBytes = getAddress().address;
+        byte[] otherNetworkBytes = network.getAddress().address;
+
+        if (thisNetworkBytes.length != otherNetworkBytes.length) {
+            return false;
+        }
+
+        // bigger prefix network can not contain smaller prefix network
+        if (prefix > network.prefix) {
+            return false;
+        }
+
+        for (int i=0; i < thisNetworkBytes.length; i++) {
+            if ((thisNetworkBytes[i] & thisNetMask[i]) != (otherNetworkBytes[i] & thisNetMask[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
