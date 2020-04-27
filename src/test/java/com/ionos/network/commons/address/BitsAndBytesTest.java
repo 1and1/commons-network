@@ -23,7 +23,8 @@ public class BitsAndBytesTest {
 
     @Test
     public void getLowestBitSetWithZeroArray() {
-        BitsAndBytes.getLowestBitSet(new byte[0]);
+        int actual = BitsAndBytes.getLowestBitSet(new byte[0]);
+        assertEquals(-1, actual);
     }
 
     @Test
@@ -68,7 +69,8 @@ public class BitsAndBytesTest {
 
     @Test
     public void getHighestBitSetWithZeroArray() {
-        BitsAndBytes.getHighestBitSet(new byte[0]);
+        int actual = BitsAndBytes.getHighestBitSet(new byte[0]);
+        assertEquals(-1, actual);
     }
 
     @Test
