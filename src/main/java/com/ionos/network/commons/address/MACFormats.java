@@ -34,7 +34,7 @@ public final class MACFormats {
                     final byte[] address = mac.address;
 
                     for (int i = 0; i < address.length; i++) {
-                        int val = address[i] & BYTE_MASK;
+                        int val = address[i];
                         if (i != 0) {
                             toAppendTo.append(':');
                         }
@@ -62,7 +62,7 @@ public final class MACFormats {
                         throws IOException {
                     final byte[] address = mac.address;
                     for (int i = 0; i < address.length; i++) {
-                        int val = address[i] & BYTE_MASK;
+                        int val = address[i];
                         // only before digits 2 and 4
                         if (i != 0 && (i & 1) == 0) {
                             toAppendTo.append('.');
