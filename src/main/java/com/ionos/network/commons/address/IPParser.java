@@ -1,5 +1,6 @@
 package com.ionos.network.commons.address;
 
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
@@ -364,28 +365,20 @@ public final class IPParser implements AddressParser<IP> {
      * Parse an IPv4 style dot separated decimal array that must
      * match {@link #IPV4_PATTERN}.
      *
-     * @param inDec the array of decimals
-     * @return the parsed address bytes, length 0 to 4 bytes.
+     * @param inIPV4 the IPV4 address.
+     * @return the parsed address bytes, length is 4 bytes.
      * @throws IllegalArgumentException if a component is out of range or
      * there are too many components
      */
-    private static byte[] parseDecV4Array(final String inDec) {
-        String[] components;
-        if (inDec.length() > 0) {
-            components = inDec.split("\\.");
-        } else {
-            components = new String[0];
+    private static byte[] parseDecV4Array(final String inIPV4) {
+        StringTokenizer stringTokenizer = new StringTokenizer(inIPV4, ".");
+        if (stringTokenizer.countTokens() != IPVersion.IPV4.getAddressBytes()) {
+            throw new IllegalArgumentException("Wrong number of address components");
         }
-        if (components.length > IPVersion.IPV4.getAddressBytes()) {
-            throw new IllegalArgumentException("Too many components");
-        }
-        if (components.length < IPVersion.IPV4.getAddressBytes()) {
-            throw new IllegalArgumentException("Too few components");
-        }
-        byte[] result = new byte[components.length];
+        byte[] result = new byte[IPVersion.IPV4.getAddressBytes()];
 
-        for (int i = 0; i < components.length; i++) {
-            int val = Integer.parseInt(components[i]);
+        for (int i = 0; stringTokenizer.hasMoreTokens(); i++) {
+            int val = Integer.parseInt(stringTokenizer.nextToken());
 
             if (val < 0 || val > BYTE_MASK) {
                 throw new IllegalArgumentException(
