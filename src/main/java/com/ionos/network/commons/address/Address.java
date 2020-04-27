@@ -1,9 +1,5 @@
 package com.ionos.network.commons.address;
 
-import java.util.Comparator;
-
-import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
-
 /** A machine- or node-address of some kind.
  * @see AddressComparators
  * @see AddressFormat

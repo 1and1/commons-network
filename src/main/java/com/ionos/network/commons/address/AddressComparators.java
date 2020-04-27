@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 
-/** Contains address {@linkplain Comparator} instances. */
+/** Provides address {@linkplain Comparator} instances. */
 public class AddressComparators {
 
     private AddressComparators() {
