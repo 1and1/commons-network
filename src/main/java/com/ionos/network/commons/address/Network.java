@@ -1,20 +1,20 @@
 package com.ionos.network.commons.address;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Comparator;
-import java.util.Set;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
+import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 
 /**
  * An immutable IP network that consists of a IP prefix and a prefix length.
@@ -672,11 +672,10 @@ public final class Network implements Iterable<IP> {
          * */
         NetworkMaskData(final IPVersion ipVersion, final int prefix) {
             byte[] data = new byte[ipVersion.getAddressBytes()];
-                clear(data);
-                setLeadingBits(data, prefix);
-                subnetMask = new IP(data);
-                inverse(data);
-                inverseSubnetMask = new IP(data);
+            setLeadingBits(data, prefix);
+            subnetMask = new IP(data);
+            inverse(data);
+            inverseSubnetMask = new IP(data);
         }
 
         /** Sets a number of leading bits to 1.
@@ -697,13 +696,6 @@ public final class Network implements Iterable<IP> {
                     (BYTE_MASK
                         << (BITS_PER_BYTE - remainingBits));
             }
-        }
-
-        /** Sets all bytes to zero.
-         * @param data the array which bytes to set to 0.
-         * */
-        static void clear(final byte[] data) {
-            Arrays.fill(data, (byte) 0);
         }
 
         /** Flips the bits in all bytes.
