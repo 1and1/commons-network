@@ -717,14 +717,20 @@ public final class Network implements Iterable<IP>, Serializable {
         }
     }
 
-    /** Custom serialization for writing an address. */
+    /** Custom serialization for writing an address.
+     * @param s the stream to write the object to.
+     * @throws IOException if there's a problem in writing to the stream.
+     * */
     private void writeObject(ObjectOutputStream s) throws IOException {
         s.writeInt(ipAddress.address.length);
         s.write(ipAddress.address);
         s.writeInt(prefix);
     }
 
-    /** Custom deserialization for reading an address. */
+    /** Custom deserialization for reading an address.
+     * @param s the stream to read the object from.
+     * @throws IOException if there's a problem in reading from the stream.
+     * */
     private void readObject(ObjectInputStream s) throws IOException {
         int length = s.readInt();
         byte[] data = new byte[length];
