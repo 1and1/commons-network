@@ -68,13 +68,19 @@ abstract class AbstractAddress implements Comparable<AbstractAddress>,
         return AddressComparators.UNSIGNED_BYTE_COMPARATOR.compare(this, other);
     }
 
-    /** Custom serialization for writing an address. */
+    /** Custom serialization for writing an address.
+     * @param s the stream to write the object to.
+     * @throws IOException if there's a problem in writing to the stream.
+     * */
     private void writeObject(ObjectOutputStream s) throws IOException {
         s.writeInt(address.length);
         s.write(address);
     }
 
-    /** Custom deserialization for reading an address. */
+    /** Custom deserialization for reading an address.
+     * @param s the stream to read the object from.
+     * @throws IOException if there's a problem in reading from the stream.
+     * */
     private void readObject(ObjectInputStream s) throws IOException {
         int length = s.readInt();
         byte[] data = new byte[length];
