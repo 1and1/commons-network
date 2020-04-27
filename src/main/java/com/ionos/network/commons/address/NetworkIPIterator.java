@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  * Iterator over the IP addresses of {@code this} network.
  * Try not to use this for performance issues.
  */
-class NetworkIPIterator implements Iterator<IP> {
+final class NetworkIPIterator implements Iterator<IP> {
 
     /** The network to iterate in. */
     private final Network network;
