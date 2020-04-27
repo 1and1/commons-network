@@ -641,7 +641,7 @@ public final class Network implements Iterable<IP> {
         if (o instanceof Network) {
             final Network ian = (Network) o;
             return (ipAddress.equals(ian.ipAddress))
-                    && (ipEnd.equals(ian.ipEnd));
+                    && (prefix == ian.prefix);
         }
         return false;
     }
