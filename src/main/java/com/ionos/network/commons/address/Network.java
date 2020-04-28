@@ -413,11 +413,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
                 continue;
             }
             for (int j = i + 1; j < nets.length; j++) {
-
-                if (i == j) {
-                    continue;
-                }
-                if (nets[j] != null && nets[j].contains(nets[i])) {
+                if (i != j
+                        && nets[j] != null
+                        && nets[j].contains(nets[i])) {
                     nets[i] = null;
                     contained = true;
                     break;
@@ -692,6 +690,8 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
                     inverse(data);
                     inverseSubnetMask = new IPv6(data);
                     break;
+                default:
+                    throw new IllegalStateException();
             }
         }
 

@@ -1,11 +1,6 @@
 package com.ionos.network.commons.address;
 
 import java.io.Serializable;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
-import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 
 /**
  * IP in the IPv4 protocol.
