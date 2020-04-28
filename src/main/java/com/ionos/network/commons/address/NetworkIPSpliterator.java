@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 /** A spliterator that returns the {@linkplain IP IPs}
  * in a {@linkplain Network}.
  * */
-class NetworkIPSpliterator implements Spliterator<IP> {
+final class NetworkIPSpliterator implements Spliterator<IP> {
 
     /** The number of bits a {@linkplain Long} has. */
     private static final int BIT_SIZE_LONG = 64;
