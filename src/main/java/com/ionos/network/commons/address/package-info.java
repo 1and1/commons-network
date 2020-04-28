@@ -27,8 +27,8 @@
  * <ul>
  *     <li>{@link com.ionos.network.commons.address.IPParser}:
  *     Parses a String into an {@linkplain com.ionos.network.commons.address.IP}.</li>
- *     <li>{@link com.ionos.network.commons.address.MACParser}:
- *     Parses a String into a {@linkplain com.ionos.network.commons.address.MAC}.</li>
+ *     <li>{@link com.ionos.network.commons.address.MACParsers}:
+ *     Parser implementations for parsing Strings into a {@linkplain com.ionos.network.commons.address.MAC}.</li>
  * </ul>
  *
  * There's a {@link com.ionos.network.commons.address.EUI64} conversion class
