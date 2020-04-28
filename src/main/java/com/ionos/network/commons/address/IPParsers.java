@@ -47,6 +47,10 @@ public final class IPParsers {
         throw new IllegalArgumentException("Address or address part '" + address + "' is malformed");
     }
 
+    private static void throwWrongNumberOfComponents(String address) {
+        throw new IllegalArgumentException("Address '" + address + "' has wrong number of components");
+    }
+
     /**
      * Parses an IP address in every possible known format.
      */
@@ -64,9 +68,9 @@ public final class IPParsers {
             } else {
                 if (dot && colon) {
                     return RFC4291_3_FULL;
-                } if (colon) {
+                } else if (colon) {
                     return RFC4291_1;
-                } if (dot) {
+                } else if (dot) {
                     return DOTTED_DECIMAL;
                 }
             }
@@ -131,7 +135,7 @@ public final class IPParsers {
         public byte[] parseAsBytes(String address) {
             StringTokenizer stringTokenizer = new StringTokenizer(address, ".");
             if (stringTokenizer.countTokens() != IPVersion.IPV4.getAddressBytes()) {
-                throw new IllegalArgumentException("Wrong number of address components");
+                throwWrongNumberOfComponents(address);
             }
             byte[] result = new byte[IPVersion.IPV4.getAddressBytes()];
 
@@ -155,13 +159,11 @@ public final class IPParsers {
 
         boolean expectNumber = true;
         byte[] result = new byte[2 * numbers];
-        for (int i = 0; stringTokenizer.hasMoreTokens(); ) {
+        int i = 0;
+        while (stringTokenizer.hasMoreTokens()) {
             String component = stringTokenizer.nextToken();
             if (component.length() == 0 || component.length() > 4) {
                 throwOutOfRange(component, address);
-            }
-            if (!expectNumber && !component.equals(":")) {
-                throwMaformed(address);
             }
             if (expectNumber) {
                 if (component.equals(":")) {
@@ -173,6 +175,8 @@ public final class IPParsers {
                 }
                 result[i++] = (byte) (val >>> 8);
                 result[i++] = (byte) val;
+            } else if (!component.equals(":")) {
+                throwMaformed(address);
             }
             expectNumber = !expectNumber;
         }
@@ -191,7 +195,7 @@ public final class IPParsers {
         public byte[] parseAsBytes(String address) {
             byte[] result = parseColonHexVariableLength(address);
             if (result.length != IPVersion.IPV6.getAddressBytes()) {
-                throw new IllegalArgumentException("Wrong number of address components");
+                throwWrongNumberOfComponents(address);
             }
             return result;
         }
@@ -249,7 +253,7 @@ public final class IPParsers {
             }
             byte[] ipv6Part = parseColonHexVariableLength(address.substring(0, lastColon));
             if (ipv6Part.length != IPVersion.IPV6.getAddressBytes() - IPVersion.IPV4.getAddressBytes()) {
-                throw new IllegalArgumentException("Wrong number of address components");
+                throwWrongNumberOfComponents(address);
             }
 
             byte[] ipv4Part = DOTTED_DECIMAL.parseAsBytes(address.substring(lastColon + 1));
