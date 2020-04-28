@@ -43,7 +43,7 @@ public final class IPParsers {
         throw new IllegalArgumentException("Component '" + component + "' of address '" + address + "' is out of range");
     }
 
-    private static void throwMaformed(String address) {
+    private static void throwMalformed(String address) {
         throw new IllegalArgumentException("Address or address part '" + address + "' is malformed");
     }
 
@@ -51,30 +51,46 @@ public final class IPParsers {
         throw new IllegalArgumentException("Address '" + address + "' has wrong number of components");
     }
 
+    private static void throwAddressFormatUnknown(String address) {
+        throw new IllegalArgumentException("Address '" + address + "' has an unknown format");
+    }
+
+    private static AddressParser<IPv6> guessIPv6(String address) {
+        boolean doubleColon = address.contains("::");
+        boolean colon = address.contains(":");
+        boolean dot = address.contains(".");
+        if (doubleColon) {
+            if (dot) {
+                return RFC4291_3_COMPRESSED;
+            } else {
+                return RFC4291_2;
+            }
+        } else {
+            if (dot && colon) {
+                return RFC4291_3_FULL;
+            } else if (colon) {
+                return RFC4291_1;
+            }
+        }
+        return null;
+    }
+
     /**
      * Parses an IP address in every possible known format.
      */
     public static final AddressParser<IP> DEFAULT = new AddressParser<IP>() {
         private AddressParser<? extends IP> guess(String address) {
-            boolean doubleColon = address.contains("::");
-            boolean colon = address.contains(":");
-            boolean dot = address.contains(".");
-            if (doubleColon) {
+            AddressParser<? extends IP> result = guessIPv6(address);
+            if (result == null) {
+                boolean dot = address.contains(".");
                 if (dot) {
-                    return RFC4291_3_COMPRESSED;
-                } else {
-                    return RFC4291_2;
-                }
-            } else {
-                if (dot && colon) {
-                    return RFC4291_3_FULL;
-                } else if (colon) {
-                    return RFC4291_1;
-                } else if (dot) {
                     return DOTTED_DECIMAL;
                 }
             }
-            throw new IllegalArgumentException("Address format of '" + address + "' unknown");
+            if (result == null) {
+                throwAddressFormatUnknown(address);
+            }
+            return result;
         }
 
         public IP parse(String address) {
@@ -94,35 +110,26 @@ public final class IPParsers {
      * Parses an IPV6 address in every possible known format.
      */
     public static final AddressParser<IPv6> IPV6 = new AddressParser<IPv6>() {
-        private AddressParser<IPv6> guess(String address) {
-            boolean doubleColon = address.contains("::");
-            boolean colon = address.contains(":");
-            boolean dot = address.contains(".");
-            if (doubleColon) {
-                if (dot) {
-                    return RFC4291_3_COMPRESSED;
-                } else {
-                    return RFC4291_2;
-                }
-            } else {
-                if (dot && colon) {
-                    return RFC4291_3_FULL;
-                } else if (colon) {
-                    return RFC4291_1;
-                }
-            }
-            throw new IllegalArgumentException("Address format of '" + address + "' unknown");
-        }
 
         public IPv6 parse(String address) {
-            AddressParser<IPv6> parser = guess(address);
-            return parser.parse(address);
+            AddressParser<IPv6> parser = guessIPv6(address);
+            if (parser != null) {
+                return parser.parse(address);
+            } else {
+                throwAddressFormatUnknown(address);
+                return null;
+            }
         }
 
         @Override
         public byte[] parseAsBytes(String address) {
-            AddressParser<? extends IP> parser = guess(address);
-            return parser.parseAsBytes(address);
+            AddressParser<? extends IP> parser = guessIPv6(address);
+            if (parser != null) {
+                return parser.parseAsBytes(address);
+            } else {
+                throwAddressFormatUnknown(address);
+                return null;
+            }
         }
     };
 
@@ -167,7 +174,7 @@ public final class IPParsers {
             }
             if (expectNumber) {
                 if (component.equals(":")) {
-                    throwMaformed(address);
+                    throwMalformed(address);
                 }
                 int val = Integer.parseInt(component, HEX_RADIX);
                 if (val < 0 || val > USHORT_MAX_VALUE) {
@@ -176,7 +183,7 @@ public final class IPParsers {
                 result[i++] = (byte) (val >>> 8);
                 result[i++] = (byte) val;
             } else if (!component.equals(":")) {
-                throwMaformed(address);
+                throwMalformed(address);
             }
             expectNumber = !expectNumber;
         }
