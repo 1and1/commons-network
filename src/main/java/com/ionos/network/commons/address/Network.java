@@ -84,9 +84,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      *     Address Allocation for Private Internets</a>
      */
     private static final Network<IPv4>[] RFC_1918_NETWORKS = new Network[]{
-            new Network(IPParser.INSTANCE.parse("10.0.0.0"), 8),
-            new Network(IPParser.INSTANCE.parse("172.16.0.0"), 12),
-            new Network(IPParser.INSTANCE.parse("192.168.0.0"), 16)
+            new Network(IPParsers.DOTTED_DECIMAL.parse("10.0.0.0"), 8),
+            new Network(IPParsers.DOTTED_DECIMAL.parse("172.16.0.0"), 12),
+            new Network(IPParsers.DOTTED_DECIMAL.parse("192.168.0.0"), 16)
     };
 
     /** The prefix size in bits. */
@@ -162,7 +162,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
                     "no '/' found in network '" + networkWithPrefix + "'");
         }
         final String sIP = networkWithPrefix.substring(0, index);
-        return (U)IPParser.INSTANCE.parse(sIP);
+        return (U)IPParsers.DEFAULT.parse(sIP);
     }
 
     /** Calculate the network part of a network/prefix string.

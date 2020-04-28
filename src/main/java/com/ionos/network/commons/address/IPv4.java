@@ -53,7 +53,7 @@ public final class IPv4 extends IP<IPv4> implements Address, Serializable {
      * @see IPParser#parse(String)
      */
     public IPv4(final String inAddress) {
-        this(IPParser.INSTANCE.parseAsBytes(inAddress));
+        this(IPParsers.DOTTED_DECIMAL.parseAsBytes(inAddress));
     }
 
     /**

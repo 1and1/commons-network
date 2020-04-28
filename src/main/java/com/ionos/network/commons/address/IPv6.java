@@ -49,11 +49,11 @@ public final class IPv6 extends IP<IPv6> implements Address, Serializable {
      * Creates a new IP address from the address bytes.
      *
      * @param inAddress a String containing the IP address in a
-     *                  notation supported by {@linkplain IPParser}.
-     * @see IPParser#parse(String)
+     *                  notation supported by {@linkplain IPParsers#IPV6}.
+     * @see IPParsers#IPV6
      */
     public IPv6(final String inAddress) {
-        this(IPParser.INSTANCE.parseAsBytes(inAddress));
+        this(IPParsers.IPV6.parseAsBytes(inAddress));
     }
 
     /**
