@@ -34,13 +34,6 @@ public abstract class IP<T extends IP> extends AbstractAddress implements Addres
      */
     protected IP(final byte[] inAddress) {
         super(inAddress);
-        if (inAddress.length !=  IPVersion.IPV4.getAddressBytes()
-                && inAddress.length != IPVersion.IPV6.getAddressBytes()) {
-            throw new IllegalArgumentException(
-                    "IP addresses must be of 4 or 16 bytes long. "
-                            + "Your address has " + inAddress.length
-                            + " bytes.");
-        }
     }
 
     /**

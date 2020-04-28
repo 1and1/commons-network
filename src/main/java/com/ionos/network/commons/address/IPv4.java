@@ -44,7 +44,7 @@ public final class IPv4 extends IP<IPv4> implements Address, Serializable {
         super(inAddress);
         if (inAddress.length !=  IPVersion.IPV4.getAddressBytes()) {
             throw new IllegalArgumentException(
-                    "IP addresses must be 4 bytes long. "
+                    "IPv4 addresses must be 4 bytes long. "
                             + "Your address has " + inAddress.length
                             + " bytes.");
         }
