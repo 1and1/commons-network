@@ -38,7 +38,7 @@ public final class IPv6 extends IP<IPv6> implements Address, Serializable {
     /**
      * Creates a new IP address from the address bytes.
      *
-     * @param inAddress a 4 or 16 byte address in network byte order.
+     * @param inAddress a 16 byte address in network byte order.
      */
     protected IPv6(final byte[] inAddress) {
         super(inAddress);

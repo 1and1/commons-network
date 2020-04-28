@@ -38,7 +38,7 @@ public final class IPv4 extends IP<IPv4> implements Address, Serializable {
     /**
      * Creates a new IP address from the address bytes.
      *
-     * @param inAddress a 4 or 16 byte address in network byte order.
+     * @param inAddress a 4 byte address in network byte order.
      */
     protected IPv4(final byte[] inAddress) {
         super(inAddress);
