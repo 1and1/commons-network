@@ -133,7 +133,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
                 maskData.subnetMask
                         .address);
 
-        this.ipEnd = (T)ipEndFor(ipAddress, prefix);
+        this.ipEnd = ipEndFor(ipAddress, prefix);
     }
 
     private static <U extends IP> U ipEndFor(U startAddress, int prefix) {
