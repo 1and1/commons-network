@@ -19,12 +19,12 @@ public final class MAC extends AbstractAddress implements Address, Serializable 
     /**
      * Creates a MAC by parsing the given String.
      *
-     * @param mac the String containing the MAC. See {@link MACParser#INSTANCE}.
+     * @param mac the String containing the MAC. See {@link MACParsers#DEFAULT}.
      * @throws java.lang.IllegalArgumentException if the specified MAC could
      * not be parsed
      */
     public MAC(final String mac) {
-        super(MACParser.INSTANCE.parseAsBytes(mac));
+        super(MACParsers.DEFAULT.parseAsBytes(mac));
     }
 
     /**

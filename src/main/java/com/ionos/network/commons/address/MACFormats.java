@@ -22,6 +22,7 @@ public final class MACFormats {
      * Returns a single byte hex representation of the MAC.
      * <br>
      * <i>Example:</i> {@code 00:ac:ac:dd:00:12}.
+     * @see MACParsers#COLON_SEPARATED_HEX_FORMAT
      */
     public static final AddressFormat<MAC> COLON_SEPARATED_HEX_FORMAT =
             new AbstractAddressFormat<MAC>() {
