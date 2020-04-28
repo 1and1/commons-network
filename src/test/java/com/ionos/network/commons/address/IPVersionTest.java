@@ -16,16 +16,4 @@ public class IPVersionTest {
         assertEquals(4, IPVersion.IPV4.getAddressBytes());
         assertEquals(16, IPVersion.IPV6.getAddressBytes());
     }
-
-    @Test
-    public void testGetMinimumAddress() {
-        assertEquals(new IP("0.0.0.0"), IPVersion.IPV4.getMinimumAddress());
-        assertEquals(new IP("0000:0000:0000:0000:0000:0000:0000:0000"), IPVersion.IPV6.getMinimumAddress());
-    }
-
-    @Test
-    public void testGetMaximumAddress() {
-        assertEquals(new IP("255.255.255.255"), IPVersion.IPV4.getMaximumAddress());
-        assertEquals(new IP("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"), IPVersion.IPV6.getMaximumAddress());
-    }
 }

@@ -16,21 +16,21 @@ public class EUI64Test {
     public void testConvertMac() {
         final MAC mac = new MAC("6C:88:14:6F:D8:91");
         final IP ip = EUI64.convertMac(mac);
-        assertEquals(new IP("fe80:0:0:0:6e88:14ff:fe6f:d891"), ip);
+        assertEquals(new IPv6("fe80:0:0:0:6e88:14ff:fe6f:d891"), ip);
     }
 
     @Test
     public void testConvertMacWithPrefix()  {
         final MAC mac = new MAC("6C:88:14:6F:D8:91");
-        final IP prefix = new IP("f380:0:ffff:0:0:0:0:0");
-        final IP ip = EUI64.convertMac(mac, prefix);
-        assertEquals(new IP("f380:0:ffff:0:6e88:14ff:fe6f:d891"), ip);
+        final IPv6 prefix = new IPv6("f380:0:ffff:0:0:0:0:0");
+        final IPv6 ip = EUI64.convertMac(mac, prefix);
+        assertEquals(new IPv6("f380:0:ffff:0:6e88:14ff:fe6f:d891"), ip);
     }
 
     @Test
     public void testConversionWithNoMac() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            final IP prefix = new IP("f380:0:ffff:0:0:0:0:0");
+            final IPv6 prefix = new IPv6("f380:0:ffff:0:0:0:0:0");
             EUI64.convertMac(null, prefix);
         });
     }
@@ -47,7 +47,7 @@ public class EUI64Test {
     public void testConversionWithIPv4Prefix() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             final MAC mac = new MAC("6C:88:14:6F:D8:91");
-            final IP prefix = new IP("127.0.0.1");
+            final IPv6 prefix = new IPv6("127.0.0.1");
             EUI64.convertMac(mac, prefix);
         });
     }

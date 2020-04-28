@@ -47,38 +47,4 @@ public enum IPVersion {
     public final int getAddressBytes() {
         return addressBytes;
     }
-
-    /**
-     * Returns the lowest possible IP address of {@code this} version.
-     *
-     * @see #getMaximumAddress()
-     * @return the lowest possible IP address of {@code this} version
-     */
-    public IP getMinimumAddress() {
-        switch (this) {
-            case IPV4:
-            return IP.IPV4_ALL_ZERO;
-        case IPV6:
-            return IP.IPV6_ALL_ZERO;
-        default:
-            throw new IllegalStateException();
-        }
-    }
-
-    /**
-     * Returns the largest possible IP address of {@code this} version.
-     *
-     * @see #getMinimumAddress()
-     * @return the largest possible IP address of {@code this} version.
-     */
-    public IP getMaximumAddress() {
-        switch (this) {
-        case IPV4:
-            return IP.IPV4_ALL_ONE;
-        case IPV6:
-            return IP.IPV6_ALL_ONE;
-        default:
-            throw new IllegalStateException();
-        }
-    }
 }

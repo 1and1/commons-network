@@ -137,13 +137,9 @@ public final class Network implements Iterable<IP>, Serializable {
     }
 
     private static IP ipEndFor(IP startAddress, int prefix) {
-        if (prefix == 0) {
-            return startAddress.getIPVersion().getMaximumAddress();
-        } else {
             return startAddress.add(
                     getNetworkMaskData(startAddress.getIPVersion())[prefix].inverseSubnetMask
                             .address);
-        }
     }
 
     /**
@@ -672,10 +668,10 @@ public final class Network implements Iterable<IP>, Serializable {
 
         /** The network mask as an IP object.
          * Example: {@code 255.255.255.0}. */
-        private final IP subnetMask;
+        private IP subnetMask;
         /** The inverse network mask as an IP object.
          * Example: {@code 0.0.0.255}. */
-        private final IP inverseSubnetMask;
+        private IP inverseSubnetMask;
 
         /** Constructor for a network mask in bits.
          * @param ipVersion the ip version to create the network masks for.
@@ -684,9 +680,18 @@ public final class Network implements Iterable<IP>, Serializable {
         NetworkMaskData(final IPVersion ipVersion, final int prefix) {
             byte[] data = new byte[ipVersion.getAddressBytes()];
             setLeadingBits(data, prefix);
-            subnetMask = new IP(data);
-            inverse(data);
-            inverseSubnetMask = new IP(data);
+            switch (ipVersion) {
+                case IPV4:
+                    subnetMask = new IPv4(data);
+                    inverse(data);
+                    inverseSubnetMask = new IPv4(data);
+                    break;
+                case IPV6:
+                    subnetMask = new IPv6(data);
+                    inverse(data);
+                    inverseSubnetMask = new IPv6(data);
+                    break;
+            }
         }
 
         /** Sets a number of leading bits to 1.
@@ -738,7 +743,14 @@ public final class Network implements Iterable<IP>, Serializable {
         byte[] data = new byte[length];
         s.readFully(data);
 
-        ipAddress = new IP(data);
+        if (length == IPVersion.IPV4.getAddressBytes()) {
+            ipAddress = new IPv4(data);
+        } else if (length == IPVersion.IPV6.getAddressBytes()) {
+            ipAddress = new IPv6(data);
+        } else {
+            throw new IllegalStateException();
+        }
+
         prefix = s.readInt();
         ipEnd = ipEndFor(ipAddress, prefix);
     }

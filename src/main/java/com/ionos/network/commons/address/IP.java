@@ -23,25 +23,9 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
  * @author Stephan Fuhrmann
  *
  **/
-public final class IP extends AbstractAddress implements Address, Serializable {
+public abstract class IP<T extends IP> extends AbstractAddress implements Address, Serializable {
     /** The version number of this class. */
     private static final long serialVersionUID = 5338854380391791729L;
-
-    /** The IPv4 address 0.0.0.0. */
-    public static final IP IPV4_ALL_ZERO =
-            new IP(BitsAndBytes.newArrayOf(4, (byte)0));
-
-    /** The IPv4 address 255.255.255.255. */
-    public static final IP IPV4_ALL_ONE =
-            new IP(BitsAndBytes.newArrayOf(4, (byte)255));
-
-    /** The IPv6 address 0::0. */
-    public static final IP IPV6_ALL_ZERO =
-            new IP(BitsAndBytes.newArrayOf(16, (byte)0));
-
-    /** The IPv6 address ffff:...:ffff. */
-    public static final IP IPV6_ALL_ONE =
-            new IP(BitsAndBytes.newArrayOf(16, (byte)255));
 
     /**
      * The number of bytes in an IPv4 address.
@@ -57,7 +41,7 @@ public final class IP extends AbstractAddress implements Address, Serializable {
      *
      * @param inAddress a 4 or 16 byte address in network byte order.
      */
-    public IP(final byte[] inAddress) {
+    protected IP(final byte[] inAddress) {
         super(inAddress);
         if (inAddress.length !=  IPVersion.IPV4.getAddressBytes()
                 && inAddress.length != IPVersion.IPV6.getAddressBytes()) {
@@ -69,30 +53,20 @@ public final class IP extends AbstractAddress implements Address, Serializable {
     }
 
     /**
-     * Creates a new IP address from the address bytes.
-     *
-     * @param inAddress a String containing the IP address in a
-     *                  notation supported by {@linkplain IPParser}.
-     * @see IPParser#parse(String)
-     */
-    public IP(final String inAddress) {
-        super(IPParser.INSTANCE.parseAsBytes(inAddress));
-    }
-
-    /**
      * Gets the IP version used in this IP address.
      * @return the IP version of this address.
      */
-    public IPVersion getIPVersion() {
-        if (address.length == IPVersion.IPV4.getAddressBytes()) {
-            return IPVersion.IPV4;
-        }
-        if (address.length == IPVersion.IPV6.getAddressBytes()) {
-            return IPVersion.IPV6;
-        }
-        throw new IllegalStateException("Address length of "
-                + address.length + " bytes is illegal");
-    }
+    public abstract IPVersion getIPVersion();
+
+    /**
+     * Allocates a new instance of this class.
+     * @param address the address data to initialize the constructor with.
+     */
+    protected abstract T newInstance(byte[] address);
+
+    /** Get the default address format for this class.
+     * */
+    protected abstract AddressFormat<T> defaultAddressFormat();
 
     /**
      * Invert the address. This will flip every bit from 1 to 0 and vice
@@ -101,12 +75,12 @@ public final class IP extends AbstractAddress implements Address, Serializable {
      * @return the inverted IP address. Example: For the input "255.255.0.0"
      * will return "0.0.255.255".
      */
-    public IP invert() {
+    public T invert() {
         final byte[] inverted = new byte[address.length];
         for (int i = 0; i < inverted.length; i++) {
             inverted[i] = (byte) ~address[i];
         }
-        return new IP(inverted);
+        return newInstance(inverted);
     }
 
     /**
@@ -125,8 +99,8 @@ public final class IP extends AbstractAddress implements Address, Serializable {
      * @throws IllegalArgumentException if the offset array is larger than
      * the address itself.
      */
-    public IP add(final byte[] offset) {
-        final IP result = new IP(address);
+    public T add(final byte[] offset) {
+        final T result = newInstance(address);
 
         if (offset.length > address.length) {
             throw new IllegalArgumentException(
@@ -169,8 +143,8 @@ public final class IP extends AbstractAddress implements Address, Serializable {
      * Example: <code>new IP("192.168.1.1").and(new byte[] {255,0})
      * .equals(new IP("192.168.1.0"))</code>
      */
-    public IP and(final byte[] mask) {
-        final IP result = new IP(address);
+    public T and(final byte[] mask) {
+        final T result = newInstance(address);
 
         for (int i = 0; i < mask.length; i++) {
             result.address[address.length - 1 - i] &= mask[mask.length - 1 - i];
@@ -190,8 +164,8 @@ public final class IP extends AbstractAddress implements Address, Serializable {
      * Example: <code>new IP("192.168.1.1").add(1)
      * .equals(new IP("192.168.1.2"))</code>
      */
-    public IP add(final long offset) {
-        final IP result = new IP(address);
+    public T add(final long offset) {
+        final T result = newInstance(address);
         long myOffset = offset;
 
         int carry = 0;
@@ -222,19 +196,7 @@ public final class IP extends AbstractAddress implements Address, Serializable {
      */
     @Override
     public String toString() {
-        switch (address.length) {
-        case IPV4_BYTES:
-            // IPv4 style
-            // decimals with dot separators
-            return IPFormats
-                    .DOTTED_DECIMAL.format(this);
-        case IPV6_BYTES:
-            return IPFormats
-                    .COLON_SEPARATED_HEXTETS
-                    .format(this);
-        default:
-            throw new IllegalStateException();
-        }
+        return defaultAddressFormat().format((T)this);
     }
 
     /**

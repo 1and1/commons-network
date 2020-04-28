@@ -17,7 +17,7 @@ public final class EUI64 {
 
     /** Prefix for link-local IPv6 addresses, that are only valid within
      * closed network segments. */
-    private static final IP LINK_LOCAL = IPParser.INSTANCE.parse("FE80::");
+    private static final IPv6 LINK_LOCAL = (IPv6)IPParser.INSTANCE.parse("FE80::");
 
     /** Private constructor preventing instantiation. */
     private EUI64() {
@@ -33,7 +33,7 @@ public final class EUI64 {
      * @throws NullPointerException     if one of the parameters is null
      * @throws IllegalArgumentException if the IP address is not IPv6
      */
-    public static IP convertMac(final MAC mac) {
+    public static IPv6 convertMac(final MAC mac) {
         return convertMac(mac, LINK_LOCAL);
     }
 
@@ -84,7 +84,7 @@ public final class EUI64 {
      * @throws NullPointerException     if one of the parameters is null
      * @throws IllegalArgumentException if the IP address is not IPv6
      */
-    public static IP convertMac(final MAC mac, final IP prefix) {
+    public static IPv6 convertMac(final MAC mac, final IPv6 prefix) {
         Objects.requireNonNull(mac, "mac may not be null");
         Objects.requireNonNull(prefix, "prefix may not be null");
         if (prefix.getIPVersion() != IPVersion.IPV6) {
@@ -121,6 +121,6 @@ public final class EUI64 {
         // toggle bit 7
         result[EUI_OUI_OFFSET] ^= 2;
 
-        return new IP(result);
+        return new IPv6(result);
     }
 }

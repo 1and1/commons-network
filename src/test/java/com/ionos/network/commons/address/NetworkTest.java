@@ -39,10 +39,10 @@ public class NetworkTest {
         final Network n1 = new Network("192.168.0.42/24");
         assertEquals("192.168.0.0", n1.getAddress().toString());
 
-        final Network n2 = new Network(new IP("192.168.0.42"), 24);
+        final Network n2 = new Network(new IPv4("192.168.0.42"), 24);
         assertEquals("192.168.0.0", n2.getAddress().toString());
 
-        final Network n3 = new Network(new IP("192.168.0.42"), new IP("255.255.255.0"));
+        final Network n3 = new Network(new IPv4("192.168.0.42"), new IPv4("255.255.255.0"));
         assertEquals("192.168.0.0", n3.getAddress().toString());
         assertEquals("192.168.0.255", n3.getAddressEnd().toString());
         assertEquals(24, n3.getPrefix());
@@ -72,7 +72,7 @@ public class NetworkTest {
             // this should happen
         }
         try {
-            new Network(new IP("192.168.0.42"), new IP("255.255.255.1"));
+            new Network(new IPv4("192.168.0.42"), new IPv4("255.255.255.1"));
             fail("should throw IllegalArgumentException");
         } catch (IllegalArgumentException iae) {
             // this should happen
@@ -81,9 +81,9 @@ public class NetworkTest {
 
     @Test
     public void testContainsNetwork() {
-        final Network n1 = new Network(new IP("192.168.0.42"), 24);
-        final Network n2 = new Network(new IP("192.168.0.128"), 25);
-        final Network n3 = new Network(new IP("192.168.0.42"), 25);
+        final Network n1 = new Network(new IPv4("192.168.0.42"), 24);
+        final Network n2 = new Network(new IPv4("192.168.0.128"), 25);
+        final Network n3 = new Network(new IPv4("192.168.0.42"), 25);
         assertTrue(n1.contains(n2));
         assertTrue(n1.contains(n3));
 
@@ -96,14 +96,14 @@ public class NetworkTest {
 
     @Test
     public void testContains() {
-        final Network n1 = new Network(new IP("192.168.0.42"), 24);
-        final Network n2 = new Network(new IP("192.168.0.42"), 31);
-        final IP ip1 = new IP("192.168.0.0");
-        final IP ip2 = new IP("192.168.0.255");
-        final IP ip3 = new IP("192.168.1.0");
-        final IP ip4 = new IP("192.168.2.255");
-        final IP ip5 = new IP("192.168.0.42");
-        final IP ip6 = new IP("192.168.0.43");
+        final Network n1 = new Network(new IPv4("192.168.0.42"), 24);
+        final Network n2 = new Network(new IPv4("192.168.0.42"), 31);
+        final IP ip1 = new IPv4("192.168.0.0");
+        final IP ip2 = new IPv4("192.168.0.255");
+        final IP ip3 = new IPv4("192.168.1.0");
+        final IP ip4 = new IPv4("192.168.2.255");
+        final IP ip5 = new IPv4("192.168.0.42");
+        final IP ip6 = new IPv4("192.168.0.43");
 
         assertTrue(n1.contains(ip1));
         assertTrue(n1.contains(ip2));
@@ -122,25 +122,25 @@ public class NetworkTest {
 
     @Test
     public void testContains32() {
-        final Network n1 = new Network(new IP("192.168.0.42"), (byte) 32);
-        final IP ip1 = new IP("192.168.0.42");
+        final Network n1 = new Network(new IPv4("192.168.0.42"), (byte) 32);
+        final IP ip1 = new IPv4("192.168.0.42");
         assertTrue(n1.contains(ip1));
     }
 
     @Test
     public void testContainsDifferentVersion() {
-        final Network n1 = new Network(new IP("::"), (byte) 0);
-        final IP ip1 = new IP("192.168.0.42");
+        final Network n1 = new Network(new IPv6("::"), (byte) 0);
+        final IP ip1 = new IPv4("192.168.0.42");
         assertFalse(n1.contains(ip1));
     }
 
     @Test
     public void isPrivate() {
-        final IP privateIp = new IP("192.168.1.1");
+        final IP privateIp = new IPv4("192.168.1.1");
         assertTrue(Network.isRFC1918(privateIp));
 
         // google DNS
-        final IP publicIp = new IP("8.8.8.8");
+        final IP publicIp = new IPv4("8.8.8.8");
         assertFalse(Network.isRFC1918(publicIp));
     }
 
@@ -149,7 +149,7 @@ public class NetworkTest {
         Network n;
 
         // two IPs
-        n = new Network(new IP("192.168.2.16"), 31);
+        n = new Network(new IPv4("192.168.2.16"), 31);
 
         Iterator<IP> iter = n.iterator();
 
@@ -157,19 +157,19 @@ public class NetworkTest {
         assertTrue(iter.hasNext());
         assertTrue(iter.hasNext());
 
-        assertEquals(new IP("192.168.2.16"), iter.next());
+        assertEquals(new IPv4("192.168.2.16"), iter.next());
         assertTrue(iter.hasNext());
         assertTrue(iter.hasNext());
-        assertEquals(new IP("192.168.2.17"), iter.next());
+        assertEquals(new IPv4("192.168.2.17"), iter.next());
         assertFalse(iter.hasNext());
 
         // one IP
-        n = new Network(new IP("192.168.2.16"), 32);
+        n = new Network(new IPv4("192.168.2.16"), 32);
         iter = n.iterator();
 
         assertTrue(iter.hasNext());
 
-        assertEquals(new IP("192.168.2.16"), iter.next());
+        assertEquals(new IPv4("192.168.2.16"), iter.next());
         assertFalse(iter.hasNext());
         try {
             iter.next();
@@ -185,13 +185,13 @@ public class NetworkTest {
         Collection<Network> test;
 
         // four IPs
-        n = new Network(new IP("89.12.0.0"), 14);
+        n = new Network(new IPv4("89.12.0.0"), 14);
         test = n.split((short) 16);
         assertEquals(4, test.size());
-        assertTrue(test.contains(new Network(new IP("89.12.0.0"), 16)));
-        assertTrue(test.contains(new Network(new IP("89.13.0.0"), 16)));
-        assertTrue(test.contains(new Network(new IP("89.14.0.0"), 16)));
-        assertTrue(test.contains(new Network(new IP("89.15.0.0"), 16)));
+        assertTrue(test.contains(new Network(new IPv4("89.12.0.0"), 16)));
+        assertTrue(test.contains(new Network(new IPv4("89.13.0.0"), 16)));
+        assertTrue(test.contains(new Network(new IPv4("89.14.0.0"), 16)));
+        assertTrue(test.contains(new Network(new IPv4("89.15.0.0"), 16)));
     }
 
     @Test
@@ -200,11 +200,11 @@ public class NetworkTest {
         Collection<Network> test;
 
         // two IPs
-        n = new Network(new IP("192.168.2.16"), 31);
+        n = new Network(new IPv4("192.168.2.16"), 31);
         test = n.split((short) 32);
         assertEquals(2, test.size());
-        assertTrue(test.contains(new Network(new IP("192.168.2.16"), 32)));
-        assertTrue(test.contains(new Network(new IP("192.168.2.16"), 32)));
+        assertTrue(test.contains(new Network(new IPv4("192.168.2.16"), 32)));
+        assertTrue(test.contains(new Network(new IPv4("192.168.2.16"), 32)));
     }
 
     @Test
@@ -213,29 +213,29 @@ public class NetworkTest {
         Collection<Network> test;
 
         // two IPs
-        n = new Network(new IP("192.168.2.16"), 32);
+        n = new Network(new IPv4("192.168.2.16"), 32);
         test = n.split((short) 32);
         assertEquals(1, test.size());
-        assertTrue(test.contains(new Network(new IP("192.168.2.16"), 32)));
+        assertTrue(test.contains(new Network(new IPv4("192.168.2.16"), 32)));
     }
 
     @Test
     public void testRangeFrom() {
 
         // start + stop are the same -> one /32
-        List<Network> list = Network.rangeFrom(new IP("192.168.1.0"), new IP("192.168.1.0"));
+        List<Network> list = Network.rangeFrom(new IPv4("192.168.1.0"), new IPv4("192.168.1.0"));
         assertEquals(Collections.singletonList(new Network("192.168.1.0/32")), list);
 
-        list = Network.rangeFrom(new IP("192.168.1.0"), new IP("192.168.1.15"));
+        list = Network.rangeFrom(new IPv4("192.168.1.0"), new IPv4("192.168.1.15"));
         assertEquals(Collections.singletonList(new Network("192.168.1.0/28")), list);
 
-        list = Network.rangeFrom(new IP("192.168.1.0"), new IP("192.168.1.16"));
+        list = Network.rangeFrom(new IPv4("192.168.1.0"), new IPv4("192.168.1.16"));
         assertEquals(Arrays.asList(new Network("192.168.1.0/28"), new Network("192.168.1.16/32")), list);
 
-        list = Network.rangeFrom(new IP("192.168.1.0"), new IP("192.168.2.16"));
+        list = Network.rangeFrom(new IPv4("192.168.1.0"), new IPv4("192.168.2.16"));
         assertEquals(Arrays.asList(new Network("192.168.1.0/24"), new Network("192.168.2.0/28"), new Network("192.168.2.16/32")), list);
 
-        list = Network.rangeFrom(new IP("192.168.1.32"), new IP("192.168.2.16"));
+        list = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.2.16"));
         assertEquals(Arrays.asList(
                 new Network("192.168.1.32/27"),
                 new Network("192.168.1.64/26"),
@@ -243,14 +243,14 @@ public class NetworkTest {
                 new Network("192.168.2.0/28"),
                 new Network("192.168.2.16/32")), list);
 
-        list = Network.rangeFrom(new IP("192.168.1.32"), new IP("192.168.2.15"));
+        list = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.2.15"));
         assertEquals(Arrays.asList(
                 new Network("192.168.1.32/27"),
                 new Network("192.168.1.64/26"),
                 new Network("192.168.1.128/25"),
                 new Network("192.168.2.0/28")), list);
 
-        list = Network.rangeFrom(new IP("192.168.1.32"), new IP("192.168.3.16"));
+        list = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.3.16"));
         assertEquals(Arrays.asList(
                 new Network("192.168.1.32/27"),
                 new Network("192.168.1.64/26"),
@@ -260,7 +260,7 @@ public class NetworkTest {
                 new Network("192.168.3.16/32")
         ), list);
 
-        list = Network.rangeFrom(new IP("192.168.1.32"), new IP("192.168.2.32"));
+        list = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.2.32"));
         assertEquals(Arrays.asList(
                 new Network("192.168.1.32/27"),
                 new Network("192.168.1.64/26"),
@@ -269,12 +269,12 @@ public class NetworkTest {
                 new Network("192.168.2.32/32")
         ), list);
 
-        list = Network.rangeFrom(new IP("255.255.255.254"), new IP("255.255.255.255"));
+        list = Network.rangeFrom(new IPv4("255.255.255.254"), new IPv4("255.255.255.255"));
         assertEquals(Collections.singletonList(
                 new Network("255.255.255.254/31")
         ), list);
 
-        list = Network.rangeFrom(new IP("0.0.0.0"), new IP("255.255.255.254"));
+        list = Network.rangeFrom(new IPv4("0.0.0.0"), new IPv4("255.255.255.254"));
         assertEquals(Arrays.asList(
                 new Network("0.0.0.0/1"),
                 new Network("128.0.0.0/2"),
@@ -311,38 +311,38 @@ public class NetworkTest {
         ), list);
 
 
-        list = Network.rangeFrom(new IP("0.0.0.0"), new IP("127.255.255.255"));
+        list = Network.rangeFrom(new IPv4("0.0.0.0"), new IPv4("127.255.255.255"));
         assertEquals(Collections.singletonList(
                 new Network("0.0.0.0/1")
         ), list);
 
-        list = Network.rangeFrom(new IP("1.1.1.32"), new IP("1.1.1.32"));
+        list = Network.rangeFrom(new IPv4("1.1.1.32"), new IPv4("1.1.1.32"));
         assertEquals(Collections.singletonList(
                 new Network("1.1.1.32/32")
         ), list);
 
-        list = Network.rangeFrom(new IP("255.255.255.255"), new IP("255.255.255.255"));
+        list = Network.rangeFrom(new IPv4("255.255.255.255"), new IPv4("255.255.255.255"));
         assertEquals(Collections.singletonList(
                 new Network("255.255.255.255/32")
         ), list);
 
 
-        list = Network.rangeFrom(new IP("0.0.0.0"), new IP("255.255.255.255"));
+        list = Network.rangeFrom(new IPv4("0.0.0.0"), new IPv4("255.255.255.255"));
         assertEquals(Collections.singletonList(
                 new Network("0.0.0.0/0")
         ), list);
 
         /* IPV6 checks */
-        list = Network.rangeFrom(new IP("2001:08d8:01fe:0001:0000:0000:0000:0000"),
-                new IP("2001:08d8:01fe:0001:ffff:ffff:ffff:ffff"));
+        list = Network.rangeFrom(new IPv6("2001:08d8:01fe:0001:0000:0000:0000:0000"),
+                new IPv6("2001:08d8:01fe:0001:ffff:ffff:ffff:ffff"));
         assertEquals(Collections.singletonList(new Network("2001:08d8:01fe:0001:0000:0000:0000:0000/64")), list);
 
-        list = Network.rangeFrom(new IP("2001:08d8:01fe:0000:0000:0000:0000:0000"),
-                new IP("2001:08d8:01fe:0001:ffff:ffff:ffff:ffff"));
+        list = Network.rangeFrom(new IPv6("2001:08d8:01fe:0000:0000:0000:0000:0000"),
+                new IPv6("2001:08d8:01fe:0001:ffff:ffff:ffff:ffff"));
         assertEquals(Collections.singletonList(new Network("2001:08d8:01fe:0000:0000:0000:0000:0000/63")), list);
 
-        list = Network.rangeFrom(new IP("2001:08d8:01fe:0000:0000:0000:0000:0020"),
-                new IP("2001:08d8:01fe:0000:0000:0000:0001:001f"));
+        list = Network.rangeFrom(new IPv6("2001:08d8:01fe:0000:0000:0000:0000:0020"),
+                new IPv6("2001:08d8:01fe:0000:0000:0000:0001:001f"));
         assertEquals(Arrays.asList(
                 new Network("2001:08d8:01fe:0000:0000:0000:0000:0020/123"),
                 new Network("2001:08d8:01fe:0000:0000:0000:0000:0040/122"),
@@ -434,33 +434,33 @@ public class NetworkTest {
 
     @Test
     public void testGetSubnetMask() {
-        assertEquals(new IP("255.255.255.0"), Network.getSubnetMask(IPVersion.IPV4, 24));
-        assertEquals(new IP("ffff:ff00:0:0:0:0:0:0"), Network.getSubnetMask(IPVersion.IPV6, 24));
+        assertEquals(new IPv4("255.255.255.0"), Network.getSubnetMask(IPVersion.IPV4, 24));
+        assertEquals(new IPv6("ffff:ff00:0:0:0:0:0:0"), Network.getSubnetMask(IPVersion.IPV6, 24));
     }
 
     @Test
     public void testGetInverseSubnetMask() {
-        assertEquals(new IP("0.0.0.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 24));
-        assertEquals(new IP("0:ff:ffff:ffff:ffff:ffff:ffff:ffff"), Network.getInverseSubnetMask(IPVersion.IPV6, 24));
-        assertEquals(new IP("255.255.255.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 0));
-        assertEquals(new IP("0.255.255.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 8));
-        assertEquals(new IP("0.0.255.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 16));
-        assertEquals(new IP("0.0.0.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 24));
-        assertEquals(new IP("0.0.0.0"), Network.getInverseSubnetMask(IPVersion.IPV4, 32));
+        assertEquals(new IPv4("0.0.0.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 24));
+        assertEquals(new IPv6("0:ff:ffff:ffff:ffff:ffff:ffff:ffff"), Network.getInverseSubnetMask(IPVersion.IPV6, 24));
+        assertEquals(new IPv4("255.255.255.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 0));
+        assertEquals(new IPv4("0.255.255.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 8));
+        assertEquals(new IPv4("0.0.255.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 16));
+        assertEquals(new IPv4("0.0.0.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 24));
+        assertEquals(new IPv4("0.0.0.0"), Network.getInverseSubnetMask(IPVersion.IPV4, 32));
     }
 
     @Test
     public void testNetworkConstructBySize() {
-        Network network = new Network(new IP("192.168.0.0"), 24);
-        assertEquals(new IP("192.168.0.0"), network.getAddress());
+        Network network = new Network(new IPv4("192.168.0.0"), 24);
+        assertEquals(new IPv4("192.168.0.0"), network.getAddress());
         assertEquals(24, network.getPrefix());
     }
 
     @Test
     public void testEqualsWithNotEqual() {
-        Network network1 = new Network(new IP("192.168.0.0"), 24);
-        Network network2 = new Network(new IP("172.10.0.0"), 24);
-        Network network3 = new Network(new IP("172.10.0.0"), 25);
+        Network network1 = new Network(new IPv4("192.168.0.0"), 24);
+        Network network2 = new Network(new IPv4("172.10.0.0"), 24);
+        Network network3 = new Network(new IPv4("172.10.0.0"), 25);
         assertNotEquals(network1, network2);
         assertNotEquals(network1, network3);
         assertNotEquals(null, network1);
@@ -468,8 +468,8 @@ public class NetworkTest {
 
     @Test
     public void testEqualsWithEqual() {
-        Network network1 = new Network(new IP("192.168.0.0"), 24);
-        Network network2 = new Network(new IP("192.168.0.0"), 24);
+        Network network1 = new Network(new IPv4("192.168.0.0"), 24);
+        Network network2 = new Network(new IPv4("192.168.0.0"), 24);
         assertEquals(network1, network1);
         assertEquals(network1, network2);
         assertEquals(network2, network1);
@@ -488,23 +488,23 @@ public class NetworkTest {
     @Test
     public void testIteratorWithIllegalRemove() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            Network network = new Network(new IP("192.168.0.0"), 24);
+            Network network = new Network(new IPv4("192.168.0.0"), 24);
             network.iterator().remove();
         });
     }
 
     @Test
     public void testGetters() {
-        Network network = new Network(new IP("192.168.1.2"), 24);
+        Network network = new Network(new IPv4("192.168.1.2"), 24);
         assertEquals(24, network.getPrefix());
-        assertEquals(new IP("192.168.1.0"), network.getAddress());
-        assertEquals(new IP("192.168.1.255"), network.getAddressEnd());
-        assertEquals(new IP("255.255.255.0"), network.getSubnetMask());
+        assertEquals(new IPv4("192.168.1.0"), network.getAddress());
+        assertEquals(new IPv4("192.168.1.255"), network.getAddressEnd());
+        assertEquals(new IPv4("255.255.255.0"), network.getSubnetMask());
     }
 
     @Test
     public void testStreamWithCount() {
-        Network network = new Network(new IP("192.168.1.0"), 24);
+        Network network = new Network(new IPv4("192.168.1.0"), 24);
         assertEquals(256, network.stream().count());
     }
 
@@ -512,14 +512,14 @@ public class NetworkTest {
     @Test
     @Disabled
     public void testStreamWithBigCount() {
-        Network network = new Network(new IP("::"), 64);
+        Network network = new Network(new IPv6("::"), 64);
         assertEquals(Long.MAX_VALUE, network.stream().count());
     }
 
     @Test
     public void testStreamWithFindFirst() {
-        Network network = new Network(new IP("192.168.1.0"), 24);
-        assertEquals(Optional.of(new IP("192.168.1.0")), network.stream().findFirst());
+        Network network = new Network(new IPv4("192.168.1.0"), 24);
+        assertEquals(Optional.of(new IPv4("192.168.1.0")), network.stream().findFirst());
     }
 
     private static List<IP> toIps(Network network) {
@@ -531,31 +531,31 @@ public class NetworkTest {
 
     @Test
     public void testStreamWithCollectSmall() {
-        Network network = new Network(new IP("192.168.1.0"), 31);
+        Network network = new Network(new IPv4("192.168.1.0"), 31);
         assertEquals(toIps(network), network.stream().collect(Collectors.toList()));
     }
 
     @Test
     public void testStreamWithCollect() {
-        Network network = new Network(new IP("192.168.1.0"), 24);
+        Network network = new Network(new IPv4("192.168.1.0"), 24);
         assertEquals(toIps(network), network.stream().collect(Collectors.toList()));
     }
 
     @Test
     public void testStreamWithParallelCollect() {
-        Network network = new Network(new IP("192.168.1.0"), 20);
+        Network network = new Network(new IPv4("192.168.1.0"), 20);
         assertEquals(new HashSet<>(toIps(network)), network.stream().parallel().collect(Collectors.toSet()));
     }
 
     @Test
     public void testToStringWithIPv4() {
-        Network network = new Network(new IP("192.168.1.0"), 20);
+        Network network = new Network(new IPv4("192.168.1.0"), 20);
         assertEquals("192.168.0.0/20", network.toString());
     }
 
     @Test
     public void testToStringWithIPv6() {
-        Network network = new Network(new IP("::"), 20);
+        Network network = new Network(new IPv6("::"), 20);
         assertEquals("0:0:0:0:0:0:0:0/20", network.toString());
     }
 

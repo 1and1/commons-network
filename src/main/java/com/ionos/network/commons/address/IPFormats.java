@@ -23,11 +23,11 @@ public final class IPFormats {
      * @see <a href="https://en.wikipedia.org/wiki/Dot-decimal_notation">
      *     Dot-decimal notation</a>
      * */
-    public static final AddressFormat<IP> DOTTED_DECIMAL =
-            new AbstractAddressFormat<IP>() {
+    public static final AddressFormat<IPv4> DOTTED_DECIMAL =
+            new AbstractAddressFormat<IPv4>() {
                 @Override
                 public <A extends Appendable> A format(
-                        final IP ip,
+                        final IPv4 ip,
                         final A toAppendTo)
                         throws IOException {
                     final byte[] address = ip.address;
@@ -48,12 +48,12 @@ public final class IPFormats {
      * @see <a href="https://en.wikipedia.org/wiki/IPv6_address">
      *     IPv6 address</a>
      * */
-    public static final AddressFormat<IP>
+    public static final AddressFormat<IPv6>
             COLON_SEPARATED_HEXTETS =
-            new AbstractAddressFormat<IP>() {
+            new AbstractAddressFormat<IPv6>() {
                 @Override
                 public <A extends Appendable> A format(
-                        final IP ip,
+                        final IPv6 ip,
                         final A toAppendTo)
                         throws IOException {
                     final byte[] address = ip.address;
@@ -75,12 +75,12 @@ public final class IPFormats {
      * @see <a href="https://en.wikipedia.org/wiki/IPv6_address">
      *     IPv6 address</a>
      * */
-    public static final AddressFormat<IP>
+    public static final AddressFormat<IPv6>
             COLON_SEPARATED_ZEROED_HEXTETS =
-            new AbstractAddressFormat<IP>() {
+            new AbstractAddressFormat<IPv6>() {
                 @Override
                 public <A extends Appendable> A format(
-                        final IP ip,
+                        final IPv6 ip,
                         final A toAppendTo)
                         throws IOException {
                     final byte[] address = ip.address;
@@ -102,12 +102,12 @@ public final class IPFormats {
      *     A Recommendation for IPv6 Address Text
      *     Representation</a>
      * */
-    public static final AddressFormat<IP>
+    public static final AddressFormat<IPv6>
             RFC_5952 =
-            new AbstractAddressFormat<IP>() {
+            new AbstractAddressFormat<IPv6>() {
                 @Override
                 public <A extends Appendable> A format(
-                        final IP ip,
+                        final IPv6 ip,
                         final A toAppendTo)
                         throws IOException {
                     final byte[] address = ip.address;
@@ -164,11 +164,11 @@ public final class IPFormats {
      * {@code 00 10 01 00 10 01}.
      * Only makes sense for {@link IPVersion#IPV4}.
      * */
-    public static final AddressFormat<IP> SYSTEM_ID_NOTATION =
-            new AbstractAddressFormat<IP>() {
+    public static final AddressFormat<IPv4> SYSTEM_ID_NOTATION =
+            new AbstractAddressFormat<IPv4>() {
                     @Override
                     public <A extends Appendable> A format(
-                            final IP ip,
+                            final IPv4 ip,
                             final A toAppendTo)
                             throws IOException {
                         final byte[] address = ip.address;

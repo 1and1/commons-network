@@ -100,7 +100,15 @@ public final class IPParser implements AddressParser<IP> {
      */
     @Override
     public IP parse(final String str) {
-        return new IP(parseAsBytes(str));
+        byte[] address = parseAsBytes(str);
+        if (address.length == IPVersion.IPV4.getAddressBytes()) {
+            return new IPv4(parseAsBytes(str));
+        } else if (address.length == IPVersion.IPV6.getAddressBytes()) {
+            return new IPv6(parseAsBytes(str));
+        } else {
+            throw new IllegalStateException("Parsed address is neither IPv4 nor IPv6");
+        }
+
     }
 
     @Override
