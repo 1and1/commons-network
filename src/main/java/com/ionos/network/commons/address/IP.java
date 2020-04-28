@@ -45,10 +45,15 @@ public abstract class IP<T extends IP> extends AbstractAddress implements Addres
     /**
      * Allocates a new instance of this class.
      * @param address the address data to initialize the constructor with.
+     *                Will get copied.
+     * @return a new IP address instance of the subclass with a copy of the input
+     * address.
      */
     protected abstract T newInstance(byte[] address);
 
     /** Get the default address format for this class.
+     * @return the IP address format that is used for
+     * the {@linkplain #toString()} method.
      * */
     protected abstract AddressFormat<T> defaultAddressFormat();
 

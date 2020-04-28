@@ -438,6 +438,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * and {@code 192.168.0.128/25} will
      * be merged to {@code 192.168.0.0/24}.
      *
+     * @param <U> the IP subclass this network is in.
      * @param networks the input networks to be joined.
      * @return a new network list with neighbor networks merged.
      * @see #mergeContaining(Collection)
