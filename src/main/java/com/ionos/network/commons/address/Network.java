@@ -106,7 +106,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @see #ipAddress
      * @see #getAddressEnd()
      */
-    private T ipEnd;
+    private transient T ipEnd;
 
     /**
      * Creates an instance.
