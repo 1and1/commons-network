@@ -413,7 +413,7 @@ public class NetworkTest {
 
     @Test
     public void testMergeNeighbors() {
-        List<Network> list = Network.mergeNeighbors(Arrays.asList(new Network("172.16.0.0/32"), new Network("172.16.0.1/32")));
+        List<Network<IPv4>> list = Network.mergeNeighbors(Arrays.asList(new Network("172.16.0.0/32"), new Network("172.16.0.1/32")));
         assertEquals(Collections.singletonList(new Network("172.16.0.0/31")), list);
 
         list = Network.mergeNeighbors(Arrays.asList(new Network("172.16.0.0/24"), new Network("172.16.0.1/24"), new Network("172.16.0.5/24")));
@@ -543,7 +543,7 @@ public class NetworkTest {
 
     @Test
     public void testStreamWithParallelCollect() {
-        Network network = new Network(new IPv4("192.168.1.0"), 20);
+        Network<IPv4> network = new Network(new IPv4("192.168.1.0"), 20);
         assertEquals(new HashSet<>(toIps(network)), network.stream().parallel().collect(Collectors.toSet()));
     }
 

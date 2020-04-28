@@ -18,7 +18,7 @@ import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
  *
  * @see <a href="http://tools.ietf.org/html/rfc4291#section-2.2">RFC 4291,
  * Textual IPv6 representations</a>
- * @see InetAddress
+ * @see java.net.Inet6Address
  * @see IPVersion
  * @author Stephan Fuhrmann
  *

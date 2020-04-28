@@ -38,7 +38,7 @@ import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
  * Objects of the Network class are immutable!
  * @author Stephan Fuhrmann
  **/
-public final class Network implements Iterable<IP>, Serializable {
+public final class Network<T extends IP> implements Iterable<T>, Serializable {
     /** The version number of this class. */
     private static final long serialVersionUID = 123816891688169L;
 
@@ -67,7 +67,7 @@ public final class Network implements Iterable<IP>, Serializable {
     }
 
     /** Compares networks {@link Network#getAddress() start} IPs. */
-    private static final Comparator<Network> NETWORK_START_COMPARATOR =
+    private static final Comparator<Network<?>> NETWORK_START_COMPARATOR =
             (network1, network2) -> {
                 final int startIpComparison = network1.getAddress()
                         .compareTo(network2.getAddress());
@@ -83,7 +83,7 @@ public final class Network implements Iterable<IP>, Serializable {
      * @see <a href="http://www.faqs.org/rfcs/rfc1918.html">
      *     Address Allocation for Private Internets</a>
      */
-    private static final Network[] RFC_1918_NETWORKS = new Network[]{
+    private static final Network<IPv4>[] RFC_1918_NETWORKS = new Network[]{
             new Network(IPParser.INSTANCE.parse("10.0.0.0"), 8),
             new Network(IPParser.INSTANCE.parse("172.16.0.0"), 12),
             new Network(IPParser.INSTANCE.parse("192.168.0.0"), 16)
@@ -98,7 +98,7 @@ public final class Network implements Iterable<IP>, Serializable {
      * @see #ipEnd
      * @see #getAddress()
      */
-    private IP ipAddress;
+    private T ipAddress;
 
     /**
      * Last IP in the network.
@@ -106,7 +106,7 @@ public final class Network implements Iterable<IP>, Serializable {
      * @see #ipAddress
      * @see #getAddressEnd()
      */
-    private IP ipEnd;
+    private T ipEnd;
 
     /**
      * Creates an instance.
@@ -116,7 +116,7 @@ public final class Network implements Iterable<IP>, Serializable {
      * @throws IllegalArgumentException if the prefix size
      * does not match the IP protocol version.
      */
-    public Network(final IP inIP,
+    public Network(final T inIP,
                    final int inPrefix) {
         Objects.requireNonNull(inIP, "ip is null");
         if (inPrefix > inIP.getIPVersion().getAddressBits()
@@ -129,15 +129,15 @@ public final class Network implements Iterable<IP>, Serializable {
         final NetworkMaskData maskData =
                 getNetworkMaskData(inIP.getIPVersion())[this.prefix];
 
-        this.ipAddress = inIP.and(
+        this.ipAddress = (T)inIP.and(
                 maskData.subnetMask
                         .address);
 
-        this.ipEnd = ipEndFor(ipAddress, prefix);
+        this.ipEnd = (T)ipEndFor(ipAddress, prefix);
     }
 
-    private static IP ipEndFor(IP startAddress, int prefix) {
-            return startAddress.add(
+    private static <U extends IP> U ipEndFor(U startAddress, int prefix) {
+            return (U)startAddress.add(
                     getNetworkMaskData(startAddress.getIPVersion())[prefix].inverseSubnetMask
                             .address);
     }
@@ -154,7 +154,7 @@ public final class Network implements Iterable<IP>, Serializable {
      * @param networkWithPrefix the network, for example {@code "1.2.3.4/24"}.
      * @return the network part as an IP, in the above example {@code 1.2.3.4}.
      * */
-    private static IP networkPartOf(final String networkWithPrefix) {
+    private static <U extends IP> U networkPartOf(final String networkWithPrefix) {
         Objects.requireNonNull(networkWithPrefix, "network is null");
         final int index = networkWithPrefix.indexOf('/');
         if (index == -1) {
@@ -162,7 +162,7 @@ public final class Network implements Iterable<IP>, Serializable {
                     "no '/' found in network '" + networkWithPrefix + "'");
         }
         final String sIP = networkWithPrefix.substring(0, index);
-        return IPParser.INSTANCE.parse(sIP);
+        return (U)IPParser.INSTANCE.parse(sIP);
     }
 
     /** Calculate the network part of a network/prefix string.
@@ -191,7 +191,7 @@ public final class Network implements Iterable<IP>, Serializable {
      * @param networkAddress the network prefix to use. Example {@code 192.168.0.0}.
      * @param networkMask the network mask to use. Example {@code 255.255.0.0}.
      * */
-    public Network(final IP networkAddress, final IP networkMask) {
+    public Network(final T networkAddress, final T networkMask) {
         this(networkAddress, getPrefix(networkMask));
     }
 
@@ -442,9 +442,9 @@ public final class Network implements Iterable<IP>, Serializable {
      * @return a new network list with neighbor networks merged.
      * @see #mergeContaining(Collection)
      */
-    public static List<Network> mergeNeighbors(
-            final Collection<Network> networks) {
-        final List<Network> result = new ArrayList<>(networks);
+    public static <U extends IP> List<Network<U>> mergeNeighbors(
+            final Collection<Network<U>> networks) {
+        final List<Network<U>> result = new ArrayList<>(networks);
         result.sort(NETWORK_START_COMPARATOR);
         for (int i = 0; i < result.size() - 1; i++) {
             Network left = result.get(i);
@@ -494,7 +494,7 @@ public final class Network implements Iterable<IP>, Serializable {
      *
      * @return the start IP of this network (inclusive).
      */
-    public IP getAddress() {
+    public T getAddress() {
         return ipAddress;
     }
 
@@ -503,7 +503,7 @@ public final class Network implements Iterable<IP>, Serializable {
      *
      * @return the last IP of this network (inclusive).
      */
-    public IP getAddressEnd() {
+    public T getAddressEnd() {
         return ipEnd;
     }
 
@@ -553,7 +553,7 @@ public final class Network implements Iterable<IP>, Serializable {
      * do not contain ip addresses of different versions (IPV4 vs. IPV6).
      * This method will return {@code false} in such a case.
      */
-    public boolean contains(final IP ip) {
+    public boolean contains(final T ip) {
         Objects.requireNonNull(ip, "IP is null");
         byte[] netMask = getSubnetMask().address;
         byte[] ipBytes = ip.address;
@@ -582,7 +582,7 @@ public final class Network implements Iterable<IP>, Serializable {
      *               four networks of the size 26.
      * @return a collection of networks.
      */
-    public List<Network> split(final int length) {
+    public List<Network<T>> split(final int length) {
         // +++ stfu 2007-10-30: this should return an iterator instead
         IPVersion ipVersion = getIPVersion();
 
@@ -602,12 +602,12 @@ public final class Network implements Iterable<IP>, Serializable {
         int bitOfs = (ipVersion.getAddressBits() - length) & BitsAndBytes.BIT_MASK_BYTE;
         incrementBytes[byteOfs] = (byte) (1 << bitOfs);
 
-        List<Network> resultCollection =
+        List<Network<T>> resultCollection =
                 new java.util.ArrayList<>(1 << iterateBitLength);
 
-        for (IP curIP = getAddress();
+        for (T curIP = getAddress();
              contains(curIP);
-             curIP = curIP.add(incrementBytes)) {
+             curIP = (T)curIP.add(incrementBytes)) {
             Network test = new Network(curIP, length);
             resultCollection.add(test);
         }
@@ -624,7 +624,7 @@ public final class Network implements Iterable<IP>, Serializable {
      * @see #stream()
      */
     @Override
-    public Iterator<IP> iterator() {
+    public Iterator<T> iterator() {
         return new NetworkIPIterator(this);
     }
 
@@ -744,9 +744,9 @@ public final class Network implements Iterable<IP>, Serializable {
         s.readFully(data);
 
         if (length == IPVersion.IPV4.getAddressBytes()) {
-            ipAddress = new IPv4(data);
+            ipAddress = (T)new IPv4(data);
         } else if (length == IPVersion.IPV6.getAddressBytes()) {
-            ipAddress = new IPv6(data);
+            ipAddress = (T)new IPv6(data);
         } else {
             throw new IllegalStateException();
         }

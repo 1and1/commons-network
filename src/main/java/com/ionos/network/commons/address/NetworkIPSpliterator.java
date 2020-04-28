@@ -8,37 +8,37 @@ import java.util.function.Consumer;
 /** A spliterator that returns the {@linkplain IP IPs}
  * in a {@linkplain Network}.
  * */
-final class NetworkIPSpliterator implements Spliterator<IP> {
+final class NetworkIPSpliterator<T extends IP> implements Spliterator<T> {
 
     /** The number of bits a {@linkplain Long} has. */
     private static final int BIT_SIZE_LONG = 64;
 
     /** The network we're returning IPs from. */
-    private Network network;
+    private Network<T> network;
 
     /** The next IP that is going to be returned. */
-    private IP currentIP;
+    private T currentIP;
 
-    NetworkIPSpliterator(final Network inNetwork) {
+    NetworkIPSpliterator(final Network<T> inNetwork) {
         this.network = inNetwork;
         this.currentIP = inNetwork.getAddress();
     }
 
     @Override
-    public boolean tryAdvance(final Consumer<? super IP> consumer) {
+    public boolean tryAdvance(final Consumer<? super T> consumer) {
         if (currentIP.compareTo(network.getAddressEnd()) <= 0) {
             consumer.accept(currentIP);
-            currentIP = currentIP.add(1);
+            currentIP = (T)currentIP.add(1);
             return currentIP.compareTo(network.getAddressEnd()) <= 0;
         }
         return false;
     }
 
     @Override
-    public Spliterator<IP> trySplit() {
+    public Spliterator<T> trySplit() {
         if (network.getPrefix()
                 < network.getIPVersion().getAddressBits()) {
-            List<Network> split =
+            List<Network<T>> split =
                     network.split(network.getPrefix() + 1);
 
             if (split.size() != 2) {

@@ -7,18 +7,18 @@ import java.util.NoSuchElementException;
  * Iterator over the IP addresses of {@code this} network.
  * Try not to use this for performance issues.
  */
-final class NetworkIPIterator implements Iterator<IP> {
+final class NetworkIPIterator<T extends IP> implements Iterator<IP> {
 
     /** The network to iterate in. */
-    private final Network network;
+    private final Network<T> network;
     /** The current IP. */
-    private IP current;
+    private T current;
 
     /** Constructs a new network iterator starting at the
      * start address.
      * @param inNetwork the network to create an iterator for.
      * */
-    NetworkIPIterator(final Network inNetwork) {
+    NetworkIPIterator(final Network<T> inNetwork) {
         this.network = inNetwork;
         current = inNetwork.getAddress();
     }
@@ -29,14 +29,14 @@ final class NetworkIPIterator implements Iterator<IP> {
     }
 
     @Override
-    public IP next() {
-        final IP result = current;
+    public T next() {
+        final T result = current;
 
         if (!hasNext()) {
             throw new NoSuchElementException("Already at end of network");
         }
 
-        current = current.add(1);
+        current = (T)current.add(1);
         return result;
     }
 

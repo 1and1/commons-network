@@ -28,15 +28,6 @@ public abstract class IP<T extends IP> extends AbstractAddress implements Addres
     private static final long serialVersionUID = 5338854380391791729L;
 
     /**
-     * The number of bytes in an IPv4 address.
-     * This is here because {@link IPVersion} initializes static IPs.
-     */
-    private static final int IPV4_BYTES = 4;
-
-    /** The number of bytes in an IPv6 address. */
-    private static final int IPV6_BYTES = 16;
-
-    /**
      * Creates a new IP address from the address bytes.
      *
      * @param inAddress a 4 or 16 byte address in network byte order.
