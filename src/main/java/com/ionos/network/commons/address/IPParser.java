@@ -29,28 +29,28 @@ public final class IPParser implements AddressParser<IP> {
             "Right side '%s' malformed";
 
     static {
-        IPV4_PATTERN = Pattern.compile("([0-9]{1,3})"
-                + "\\.([0-9]{1,3})"
-                + "\\.([0-9]{1,3})"
-                + "\\.([0-9]{1,3})");
-        IPV6_PATTERN = Pattern.compile("([0-9a-fA-F]{1,4})"
-                + "(:([0-9a-fA-F]{1,4})){7}");
-        IPV6_PART_PATTERN = Pattern.compile("([0-9a-fA-F]{1,4})?"
-                + "(:[0-9a-fA-F]{1,4}){0,7}");
+        Pattern decimalOctet = Pattern.compile("[0-9]{1,3}");
+        Pattern fourNibbles = Pattern.compile("[0-9a-fA-F]{1,4}");
+        Pattern ipv4;
+        ipv4 = Pattern.compile(
+                decimalOctet
+                + "(\\." + decimalOctet + "){3}");
+        IPV4_PATTERN = ipv4;
+        IPV6_PATTERN = Pattern.compile(fourNibbles
+                + "(:" + fourNibbles + "){7}");
+        IPV6_PART_PATTERN = Pattern.compile("(" + fourNibbles + "{1,4})?"
+                + "(:" + fourNibbles + "){0,7}");
         IPV6_PATTERN_TYPE_3 = Pattern.compile(
-                "(([0-9a-fA-F]{1,4})"
-                    + "(:([0-9a-fA-F]{1,4})){5})"
-                    + ":(([0-9]{1,3})"
-                    + "\\.([0-9]{1,3})"
-                    + "\\.([0-9]{1,3})"
-                    + "\\.([0-9]{1,3}))");
+                "(" + fourNibbles
+                    + "(:" + fourNibbles + "){5})"
+                    + ":(" + ipv4 +")");
         INSTANCE = new IPParser();
     }
 
     /** The group number of the IPv6 group in {@link #IPV6_PATTERN_TYPE_3}. */
     private static final int IPV6_PATTERN_TYPE_3_IPV6_GROUP = 1;
     /** The group number of the IPv4 group in {@link #IPV6_PATTERN_TYPE_3}. */
-    private static final int IPV6_PATTERN_TYPE_3_IPV4_GROUP = 5;
+    private static final int IPV6_PATTERN_TYPE_3_IPV4_GROUP = 3;
 
     /** The singleton instance for parsing IP addresses. */
     public static final AddressParser<IP> INSTANCE;
