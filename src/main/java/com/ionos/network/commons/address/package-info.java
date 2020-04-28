@@ -25,8 +25,8 @@
  *
  * There are classes for parsing Strings into addresses:
  * <ul>
- *     <li>{@link com.ionos.network.commons.address.IPParser}:
- *     Parses a String into an {@linkplain com.ionos.network.commons.address.IP}.</li>
+ *     <li>{@link com.ionos.network.commons.address.IPParsers}:
+ *     Parser implementations to convert a String into an {@linkplain com.ionos.network.commons.address.IP}.</li>
  *     <li>{@link com.ionos.network.commons.address.MACParsers}:
  *     Parser implementations for parsing Strings into a {@linkplain com.ionos.network.commons.address.MAC}.</li>
  * </ul>

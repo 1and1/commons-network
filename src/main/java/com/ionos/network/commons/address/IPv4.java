@@ -49,8 +49,8 @@ public final class IPv4 extends IP<IPv4> implements Address, Serializable {
      * Creates a new IP address from the address bytes.
      *
      * @param inAddress a String containing the IP address in a
-     *                  notation supported by {@linkplain IPParser}.
-     * @see IPParser#parse(String)
+     *                  notation supported by {@linkplain IPParsers}.
+     * @see IPParsers#DOTTED_DECIMAL
      */
     public IPv4(final String inAddress) {
         this(IPParsers.DOTTED_DECIMAL.parseAsBytes(inAddress));
