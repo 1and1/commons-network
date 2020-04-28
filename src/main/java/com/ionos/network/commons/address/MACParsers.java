@@ -16,7 +16,7 @@ public final class MACParsers {
         // no instance allowed
     }
 
-    private static abstract class AbstractMacParser implements AddressParser<MAC> {
+    private abstract static class AbstractMacParser implements AddressParser<MAC> {
         public MAC parse(String address) {
             return new MAC(parseAsBytes(address));
         }
