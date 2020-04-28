@@ -217,9 +217,8 @@ public final class IP extends AbstractAddress implements Address, Serializable {
     /**
      * Returns the IP representation of the form <code>a.b.c.d</code>
      * or <code>a:b:c:d:e:f:g:h</code>.
-     * @see IPFormats#DOTTED_DECIMAL for {@link IPVersion#IPV4}
+     * @see IPFormats#DOTTED_DECIMAL
      * @see IPFormats#COLON_SEPARATED_HEXTETS
-     * for {@link IPVersion#IPV6}
      */
     @Override
     public String toString() {
