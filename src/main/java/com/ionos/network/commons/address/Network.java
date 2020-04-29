@@ -27,12 +27,12 @@ import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
  * <br>
  * <ul>
  * <li>{@code 1.2.3.0} is the first IP in the network, the network address
- * (returned by {@link #getAddress()} ()})</li>
+ * (returned by {@link #getAddress()})</li>
  * <li>{@code 24} is the network prefix length (returned by {@link #getPrefix()})
  * and used as index in all static get* methods</li>
  * <li>{@code 255.255.255.0} is the subnet mask for this network returned
  * by {@link #getSubnetMask()}</li>
- * <li>0.0.0.255 is the inverse network mask for this network</li>
+ * <li>{@code 0.0.0.255} is the inverse network mask for this network, see {@link #getInverseSubnetMask(IPVersion, int)}</li>
  * </ul>
  *
  * Objects of the Network class are immutable!
@@ -205,9 +205,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @return {@code true} if the specified IP is within a
      * private network, otherwise {@code false}
      */
-    public static boolean isRFC1918(final IP ip) {
+    public static boolean isRFC1918(final IPv4 ip) {
         boolean result = false;
-        if (ip != null && ip.getIPVersion() == IPVersion.IPV4) {
+        if (ip != null) {
             for (final Network privateNetwork : RFC_1918_NETWORKS) {
                 if (privateNetwork.contains(ip)) {
                     result = true;
@@ -219,10 +219,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
 
     /**
      * Get the network mask for a IP version and a number of network bits.
-     *
-     * @param version the IP version to get the network mask for
-     * @param prefix    the bit length of the prefix
-     * @return the network mask as an IP.
+     * @param version the IP version to get the network mask for.
+     * @param prefix    the bit length of the prefix.
+     * @return the network mask as an IP, for example {@code 255.255.255.0 }.
      */
     public static IP getSubnetMask(final IPVersion version, final int prefix) {
         Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
@@ -230,11 +229,10 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     }
 
     /**
-     * Get the network mask for a IP version and a number of network bits.
-     *
+     * Get the inverse network mask for a IP version and a number of network bits.
      * @param version the IP version to get the network mask for.
      * @param prefix    the bit length of the prefix.
-     * @return the network mask as an IP
+     * @return the inverse network mask as an IP, for example {@code 0.0.0.255 }.
      */
     public static IP getInverseSubnetMask(final IPVersion version,
                                           final int prefix) {
@@ -245,9 +243,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     /**
      * Get the prefix size in bits.
      *
-     * @param netMask the network mask to get the size for
+     * @param netMask the network mask to get the size for.
      * @return the prefix size in bits.
-     * @throws IllegalArgumentException if it's not a legal netMask
+     * @throws IllegalArgumentException if it's not a legal netMask.
      */
     public static int getPrefix(final IP netMask) {
         final NetworkMaskData[] data =
@@ -471,7 +469,8 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     /**
      * Returns the network mask of {@code this} network.
      *
-     * @return the network mask of {@code this} network as an {@link IP} object
+     * @return the network mask of {@code this} network as an {@link IP} object.
+     * @see #getSubnetMask(IPVersion, int) 
      */
     public IP getSubnetMask() {
         return getSubnetMask(getAddress().getIPVersion(), getPrefix());
@@ -480,7 +479,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     /**
      * Returns the number of bits of {@code this} network prefix.
      *
-     * @return the number of bits in the prefix, for example
+     * @return the number of bits in the prefix. For example
      * for {@code 1.2.3.4/24}
      * returns 24.
      */
@@ -527,21 +526,13 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
         byte[] thisNetworkBytes = getAddress().address;
         byte[] otherNetworkBytes = network.getAddress().address;
 
-        if (thisNetworkBytes.length != otherNetworkBytes.length) {
-            return false;
-        }
-
         // bigger prefix network can not contain smaller prefix network
         if (prefix > network.prefix) {
             return false;
         }
-
-        for (int i=0; i < thisNetworkBytes.length; i++) {
-            if ((thisNetworkBytes[i] & thisNetMask[i]) != (otherNetworkBytes[i] & thisNetMask[i])) {
-                return false;
-            }
-        }
-        return true;
+        return BitsAndBytes.equalsWithMask(thisNetworkBytes,
+                otherNetworkBytes,
+                thisNetMask);
     }
 
     /**
@@ -558,16 +549,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
         byte[] ipBytes = ip.address;
         byte[] networkBytes = getAddress().address;
 
-        if (ip.address.length != netMask.length) {
-            return false;
-        }
-
-        for (int i=0; i < ip.address.length; i++) {
-            if ((ipBytes[i] & netMask[i]) != (networkBytes[i] & netMask[i])) {
-                return false;
-            }
-        }
-        return true;
+        return BitsAndBytes.equalsWithMask(networkBytes, ipBytes, netMask);
     }
 
     /**
@@ -618,6 +600,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * Returns an iterator over the IP addresses within {@code this} network.
      * <br>
      * Try to avoid the usage of this method for performance reasons.
+     * There could be more of IPs in a network than your computer can process.
      *
      * @return iterator over the IP addresses within {@code this} network.
      * @see #stream()
@@ -629,6 +612,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
 
     /**
      * Returns a stream of IPs that are contained in this network.
+     * <br>
+     * Try to avoid the usage of this method for performance reasons.
+     * There could be more of IPs in a network than your computer can process.
      * @return a stream of IPs.
      * @see #iterator()
      */

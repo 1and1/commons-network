@@ -8,6 +8,8 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BitsAndBytesTest {
 
@@ -191,5 +193,23 @@ public class BitsAndBytesTest {
         StringBuilder actual = new StringBuilder();
         BitsAndBytes.appendHexWithLeadingZeros(actual, (byte)1, (byte)255);
         assertEquals("01ff", actual.toString());
+    }
+
+    @Test
+    public void equalsWithMaskWithMatch() throws IOException {
+        byte[] left = {1, 2, 3};
+        byte[] right = {1, 2, 4};
+        byte[] mask = {(byte)0xff, (byte)0xff, (byte)0xf8};
+        boolean result = BitsAndBytes.equalsWithMask(left, right, mask);
+        assertTrue(result);
+    }
+
+    @Test
+    public void equalsWithMaskWithMismatch() throws IOException {
+        byte[] left = {1, 2, 3};
+        byte[] right = {1, 2, 4};
+        byte[] mask = {(byte)0xff, (byte)0xff, (byte)0xff};
+        boolean result = BitsAndBytes.equalsWithMask(left, right, mask);
+        assertFalse(result);
     }
 }

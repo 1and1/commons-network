@@ -136,11 +136,11 @@ public class NetworkTest {
 
     @Test
     public void isPrivate() {
-        final IP privateIp = new IPv4("192.168.1.1");
+        final IPv4 privateIp = new IPv4("192.168.1.1");
         assertTrue(Network.isRFC1918(privateIp));
 
         // google DNS
-        final IP publicIp = new IPv4("8.8.8.8");
+        final IPv4 publicIp = new IPv4("8.8.8.8");
         assertFalse(Network.isRFC1918(publicIp));
     }
 
