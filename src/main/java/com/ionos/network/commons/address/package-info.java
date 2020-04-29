@@ -4,7 +4,7 @@
  * {@link com.ionos.network.commons.address.Network} and
  * {@link com.ionos.network.commons.address.MAC}.
  *
- * <h3>Address classes</h3>
+ * <h2>Address classes</h2>
  *
  * There are immutable classes containing addresses:
  * <ul>
@@ -19,7 +19,7 @@
  *     <li>{@link com.ionos.network.commons.address.MAC}:
  *     A Media-Access-Control address.</li>
  * </ul>
- * <h3>Formatting addresses</h3>
+ * <h2>Formatting addresses</h2>
  * There are classes for formatting the addresses into multiple string representations:
  * <ul>
  *     <li>{@link com.ionos.network.commons.address.IPFormats}:
@@ -29,7 +29,7 @@
  * </ul>
  * All hexadecimal characters are lower-case in this library.
  *
- * <h3>Parsing textual address representations</h3>
+ * <h2>Parsing textual address representations</h2>
  * There are classes for parsing Strings into addresses:
  * <ul>
  *     <li>{@link com.ionos.network.commons.address.IPParsers}:
