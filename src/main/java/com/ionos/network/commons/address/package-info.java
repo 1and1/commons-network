@@ -4,16 +4,22 @@
  * {@link com.ionos.network.commons.address.Network} and
  * {@link com.ionos.network.commons.address.MAC}.
  *
+ * <h3>Address classes</h3>
+ *
  * There are immutable classes containing addresses:
  * <ul>
  *     <li>{@link com.ionos.network.commons.address.IP}:
- *     An IP of a certain {@link com.ionos.network.commons.address.IPVersion}.</li>
+ *     An IP of a certain {@link com.ionos.network.commons.address.IPVersion}.
+ *     There are implementations for type safe distinguishing between
+ *     {@link com.ionos.network.commons.address.IPv4} and
+ *     {@link com.ionos.network.commons.address.IPv6}.
+ *     </li>
  *     <li>{@link com.ionos.network.commons.address.Network}:
  *     An IP network containing network addresses.</li>
  *     <li>{@link com.ionos.network.commons.address.MAC}:
  *     A Media-Access-Control address.</li>
  * </ul>
- *
+ * <h3>Formatting addresses</h3>
  * There are classes for formatting the addresses into multiple string representations:
  * <ul>
  *     <li>{@link com.ionos.network.commons.address.IPFormats}:
@@ -23,14 +29,16 @@
  * </ul>
  * All hexadecimal characters are lower-case in this library.
  *
+ * <h3>Parsing textual address representations</h3>
  * There are classes for parsing Strings into addresses:
  * <ul>
  *     <li>{@link com.ionos.network.commons.address.IPParsers}:
- *     Parser implementations to convert a String into an {@linkplain com.ionos.network.commons.address.IP}.</li>
+ *     Parser implementations for converting Strings into an {@linkplain com.ionos.network.commons.address.IP} address.</li>
  *     <li>{@link com.ionos.network.commons.address.MACParsers}:
- *     Parser implementations for parsing Strings into a {@linkplain com.ionos.network.commons.address.MAC}.</li>
+ *     Parser implementations for converting Strings into a {@linkplain com.ionos.network.commons.address.MAC} address.</li>
  * </ul>
  *
+ * <h3>Miscellaneous</h3>
  * There's a {@link com.ionos.network.commons.address.EUI64} conversion class
  * that can convert MAC addresses
  * into the corresponding IPv6 addresses using the EUI-64 / SLAAC mechanism.
