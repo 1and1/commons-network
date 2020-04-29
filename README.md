@@ -27,7 +27,7 @@ You can include commons-network as a Maven dependency from [Maven Central](https
 <dependency>
     <groupId>com.oneandone</groupId>
     <artifactId>commons-network</artifactId>
-    <version>0.9.6</version>
+    <version>0.10.0</version>
 </dependency>
 ```
 
