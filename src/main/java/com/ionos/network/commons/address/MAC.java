@@ -6,8 +6,9 @@ import java.io.Serializable;
  * The Media Access Control address of a network interface.
  * Objects of the MAC class are immutable!
  *
+ * @see MACFormats
+ * @see MACParsers
  * @author Stephan Fuhrmann
- *
  **/
 public final class MAC extends AbstractAddress implements Address, Serializable {
     /** The version number of this class. */

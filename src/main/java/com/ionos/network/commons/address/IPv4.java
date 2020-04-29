@@ -3,18 +3,15 @@ package com.ionos.network.commons.address;
 import java.io.Serializable;
 
 /**
- * IP in the IPv4 protocol.
+ * IP for the IPv4 protocol.
  * Stores the address bytes and has methods to calculate with IPs.
- * The IP class has some methods for calculation with IP numbers, for example
- * {@link #add(byte[])}, {@link #add(long)},
- * {@link AbstractAddress#compareTo(AbstractAddress)}.
  * <br>
  * Objects of the IPv4 class are immutable!
  *
- * @see <a href="http://tools.ietf.org/html/rfc4291#section-2.2">RFC 4291,
- * Textual IPv6 representations</a>
  * @see java.net.Inet4Address
  * @see IPVersion
+ * @see IPFormats
+ * @see IPParsers
  * @author Stephan Fuhrmann
  *
  **/
