@@ -79,7 +79,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
 
     /**
      * The list of private IPv4 networks as according to RFC 1918.
-     * @see #isRFC1918(IP)
+     * @see #isRFC1918(IPv4)
      * @see <a href="http://www.faqs.org/rfcs/rfc1918.html">
      *     Address Allocation for Private Internets</a>
      */
