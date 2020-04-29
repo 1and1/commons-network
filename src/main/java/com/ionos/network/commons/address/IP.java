@@ -60,8 +60,8 @@ public abstract class IP<T extends IP> extends AbstractAddress implements Addres
      * Invert the address. This will flip every bit from 1 to 0 and vice
      * versa.
      *
-     * @return the inverted IP address. Example: For the input "255.255.0.0"
-     * will return "0.0.255.255".
+     * @return the inverted IP address. Example: For the input {@code 255.255.0.0}
+     * will return {@code 0.0.255.255}.
      */
     public T invert() {
         final byte[] inverted = new byte[address.length];
@@ -128,8 +128,8 @@ public abstract class IP<T extends IP> extends AbstractAddress implements Addres
      *             to this address, starting at the <em>end of the array</em>.
      * @return the new IP built from the base IP and the offset
      * given in the values.
-     * Example: <code>new IP("192.168.1.1").and(new byte[] {255,0})
-     * .equals(new IP("192.168.1.0"))</code>
+     * Example: {@code new IPv4("192.168.1.1").and(new byte[] {255,0})
+     * .equals(new IPv4("192.168.1.0"))}
      */
     public T and(final byte[] mask) {
         final T result = newInstance(address);

@@ -21,11 +21,11 @@ public final class IPv6 extends IP<IPv6> implements Address, Serializable {
     /** The version number of this class. */
     private static final long serialVersionUID = 6626793331933215894L;
 
-    /** The IPv6 address 0::0. */
+    /** The IPv6 address {@code 0::0}. */
     public static final IPv6 IPV6_ALL_ZERO =
             new IPv6(BitsAndBytes.newArrayOf(IPVersion.IPV6.getAddressBytes(), (byte)0));
 
-    /** The IPv6 address ffff:...:ffff. */
+    /** The IPv6 address {@code ffff:...:ffff}. */
     public static final IPv6 IPV6_ALL_ONE =
             new IPv6(BitsAndBytes.newArrayOf(IPVersion.IPV6.getAddressBytes(), (byte)255));
 

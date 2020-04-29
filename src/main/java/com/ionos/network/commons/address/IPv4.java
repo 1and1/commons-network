@@ -19,11 +19,11 @@ public final class IPv4 extends IP<IPv4> implements Address, Serializable {
     /** The version number of this class. */
     private static final long serialVersionUID = 1212884661391791729L;
 
-    /** The IPv4 address 0.0.0.0. */
+    /** The IPv4 address {@code 0.0.0.0}. */
     public static final IPv4 IPV4_ALL_ZERO =
             new IPv4(BitsAndBytes.newArrayOf(IPVersion.IPV4.getAddressBytes(), (byte)0));
 
-    /** The IPv4 address 255.255.255.255. */
+    /** The IPv4 address {@code 255.255.255.255}. */
     public static final IPv4 IPV4_ALL_ONE =
             new IPv4(BitsAndBytes.newArrayOf(IPVersion.IPV4.getAddressBytes(), (byte)255));
 
