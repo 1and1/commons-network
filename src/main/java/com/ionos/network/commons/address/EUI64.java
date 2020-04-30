@@ -17,7 +17,7 @@ public final class EUI64 {
 
     /** Prefix for link-local IPv6 addresses, that are only valid within
      * closed network segments. */
-    private static final IPv6 LINK_LOCAL = (IPv6)IPParsers.IPV6.parse("FE80::");
+    private static final IPv6 LINK_LOCAL = IPParsers.IPV6.parse("FE80::");
 
     /** Private constructor preventing instantiation. */
     private EUI64() {

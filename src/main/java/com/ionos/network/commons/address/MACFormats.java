@@ -23,7 +23,7 @@ public final class MACFormats {
      * @see MACParsers#COLON_SEPARATED_HEX_FORMAT
      */
     public static final AddressFormat<MAC> COLON_SEPARATED_HEX_FORMAT =
-            new HexadecimalAddressFormat<MAC>(':', 2);
+            new HexadecimalAddressFormat<>(':', 2);
 
     /**
      * Word hex representation of the MAC in CISCO style.
@@ -31,5 +31,5 @@ public final class MACFormats {
      * <i>Example:</i>{@code 00ac.acdd.0012}.
      */
     public static final AddressFormat<MAC> CISCO_CUSTOM_FORMAT =
-            new HexadecimalAddressFormat<MAC>('.', 4);
+            new HexadecimalAddressFormat<>('.', 4);
 }
