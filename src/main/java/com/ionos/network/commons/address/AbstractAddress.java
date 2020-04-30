@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Abstract address is the base class that contains the bytes of the address.
@@ -25,8 +26,10 @@ abstract class AbstractAddress implements Comparable<AbstractAddress>,
      * Creates a new address from the address bytes.
      *
      * @param inAddress an address in network byte order.
+     * @throws NullPointerException if the input array reference is null.
      */
     AbstractAddress(final byte[] inAddress) {
+        Objects.requireNonNull(inAddress, "address byte array is null");
         this.address = Arrays.copyOf(inAddress, inAddress.length);
     }
 
