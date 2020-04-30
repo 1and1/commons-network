@@ -77,23 +77,7 @@ public final class IPFormats {
      * */
     public static final AddressFormat<IPv6>
             COLON_SEPARATED_ZEROED_HEXTETS =
-            new AbstractAddressFormat<IPv6>() {
-                @Override
-                public <A extends Appendable> A format(
-                        final IPv6 ip,
-                        final A toAppendTo)
-                        throws IOException {
-                    final byte[] address = ip.address;
-                    // everything else goes HEX with word components
-                    for (int i = 0; i < address.length; i += 2) {
-                        if (i > 0) {
-                            toAppendTo.append(':');
-                        }
-                        appendHexWithLeadingZeros(toAppendTo, address[i], address[i + 1]);
-                    }
-                    return toAppendTo;
-                }
-            };
+            new HexadecimalAddressFormat<IPv6>(':', 4);
 
     /** Canonical IPv6 formatter. This is the compressed
      * colon-separated notation in lower case.
