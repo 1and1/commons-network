@@ -7,7 +7,6 @@ import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 /**
  * IP parser implementations to parse addresses from text notation.
  * @see IP
- * @author Stephan Fuhrmann
  * @see AddressFormat
  * @author Stephan Fuhrmann
  **/
