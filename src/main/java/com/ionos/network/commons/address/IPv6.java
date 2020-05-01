@@ -23,11 +23,14 @@ public final class IPv6 extends IP<IPv6> implements Address, Serializable {
 
     /** The IPv6 address {@code 0::0}. */
     public static final IPv6 IPV6_ALL_ZERO =
-            new IPv6(BitsAndBytes.newArrayOf(IPVersion.IPV6.getAddressBytes(), (byte)0));
+            new IPv6(BitsAndBytes.newArrayOf(
+                    IPVersion.IPV6.getAddressBytes(), (byte) 0));
 
     /** The IPv6 address {@code ffff:...:ffff}. */
     public static final IPv6 IPV6_ALL_ONE =
-            new IPv6(BitsAndBytes.newArrayOf(IPVersion.IPV6.getAddressBytes(), (byte)255));
+            new IPv6(BitsAndBytes.newArrayOf(
+                    IPVersion.IPV6.getAddressBytes(),
+                    (byte) BitsAndBytes.UBYTE_MAX_VALUE));
 
     /**
      * Creates a new IP address from the address bytes.
@@ -64,7 +67,7 @@ public final class IPv6 extends IP<IPv6> implements Address, Serializable {
     }
 
     @Override
-    protected IPv6 newInstance(byte[] address) {
+    protected IPv6 newInstance(final byte[] address) {
         return new IPv6(address);
     }
 

@@ -75,7 +75,7 @@ abstract class AbstractAddress implements Comparable<AbstractAddress>,
      * @param s the stream to write the object to.
      * @throws IOException if there's a problem in writing to the stream.
      * */
-    private void writeObject(ObjectOutputStream s) throws IOException {
+    private void writeObject(final ObjectOutputStream s) throws IOException {
         s.writeInt(address.length);
         s.write(address);
     }
@@ -84,10 +84,27 @@ abstract class AbstractAddress implements Comparable<AbstractAddress>,
      * @param s the stream to read the object from.
      * @throws IOException if there's a problem in reading from the stream.
      * */
-    private void readObject(ObjectInputStream s) throws IOException {
+    private void readObject(final ObjectInputStream s) throws IOException {
         int length = s.readInt();
         byte[] data = new byte[length];
         s.readFully(data);
         address = data;
+    }
+
+    /** A performance optimized variant for
+     * {@linkplain #getBytes()} that does not
+     * return a copy, but the original array.
+     * This is only allowed for reading the data.
+     * @param address the address that can possibly
+     *                be an instance of {@linkplain AbstractAddress}
+     *                or another implementation.
+     * @return the byte array for reading.
+     * */
+    static byte[] getBytesForReading(final Address address) {
+        if (address instanceof AbstractAddress) {
+            return ((AbstractAddress) address).address;
+        } else {
+            return address.getBytes();
+        }
     }
 }

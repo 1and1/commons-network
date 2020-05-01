@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 import static com.ionos.network.commons.address.BitsAndBytes.appendHex;
-import static com.ionos.network.commons.address.BitsAndBytes.appendHexWithLeadingZeros;
 
 /**
  * Text formatting alternatives for IP address in multiple notations.

@@ -5,9 +5,11 @@ import java.io.IOException;
 /**
  * Formats an address to a text form in a customizable hexadecimal
  * notation.
+ * @param <T> the type of address to format.
  * @author Stephan Fuhrmann
  * */
-public final class HexadecimalAddressFormat<T extends Address> extends AbstractAddressFormat<T> {
+public final class HexadecimalAddressFormat<T extends Address>
+        extends AbstractAddressFormat<T> {
 
     /** The character to use as a separator. */
     private final char separator;
@@ -19,10 +21,12 @@ public final class HexadecimalAddressFormat<T extends Address> extends AbstractA
      * @param inSeparator the character to separate the parts with.
      * @param inSeparatorInterval the number of hex digits that form the parts.
      */
-    public HexadecimalAddressFormat(char inSeparator, int inSeparatorInterval) {
+    public HexadecimalAddressFormat(final char inSeparator,
+                                    final int inSeparatorInterval) {
         this.separator = inSeparator;
         if (inSeparatorInterval <= 0) {
-            throw new IllegalArgumentException("separatorInterval must be > 0");
+            throw new IllegalArgumentException(
+                    "separatorInterval must be > 0");
         }
         this.separatorInterval = inSeparatorInterval;
     }
@@ -32,12 +36,7 @@ public final class HexadecimalAddressFormat<T extends Address> extends AbstractA
             final T address,
             final A toAppendTo)
             throws IOException {
-        byte[] addressBytes;
-        if (address instanceof AbstractAddress) {
-            addressBytes = ((AbstractAddress)address).address;
-        } else {
-            addressBytes = address.getBytes();
-        }
+        byte[] addressBytes = AbstractAddress.getBytesForReading(address);
 
         int charIndex = 0;
         for (int i = 0; i < addressBytes.length; i++) {
@@ -47,13 +46,16 @@ public final class HexadecimalAddressFormat<T extends Address> extends AbstractA
                 toAppendTo.append(separator);
             }
 
-            toAppendTo.append(BitsAndBytes.toHexDigit(val >>> 4 & 0x0f));
+            toAppendTo.append(BitsAndBytes.toHexDigit(
+                    val >>> BitsAndBytes.BITS_PER_NIBBLE
+                            & BitsAndBytes.BIT_MASK_NIBBLE));
             charIndex++;
 
             if (charIndex % separatorInterval == 0) {
                 toAppendTo.append(separator);
             }
-            toAppendTo.append(BitsAndBytes.toHexDigit(val & 0x0f));
+            toAppendTo.append(BitsAndBytes.toHexDigit(
+                    val & BitsAndBytes.BIT_MASK_NIBBLE));
             charIndex++;
         }
 

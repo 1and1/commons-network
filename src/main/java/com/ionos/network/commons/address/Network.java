@@ -28,21 +28,26 @@ import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
  * <ul>
  * <li>{@code 1.2.3.0} is the first IP in the network, the network address
  * (returned by {@link #getAddress()})</li>
- * <li>{@code 24} is the network prefix length (returned by {@link #getPrefix()})
+ * <li>{@code 24} is the network prefix length (returned by
+ * {@link #getPrefix()})
  * and used as index in all static get* methods</li>
  * <li>{@code 255.255.255.0} is the subnet mask for this network returned
  * by {@link #getSubnetMask()}</li>
- * <li>{@code 0.0.0.255} is the inverse network mask for this network, see {@link #getInverseSubnetMask(IPVersion, int)}</li>
+ * <li>{@code 0.0.0.255} is the inverse network mask for this network,
+ * see {@link #getInverseSubnetMask(IPVersion, int)}</li>
  * </ul>
  *
  * Objects of the Network class are immutable!
+ * @param <T> the IP address type this network is defined for.
  * @author Stephan Fuhrmann
  **/
 public final class Network<T extends IP> implements Iterable<T>, Serializable {
     /** The version number of this class. */
     private static final long serialVersionUID = 123816891688169L;
 
-    private static final String ERROR_IP_VERSION_NOT_NULL = "the ip version may not be null";
+    /** Error message for null ip versions. */
+    private static final String ERROR_IP_VERSION_NOT_NULL =
+            "the ip version may not be null";
 
     /** Pre-calculated network masks for IPv4. */
     private static final NetworkMaskData[] IP_V4_NETWORK_MASK_DATA;
@@ -129,16 +134,18 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
         final NetworkMaskData maskData =
                 getNetworkMaskData(inIP.getIPVersion())[this.prefix];
 
-        this.ipAddress = (T)inIP.and(
+        this.ipAddress = (T) inIP.and(
                 maskData.subnetMask
                         .address);
 
         this.ipEnd = ipEndFor(ipAddress, prefix);
     }
 
-    private static <U extends IP> U ipEndFor(U startAddress, int prefix) {
-            return (U)startAddress.add(
-                    getNetworkMaskData(startAddress.getIPVersion())[prefix].inverseSubnetMask
+    private static <U extends IP> U ipEndFor(final U startAddress,
+                                             final int prefix) {
+            return (U) startAddress.add(
+                    getNetworkMaskData(startAddress.getIPVersion())[prefix]
+                            .inverseSubnetMask
                             .address);
     }
 
@@ -147,14 +154,17 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @param networkWithPrefix a network in the format {@code 1.2.3.4/23}.
      */
     public Network(final String networkWithPrefix) {
-        this(networkPartOf(networkWithPrefix), prefixPartOf(networkWithPrefix));
+        this(networkPartOf(networkWithPrefix),
+                prefixPartOf(networkWithPrefix));
     }
 
     /** Calculate the network part of a network/prefix string.
      * @param networkWithPrefix the network, for example {@code "1.2.3.4/24"}.
+     * @param <U> the type of IP address to get the network part for.
      * @return the network part as an IP, in the above example {@code 1.2.3.4}.
      * */
-    private static <U extends IP> U networkPartOf(final String networkWithPrefix) {
+    private static <U extends IP> U networkPartOf(
+            final String networkWithPrefix) {
         Objects.requireNonNull(networkWithPrefix, "network is null");
         final int index = networkWithPrefix.indexOf('/');
         if (index == -1) {
@@ -162,7 +172,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
                     "no '/' found in network '" + networkWithPrefix + "'");
         }
         final String sIP = networkWithPrefix.substring(0, index);
-        return (U)IPParsers.DEFAULT.parse(sIP);
+        return (U) IPParsers.DEFAULT.parse(sIP);
     }
 
     /** Calculate the network part of a network/prefix string.
@@ -188,8 +198,10 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     }
 
     /** Constructs a new network from a network prefix and a network mask.
-     * @param networkAddress the network prefix to use. Example {@code 192.168.0.0}.
-     * @param networkMask the network mask to use. Example {@code 255.255.0.0}.
+     * @param networkAddress the network prefix to use.
+     *                       Example {@code 192.168.0.0}.
+     * @param networkMask the network mask to use.
+     *                    Example {@code 255.255.0.0}.
      * */
     public Network(final T networkAddress, final T networkMask) {
         this(networkAddress, getPrefix(networkMask));
@@ -229,10 +241,12 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     }
 
     /**
-     * Get the inverse network mask for a IP version and a number of network bits.
+     * Get the inverse network mask for a IP version and a number
+     * of network bits.
      * @param version the IP version to get the network mask for.
      * @param prefix    the bit length of the prefix.
-     * @return the inverse network mask as an IP, for example {@code 0.0.0.255 }.
+     * @return the inverse network mask as an IP, for
+     * example {@code 0.0.0.255 }.
      */
     public static IP getInverseSubnetMask(final IPVersion version,
                                           final int prefix) {
@@ -365,7 +379,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
             if (currentBit < adrBits) {
                 final int byteOfs = (adrBits - currentBit - 1)
                         >> BitsAndBytes.BIT_SHIFT_BYTE;
-                final int bitOfs = currentBit & BitsAndBytes.BIT_MASK_BYTE;
+                final int bitOfs = currentBit & BitsAndBytes.BIT_MASK_TRIPLE;
                 last = cur;
                 increment[byteOfs] |= (1 << bitOfs);
                 cur = cur.add(increment);
@@ -470,7 +484,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * Returns the network mask of {@code this} network.
      *
      * @return the network mask of {@code this} network as an {@link IP} object.
-     * @see #getSubnetMask(IPVersion, int) 
+     * @see #getSubnetMask(IPVersion, int)
      */
     public IP getSubnetMask() {
         return getSubnetMask(getAddress().getIPVersion(), getPrefix());
@@ -539,7 +553,8 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * Tests whether the given IP address is contained in this {@link Network}.
      *
      * @param ip the ip address to test.
-     * @return {@code true} if this network contains the given IP, {@code false} otherwise. Networks
+     * @return {@code true} if this network contains the given IP,
+     * {@code false} otherwise. Networks
      * do not contain ip addresses of different versions (IPV4 vs. IPV6).
      * This method will return {@code false} in such a case.
      */
@@ -577,10 +592,11 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
         }
         int iterateBitLength = length - prefix;
         byte[] incrementBytes = new byte[ipVersion.getAddressBytes()];
-        int byteOfs = incrementBytes.length
-                - 1
-                - ((ipVersion.getAddressBits() - length) >> BitsAndBytes.BIT_SHIFT_BYTE);
-        int bitOfs = (ipVersion.getAddressBits() - length) & BitsAndBytes.BIT_MASK_BYTE;
+        int byteOfs = incrementBytes.length - 1
+                - ((ipVersion.getAddressBits() - length)
+                >> BitsAndBytes.BIT_SHIFT_BYTE);
+        int bitOfs = (ipVersion.getAddressBits() - length)
+                & BitsAndBytes.BIT_MASK_TRIPLE;
         incrementBytes[byteOfs] = (byte) (1 << bitOfs);
 
         List<Network<T>> resultCollection =
@@ -588,7 +604,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
 
         for (T curIP = getAddress();
              contains(curIP);
-             curIP = (T)curIP.add(incrementBytes)) {
+             curIP = (T) curIP.add(incrementBytes)) {
             Network test = new Network(curIP, length);
             resultCollection.add(test);
         }
@@ -715,7 +731,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @param s the stream to write the object to.
      * @throws IOException if there's a problem in writing to the stream.
      * */
-    private void writeObject(ObjectOutputStream s) throws IOException {
+    private void writeObject(final ObjectOutputStream s) throws IOException {
         s.writeInt(ipAddress.address.length);
         s.write(ipAddress.address);
         s.writeInt(prefix);
@@ -725,15 +741,15 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @param s the stream to read the object from.
      * @throws IOException if there's a problem in reading from the stream.
      * */
-    private void readObject(ObjectInputStream s) throws IOException {
+    private void readObject(final ObjectInputStream s) throws IOException {
         int length = s.readInt();
         byte[] data = new byte[length];
         s.readFully(data);
 
         if (length == IPVersion.IPV4.getAddressBytes()) {
-            ipAddress = (T)new IPv4(data);
+            ipAddress = (T) new IPv4(data);
         } else if (length == IPVersion.IPV6.getAddressBytes()) {
-            ipAddress = (T)new IPv6(data);
+            ipAddress = (T) new IPv6(data);
         } else {
             throw new IllegalStateException();
         }

@@ -10,7 +10,8 @@ import java.io.Serializable;
  * @see MACParsers
  * @author Stephan Fuhrmann
  **/
-public final class MAC extends AbstractAddress implements Address, Serializable {
+public final class MAC extends AbstractAddress
+        implements Address, Serializable {
     /** The version number of this class. */
     private static final long serialVersionUID = 7743380391792341L;
 

@@ -9,7 +9,8 @@
  * There are immutable classes containing addresses:
  * <ul>
  *     <li>{@link com.ionos.network.commons.address.IP}:
- *     An IP of a certain {@link com.ionos.network.commons.address.IPVersion}.
+ *     An IP of a certain
+ *     {@link com.ionos.network.commons.address.IPVersion}.
  *     There are implementations for type safe distinguishing between
  *     {@link com.ionos.network.commons.address.IPv4} and
  *     {@link com.ionos.network.commons.address.IPv6}.
@@ -20,7 +21,8 @@
  *     A Media-Access-Control address.</li>
  * </ul>
  * <h2>Formatting addresses</h2>
- * There are classes for formatting the addresses into multiple string representations:
+ * There are classes for formatting the addresses into multiple
+ * string representations:
  * <ul>
  *     <li>{@link com.ionos.network.commons.address.IPFormats}:
  *     Multiple formatters for IP addresses.</li>
@@ -33,9 +35,13 @@
  * There are classes for parsing Strings into addresses:
  * <ul>
  *     <li>{@link com.ionos.network.commons.address.IPParsers}:
- *     Parser implementations for converting Strings into an {@linkplain com.ionos.network.commons.address.IP} address.</li>
+ *     Parser implementations for converting Strings into an
+ *     {@linkplain com.ionos.network.commons.address.IP}
+ *     address.</li>
  *     <li>{@link com.ionos.network.commons.address.MACParsers}:
- *     Parser implementations for converting Strings into a {@linkplain com.ionos.network.commons.address.MAC} address.</li>
+ *     Parser implementations for converting Strings into a
+ *     {@linkplain com.ionos.network.commons.address.MAC}
+ *     address.</li>
  * </ul>
  *
  * <h3>Miscellaneous</h3>

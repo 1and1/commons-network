@@ -21,11 +21,15 @@ public final class IPv4 extends IP<IPv4> implements Address, Serializable {
 
     /** The IPv4 address {@code 0.0.0.0}. */
     public static final IPv4 IPV4_ALL_ZERO =
-            new IPv4(BitsAndBytes.newArrayOf(IPVersion.IPV4.getAddressBytes(), (byte)0));
+            new IPv4(BitsAndBytes.newArrayOf(
+                    IPVersion.IPV4.getAddressBytes(),
+                    (byte) 0));
 
     /** The IPv4 address {@code 255.255.255.255}. */
     public static final IPv4 IPV4_ALL_ONE =
-            new IPv4(BitsAndBytes.newArrayOf(IPVersion.IPV4.getAddressBytes(), (byte)255));
+            new IPv4(BitsAndBytes.newArrayOf(
+                    IPVersion.IPV4.getAddressBytes(),
+                    (byte) 255));
 
     /**
      * Creates a new IP address from the address bytes.
@@ -62,7 +66,7 @@ public final class IPv4 extends IP<IPv4> implements Address, Serializable {
     }
 
     @Override
-    protected IPv4 newInstance(byte[] address) {
+    protected IPv4 newInstance(final byte[] address) {
         return new IPv4(address);
     }
 

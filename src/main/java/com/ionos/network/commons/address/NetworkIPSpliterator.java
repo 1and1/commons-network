@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 /** A spliterator that returns the {@linkplain IP IPs}
  * in a {@linkplain Network}.
+ * @param <T> the type of IP address to return.
  * */
 final class NetworkIPSpliterator<T extends IP> implements Spliterator<T> {
 
@@ -28,7 +29,7 @@ final class NetworkIPSpliterator<T extends IP> implements Spliterator<T> {
     public boolean tryAdvance(final Consumer<? super T> consumer) {
         if (currentIP.compareTo(network.getAddressEnd()) <= 0) {
             consumer.accept(currentIP);
-            currentIP = (T)currentIP.add(1);
+            currentIP = (T) currentIP.add(1);
             return currentIP.compareTo(network.getAddressEnd()) <= 0;
         }
         return false;

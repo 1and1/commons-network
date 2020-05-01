@@ -15,6 +15,7 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
  * {@link AbstractAddress#compareTo(AbstractAddress)}.
  * <br>
  * Objects of the IP class are immutable!
+ * @param <T> the concrete IP subclass that is used.
  * @see java.net.InetAddress
  * @see IPVersion
  * @see IPFormats
@@ -22,7 +23,9 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
  * @author Stephan Fuhrmann
  *
  **/
-public abstract class IP<T extends IP> extends AbstractAddress implements Address, Serializable {
+public abstract class IP<T extends IP>
+        extends AbstractAddress
+        implements Address, Serializable {
     /** The version number of this class. */
     private static final long serialVersionUID = 5338854380391791729L;
 
@@ -45,7 +48,8 @@ public abstract class IP<T extends IP> extends AbstractAddress implements Addres
      * Allocates a new instance of this class.
      * @param address the address data to initialize the constructor with.
      *                Will get copied.
-     * @return a new IP address instance of the subclass with a copy of the input
+     * @return a new IP address instance of the subclass with a copy
+     * of the input
      * address.
      */
     protected abstract T newInstance(byte[] address);
@@ -60,7 +64,8 @@ public abstract class IP<T extends IP> extends AbstractAddress implements Addres
      * Invert the address. This will flip every bit from 1 to 0 and vice
      * versa.
      *
-     * @return the inverted IP address. Example: For the input {@code 255.255.0.0}
+     * @return the inverted IP address.
+     * Example: For the input {@code 255.255.0.0}
      * will return {@code 0.0.255.255}.
      */
     public T invert() {
@@ -184,7 +189,7 @@ public abstract class IP<T extends IP> extends AbstractAddress implements Addres
      */
     @Override
     public String toString() {
-        return defaultAddressFormat().format((T)this);
+        return defaultAddressFormat().format((T) this);
     }
 
     /**
