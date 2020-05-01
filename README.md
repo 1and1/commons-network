@@ -17,9 +17,19 @@ A library of IP network representation classes, like
 * Java 8 or later
 * Maven 3.6 or later
  
+## Design Goals
+
+The following are the key design goals:
+* Test-coverage: Have well-tested classes.
+* Immutability: Have immutable classes where possible to support usage in a multi-threaded environment.
+* Performance: Have simple, well-performing implementations.
+* Simplicity: Have simple implementations where possible.
+* No dependencies: Do not require dependencies for the core cases.
+
 Usage
 ============
-You can include commons-network as a Maven dependency from [Maven Central](https://mvnrepository.com/artifact/com.oneandone/commons-network).
+You can include commons-network as a Maven dependency from
+[Maven Central](https://mvnrepository.com/artifact/com.oneandone/commons-network).
 
 ## Maven dependency
 
@@ -35,7 +45,7 @@ You can include commons-network as a Maven dependency from [Maven Central](https
 
 The JavaDoc documentation can be found [here](https://javadoc.io/doc/com.oneandone/commons-network).
 
-## Versions
+## Version schema
 
 The version numbers are chosen according to the
 [semantic versioning](https://semver.org/) schema.
