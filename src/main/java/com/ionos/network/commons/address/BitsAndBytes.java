@@ -144,17 +144,21 @@ final class BitsAndBytes {
      * @param right the array to compare the {@code left} array with.
      * @param mask  the mask to use for the comparison on {@code left} and
      *              {@code right}.
+     * @return {@code true} if {@code left} and {@code right}
+     * are equal after applying the {@code mask} and all
+     * arrays have the same size.
      * */
     static boolean equalsWithMask(byte[] left, byte[] right, byte[] mask) {
-            if (left.length != right.length) {
+        if (left.length != right.length
+            || left.length != mask.length) {
+            return false;
+        }
+
+        for (int i=0; i < left.length; i++) {
+            if ((left[i] & mask[i]) != (right[i] & mask[i])) {
                 return false;
             }
-
-            for (int i=0; i < left.length; i++) {
-                if ((left[i] & mask[i]) != (right[i] & mask[i])) {
-                    return false;
-                }
-            }
-            return true;
+        }
+        return true;
     }
 }
