@@ -1,7 +1,8 @@
 package com.ionos.network.commons.address;
 
-import com.ionos.network.commons.address.MAC;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -14,56 +15,53 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.Matchers.*;
 
+
+
+/**
+ * JUnit test for {@linkplain MAC}.
+ */
 public class MACTest {
+
+    final byte[] mac1Bytes = new byte[]{108, -120, 20, 111, -40, -111};
+    final byte[] mac2Bytes = new byte[]{108, -120, 20, 111, -40, -110};
+    private static final String MAC1_STRING = "6c:88:14:6f:d8:91";
+    private static final String MAC2_STRING = "6c:88:14:6f:d8:92";
+    private MAC mac1;
+    private MAC mac2;
+
+    @BeforeEach
+    @Test
+    public void init() {
+        mac1 = new MAC(MAC1_STRING);
+        mac2 = new MAC(MAC2_STRING);
+    }
 
     @Test
     public void testCreationByString() {
-        final MAC mac = new MAC("6C:88:14:6F:D8:91");
-        final byte[] array = new byte[]{108, -120, 20, 111, -40, -111};
-
-        assertArrayEquals(array, mac.getBytes());
+        assertArrayEquals(mac1Bytes, new MAC(MAC1_STRING).getBytes());
     }
 
     @Test
     public void testCreationByCiscoString() {
-        final MAC mac1 = new MAC("6c88.146f.d891");
-        final byte[] array1 = new byte[]{108, -120, 20, 111, -40, -111};
-
-        assertArrayEquals(array1, mac1.getBytes());
-
-        final MAC mac2 = new MAC("0000.146f.d891");
-        final byte[] array2 = new byte[]{0, 0, 20, 111, -40, -111};
-
-        assertArrayEquals(array2, mac2.getBytes());
+        assertArrayEquals(mac1Bytes, new MAC("6c88.146f.d891").getBytes());
     }
 
     @Test
     public void testCreationByArray() {
-        final byte[] array = new byte[]{0, 0, 0, 0, 0, 0};
-        final MAC mac = new MAC(array);
-
-        assertArrayEquals(array, mac.getBytes());
+        assertArrayEquals(mac1Bytes, new MAC(mac1Bytes).getBytes());
+        assertNotSame(mac1Bytes, new MAC(mac1Bytes).getBytes());
     }
 
     @Test
     public void testToString() {
-        final MAC mac1 = new MAC("6C:88:14:6F:D8:91");
-        assertEquals("6c:88:14:6f:d8:91", mac1.toString());
-
-        final MAC mac2 = new MAC("00:00:14:6F:D8:91");
-        assertEquals("00:00:14:6f:d8:91", mac2.toString());
-
-        final MAC mac3 = new MAC("14:6F:00:00:D8:91");
-        assertEquals("14:6f:00:00:d8:91", mac3.toString());
-
-        final MAC mac4 = new MAC("14:6F:D8:91:00:00");
-        assertEquals("14:6f:d8:91:00:00", mac4.toString());
-
-        final MAC mac5 = new MAC("00:00:00:00:00:00");
-        assertEquals("00:00:00:00:00:00", mac5.toString());
+        assertEquals(MAC1_STRING, mac1.toString());
     }
 
     @Test
@@ -80,28 +78,27 @@ public class MACTest {
 
     @Test
     public void testSameInstance() {
-        final MAC mac = new MAC("6C:88:14:6F:D8:91");
-        assertEquals(mac, mac);
+        assertTrue(mac1.equals(mac1));
     }
 
     @Test
-    public void testEqualsOtherObject() {
-        final MAC mac = new MAC("6C:88:14:6F:D8:91");
-        assertNotEquals("hello", mac);
+    public void testEqualsWithStringClass() {
+        assertFalse(mac1.equals("foo"));
     }
 
     @Test
-    public void testEquals() {
-        final MAC mac1 = new MAC("6C:88:14:6F:D8:91");
-        final MAC mac2 = new MAC("6C:88:14:6F:D8:91");
-        assertEquals(mac1, mac2);
+    public void testEqualsWithSameContent() {
+        assertTrue(mac1.equals(new MAC(mac1.getBytes())));
     }
 
     @Test
-    public void testNotEquals() {
-        final MAC mac1 = new MAC("6C:88:14:6F:D8:91");
-        final MAC mac2 = new MAC("6C:88:23:6F:D8:91");
-        assertNotEquals(mac1, mac2);
+    public void testEqualsWithNull() {
+        assertFalse(mac1.equals(null));
+    }
+
+    @Test
+    public void testEqualsWithOtherAddressClass() {
+        assertFalse(mac1.equals((Address)() -> new byte[0]));
     }
 
     @Test
@@ -126,5 +123,35 @@ public class MACTest {
             MAC mac = (MAC)objectInputStream.readObject();
             assertEquals(new MAC("11:22:33:44:55:66"), mac);
         }
+    }
+
+    @Test
+    public void testHashCodeWithSame() {
+        assertEquals(mac1.hashCode(), new MAC(MAC1_STRING).hashCode());
+    }
+
+    @Test
+    public void testHashCodeWithOtherMac() {
+        assertNotEquals(mac1.hashCode(), mac2.hashCode());
+    }
+
+    @Test
+    public void testCompareToWithSame() {
+        MatcherAssert.assertThat(mac1.compareTo(mac1), equalTo(0));
+    }
+
+    @Test
+    public void testCompareToWithEqual() {
+        MatcherAssert.assertThat(mac1.compareTo(new MAC(MAC1_STRING)), equalTo(0));
+    }
+
+    @Test
+    public void testCompareToWithSmaller() {
+        MatcherAssert.assertThat(mac1.compareTo(mac2), lessThan(0));
+    }
+
+    @Test
+    public void testCompareToWithGreater() {
+        MatcherAssert.assertThat(mac2.compareTo(mac1), greaterThan(0));
     }
 }
