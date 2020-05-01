@@ -49,6 +49,11 @@ public class MACTest {
     }
 
     @Test
+    public void testCreationByString2() {
+        assertArrayEquals(mac2Bytes, new MAC(MAC2_STRING).getBytes());
+    }
+
+    @Test
     public void testCreationByCiscoString() {
         assertArrayEquals(mac1Bytes, new MAC("6c88.146f.d891").getBytes());
     }
