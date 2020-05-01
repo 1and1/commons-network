@@ -319,9 +319,9 @@ public final class IPParsers {
     };
 
     /**
-     * Parses a IPv6 address in RFC 4291 variant 3, full form.
+     * Parses a IPv6 address in RFC 4291 variant 3, compressed form.
      * Example:
-     * {@code abcd:abcd:abcd:abcd:abcd:abcd:123.123.123.123}.
+     * {@code abcd:abcd:::abcd:abcd:123.123.123.123}.
      * @see <a href="http://tools.ietf.org/html/rfc4291#section-2.2">
      *     RFC 4291, Section 2.2</a>
      */
