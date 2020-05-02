@@ -48,7 +48,7 @@ public final class MACParsers {
     public static final AddressParser<MAC> COLON_SEPARATED_HEX_FORMAT =
             new HexadecimalAddressParser<>(':',
                     2,
-                    array -> new MAC(array),
+                    MAC::new,
                     MAC.MAC_LENGTH);
 
     /**
@@ -60,6 +60,6 @@ public final class MACParsers {
     public static final AddressParser<MAC> CISCO_CUSTOM_FORMAT =
             new HexadecimalAddressParser<>('.',
                     4,
-                    array -> new MAC(array),
+                    MAC::new,
                     MAC.MAC_LENGTH);
 }
