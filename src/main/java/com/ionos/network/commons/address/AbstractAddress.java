@@ -26,10 +26,17 @@ abstract class AbstractAddress implements Comparable<AbstractAddress>,
      * Creates a new address from the address bytes.
      *
      * @param inAddress an address in network byte order.
+     * @param inExpectedLength the number of bytes expected.
      * @throws NullPointerException if the input array reference is null.
      */
-    AbstractAddress(final byte[] inAddress) {
+    AbstractAddress(final byte[] inAddress, final int inExpectedLength) {
         Objects.requireNonNull(inAddress, "address byte array is null");
+        if (inAddress.length != inExpectedLength) {
+            throw new IllegalArgumentException(
+                    "Address length is expected to be "
+                    + inExpectedLength + " bytes, but address has "
+                    + inAddress.length);
+        }
         this.address = Arrays.copyOf(inAddress, inAddress.length);
     }
 

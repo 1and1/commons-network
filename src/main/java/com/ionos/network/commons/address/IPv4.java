@@ -37,13 +37,7 @@ public final class IPv4 extends IP<IPv4> implements Address, Serializable {
      * @param inAddress a 4 byte address in network byte order.
      */
     protected IPv4(final byte[] inAddress) {
-        super(inAddress);
-        if (inAddress.length !=  IPVersion.IPV4.getAddressBytes()) {
-            throw new IllegalArgumentException(
-                    "IPv4 addresses must be 4 bytes long. "
-                            + "Your address has " + inAddress.length
-                            + " bytes.");
-        }
+        super(inAddress, IPVersion.IPV4.getAddressBytes());
     }
 
     /**

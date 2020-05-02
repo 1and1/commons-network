@@ -33,9 +33,10 @@ public abstract class IP<T extends IP>
      * Creates a new IP address from the address bytes.
      *
      * @param inAddress a 4 or 16 byte address in network byte order.
+     * @param inLength the number of expected bytes.
      */
-    protected IP(final byte[] inAddress) {
-        super(inAddress);
+    protected IP(final byte[] inAddress, final int inLength) {
+        super(inAddress, inLength);
     }
 
     /**

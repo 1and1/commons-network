@@ -26,7 +26,7 @@ public final class MAC extends AbstractAddress
      * not be parsed
      */
     public MAC(final String mac) {
-        super(MACParsers.DEFAULT.parseAsBytes(mac));
+        super(MACParsers.DEFAULT.parseAsBytes(mac), MAC_LENGTH);
     }
 
     /**
@@ -37,10 +37,7 @@ public final class MAC extends AbstractAddress
      * illegal length
      */
     public MAC(final byte[] mac) {
-        super(mac);
-        if (mac.length != MAC_LENGTH) {
-            throw new IllegalArgumentException("illegal mac length");
-        }
+        super(mac, MAC_LENGTH);
     }
 
     /**

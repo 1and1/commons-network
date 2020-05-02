@@ -38,13 +38,7 @@ public final class IPv6 extends IP<IPv6> implements Address, Serializable {
      * @param inAddress a 16 byte address in network byte order.
      */
     protected IPv6(final byte[] inAddress) {
-        super(inAddress);
-        if (inAddress.length != IPVersion.IPV6.getAddressBytes()) {
-            throw new IllegalArgumentException(
-                    "IPv6 addresses must be 16 bytes long. "
-                            + "Your address has " + inAddress.length
-                            + " bytes.");
-        }
+        super(inAddress, IPVersion.IPV6.getAddressBytes());
     }
 
     /**
