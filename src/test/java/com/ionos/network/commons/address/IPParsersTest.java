@@ -94,6 +94,14 @@ public class IPParsersTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             IPParsers.RFC4291_3_FULL.parse("0000:1111:0000:1111:0000:1111:0000:127.128.129.253");
         });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            IPParsers.RFC4291_3_FULL.parse("hallo");
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            IPParsers.RFC4291_3_COMPRESSED.parse("hallo");
+        });
     }
 
     @Test
