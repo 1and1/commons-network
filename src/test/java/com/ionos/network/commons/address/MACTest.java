@@ -103,7 +103,17 @@ public class MACTest {
 
     @Test
     public void testEqualsWithOtherAddressClass() {
-        assertFalse(mac1.equals((Address)() -> new byte[0]));
+        assertFalse(mac1.equals(new Address() {
+            @Override
+            public byte[] getBytes() {
+                return new byte[0];
+            }
+
+            @Override
+            public int length() {
+                return 0;
+            }
+        }));
     }
 
     @Test
