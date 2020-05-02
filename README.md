@@ -25,6 +25,10 @@ The following are the key design goals:
 * Performance: Have simple, well-performing implementations.
 * Simplicity: Have simple implementations where possible.
 * No dependencies: Do not require dependencies for the core cases.
+* Fail-fast: If you enter illegal data, you'll get an exception. The invariant
+  of all objects is to contain no illegal or null data.
+* No I/O: In contrast to the [InetAddress](https://docs.oracle.com/javase/7/docs/api/java/net/InetAddress.html) class
+in JDK, these classes are just model classes.
 
 Usage
 ============
