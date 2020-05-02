@@ -15,4 +15,10 @@ public interface Address {
      * or big endian byte order.
      */
     byte[] getBytes();
+
+    /** Returns the length of the address in bytes.
+     * @return the length of the address in bytes. This is the length of the
+     * array returned by {@linkplain #getBytes()}.
+     * */
+    int length();
 }

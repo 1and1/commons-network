@@ -38,6 +38,11 @@ public class HexadecimalAddressFormatTest {
             public byte[] getBytes() {
                 return new byte[] {1,2,3,4};
             }
+
+            @Override
+            public int length() {
+                return 4;
+            }
         };
         String actual = new HexadecimalAddressFormat<Address>(':', 1)
                 .format(address);

@@ -28,5 +28,10 @@ public class AddressComparatorsTest {
         public byte[] getBytes() {
             return new byte[4];
         }
+
+        @Override
+        public int length() {
+            return 4;
+        }
     }
 }

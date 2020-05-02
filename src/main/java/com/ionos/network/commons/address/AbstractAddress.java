@@ -41,6 +41,11 @@ abstract class AbstractAddress implements Comparable<AbstractAddress>,
     }
 
     @Override
+    public int length() {
+        return address.length;
+    }
+
+    @Override
     public boolean equals(final Object o) {
         if (o == null) {
             return false;
