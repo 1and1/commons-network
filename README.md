@@ -20,7 +20,7 @@ A library of IP network representation classes, like
 ## Design Goals
 
 The following are the key design goals:
-* Test-coverage: Have well-tested classes.
+* Test-coverage: Have well-tested classes. Test coverage is at the moment at 95% line-coverage.
 * Immutability: Have immutable classes where possible to support usage in a multi-threaded environment.
 * Performance: Have simple, well-performing implementations.
 * Simplicity: Have simple implementations where possible.
