@@ -154,6 +154,43 @@ public class BitsAndBytesTest {
     }
 
     @Test
+    public void toIntWithWith0() {
+        assertEquals(0, BitsAndBytes.toInt('0'));
+    }
+
+    @Test
+    public void toIntWithWith9() {
+        assertEquals(9, BitsAndBytes.toInt('9'));
+    }
+
+    @Test
+    public void toIntWithWitha() {
+        assertEquals(10, BitsAndBytes.toInt('a'));
+    }
+
+    @Test
+    public void toIntWithWithA() {
+        assertEquals(10, BitsAndBytes.toInt('A'));
+    }
+
+    @Test
+    public void toIntWithWithF() {
+        assertEquals(15, BitsAndBytes.toInt('F'));
+    }
+
+    @Test
+    public void toIntWithWithf() {
+        assertEquals(15, BitsAndBytes.toInt('f'));
+    }
+
+    @Test
+    public void toIntWithZ() {
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+            BitsAndBytes.toInt('Z')
+        );
+    }
+
+    @Test
     public void appendHexWith0() throws IOException {
         StringBuilder actual = new StringBuilder();
         BitsAndBytes.appendHex(actual, (byte)0, (byte)0);

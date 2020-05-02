@@ -157,6 +157,7 @@ final class BitsAndBytes {
     /** Convert the passed in value to a hex digit.
      * @param value a value between 0 and 15 (inclusive).
      * @return a character between '0' and '9' or 'a and 'f'.
+     * @see #toInt(char)
      * */
     static char toHexDigit(final int value) {
         if (value >= 0 && value <= DECIMAL_MAX_DIGIT) {
@@ -167,6 +168,24 @@ final class BitsAndBytes {
         } else {
             throw new IllegalArgumentException("Value "
                     + value + " can not be mapped to hex");
+        }
+    }
+
+    /** Convert the passed in value to a hex digit.
+     * @param hexDigit the hex digit to convert to an int.
+     * @return a value between 0 and 15.
+     * @see #toHexDigit(int)
+     * */
+    static int toInt(final char hexDigit) {
+        if (hexDigit >= '0' && hexDigit <= '9') {
+            return hexDigit - '0';
+        } else if (hexDigit >= 'a' && hexDigit <= 'f') {
+            return hexDigit - 'a' + HEXADECIMAL_A_VALUE;
+        } else if (hexDigit >= 'A' && hexDigit <= 'F') {
+            return hexDigit - 'A' + HEXADECIMAL_A_VALUE;
+        } else {
+            throw new IllegalArgumentException("Value "
+                    + hexDigit + " can not be interpreted as hex");
         }
     }
 

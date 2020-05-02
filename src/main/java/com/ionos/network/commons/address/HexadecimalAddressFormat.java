@@ -4,8 +4,9 @@ import java.io.IOException;
 
 /**
  * Formats an address to a text form in a customizable hexadecimal
- * notation.
+ * notation in fixed length.
  * @param <T> the type of address to format.
+ * @see HexadecimalAddressParser
  * @author Stephan Fuhrmann
  * */
 public final class HexadecimalAddressFormat<T extends Address>
@@ -13,6 +14,7 @@ public final class HexadecimalAddressFormat<T extends Address>
 
     /** The character to use as a separator. */
     private final char separator;
+
     /** The interval in characters for separators to occur. */
     private final int separatorInterval;
 
@@ -20,6 +22,8 @@ public final class HexadecimalAddressFormat<T extends Address>
      * Constructor of an instance.
      * @param inSeparator the character to separate the parts with.
      * @param inSeparatorInterval the number of hex digits that form the parts.
+     * @throws IllegalArgumentException if the
+     * {@code separatorInterval is equal or less than 0}.
      */
     public HexadecimalAddressFormat(final char inSeparator,
                                     final int inSeparatorInterval) {

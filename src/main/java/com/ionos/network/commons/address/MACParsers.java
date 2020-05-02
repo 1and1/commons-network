@@ -1,12 +1,5 @@
 package com.ionos.network.commons.address;
 
-import java.util.StringTokenizer;
-
-import static  com.ionos.network.commons.address.BitsAndBytes.UBYTE_MAX_VALUE;
-import static  com.ionos.network.commons.address.BitsAndBytes.USHORT_MAX_VALUE;
-import static  com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
-import static  com.ionos.network.commons.address.BitsAndBytes.HEX_RADIX;
-
 /**
  * Parser implementations for MAC addresses.
  * @see MAC
@@ -53,38 +46,10 @@ public final class MACParsers {
      * @see MACFormats#COLON_SEPARATED_HEX_FORMAT
      */
     public static final AddressParser<MAC> COLON_SEPARATED_HEX_FORMAT =
-            new AbstractMacParser() {
-        @Override
-        public byte[] parseAsBytes(final String address) {
-            StringTokenizer stringTokenizer =
-                    new StringTokenizer(address, ":");
-            if (stringTokenizer.countTokens() != MAC.MAC_LENGTH) {
-                throw new IllegalArgumentException("Illegal address "
-                        + address);
-            }
-            byte[] result = new byte[MAC.MAC_LENGTH];
-            int index = 0;
-            while (stringTokenizer.hasMoreTokens()) {
-                String component = stringTokenizer.nextToken();
-                int value = Integer.parseInt(component, HEX_RADIX);
-                if (value < 0
-                        || value > UBYTE_MAX_VALUE
-                        || component.length() != 2) {
-                    throw new IllegalArgumentException("Illegal component "
-                            + component + " in address " + address);
-                }
-
-                result[index++] = (byte) value;
-            }
-            return result;
-        }
-    };
-
-    /** The number of blocks in the cisco format. */
-    private static final int CISCO_FORMAT_PARTS = 3;
-
-    /** The character length of a block in cisco format. */
-    private static final int CISCO_BLOCK_LENGTH = 4;
+            new HexadecimalAddressParser<>(':',
+                    2,
+                    array -> new MAC(array),
+                    MAC.MAC_LENGTH);
 
     /**
      * Parses a word hex representation of the MAC in CISCO style.
@@ -93,31 +58,8 @@ public final class MACParsers {
      * @see MACFormats#CISCO_CUSTOM_FORMAT
      */
     public static final AddressParser<MAC> CISCO_CUSTOM_FORMAT =
-            new AbstractMacParser() {
-        @Override
-        public byte[] parseAsBytes(final String address) {
-            StringTokenizer stringTokenizer = new StringTokenizer(address, ".");
-            if (stringTokenizer.countTokens() != CISCO_FORMAT_PARTS) {
-                throw new IllegalArgumentException("Illegal address "
-                        + address);
-            }
-            byte[] result = new byte[MAC.MAC_LENGTH];
-            int index = 0;
-            while (stringTokenizer.hasMoreTokens()) {
-                String component = stringTokenizer.nextToken();
-                int value = Integer.parseInt(component, HEX_RADIX);
-                if (value < 0
-                        || value > USHORT_MAX_VALUE
-                        || component.length() != CISCO_BLOCK_LENGTH) {
-                    throw new IllegalArgumentException(
-                            "Illegal component " + component
-                                    + " in address " + address);
-                }
-
-                result[index++] = (byte) (value >> BITS_PER_BYTE);
-                result[index++] = (byte) value;
-            }
-            return result;
-        }
-    };
+            new HexadecimalAddressParser<>('.',
+                    4,
+                    array -> new MAC(array),
+                    MAC.MAC_LENGTH);
 }
