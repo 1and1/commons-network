@@ -90,9 +90,15 @@ public final class Network<T extends IP<T>>
      *     Address Allocation for Private Internets</a>
      */
     private static final List<Network<IPv4>> RFC_1918_NETWORKS = Arrays.asList(
-            new Network<>(IPParsers.DOTTED_DECIMAL.parse("10.0.0.0"), 8),  //NOSONAR
-            new Network<>(IPParsers.DOTTED_DECIMAL.parse("172.16.0.0"), 12),  //NOSONAR
-            new Network<>(IPParsers.DOTTED_DECIMAL.parse("192.168.0.0"), 16)  //NOSONAR
+            new Network<>(
+                    IPParsers.DOTTED_DECIMAL.parse(
+                            "10.0.0.0"), 8),  //NOSONAR
+            new Network<>(
+                    IPParsers.DOTTED_DECIMAL.parse(
+                            "172.16.0.0"), 12),  //NOSONAR
+            new Network<>(
+                    IPParsers.DOTTED_DECIMAL.parse(
+                            "192.168.0.0"), 16)  //NOSONAR
     );
 
     /** The prefix size in bits. */
