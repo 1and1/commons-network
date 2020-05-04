@@ -216,4 +216,24 @@ final class BitsAndBytes {
         }
         return true;
     }
+
+    /** Sets a number of leading bits to 1.
+     * @param data the array where to set the first {@code bits} to one.
+     * @param bits the number of bits to set to one.
+     */
+    static void setLeadingBits(final byte[] data, final int bits) {
+        int i = 0;
+        int remainingBits;
+        for (remainingBits = bits;
+             remainingBits >= BITS_PER_BYTE;
+             remainingBits -= BITS_PER_BYTE) {
+            data[i++] = (byte) BYTE_MASK;
+        }
+
+        if (remainingBits != 0) {
+            data[i] = (byte)
+                    (BYTE_MASK
+                            << (BITS_PER_BYTE - remainingBits));
+        }
+    }
 }

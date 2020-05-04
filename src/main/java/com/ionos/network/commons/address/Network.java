@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
-import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 
 /**
  * An IP network that consists of a IP prefix and a prefix length.
@@ -60,15 +59,19 @@ public final class Network<T extends IP<T>>
         IP_V4_NETWORK_MASK_DATA = new NetworkMaskData[
                 IPVersion.IPV4.getAddressBits() + 1];
         for (int i = 0; i <= IPVersion.IPV4.getAddressBits(); i++) {
+            byte[] data = new byte[IPVersion.IPV4.getAddressBytes()];
+            BitsAndBytes.setLeadingBits(data, i);
             IP_V4_NETWORK_MASK_DATA[i] =
-                    new NetworkMaskData(IPVersion.IPV4, i);
+                    new NetworkMaskData<>(new IPv4(data));
         }
 
         IP_V6_NETWORK_MASK_DATA = new NetworkMaskData[
                 IPVersion.IPV6.getAddressBits() + 1];
         for (int i = 0; i <= IPVersion.IPV6.getAddressBits(); i++) {
+            byte[] data = new byte[IPVersion.IPV6.getAddressBytes()];
+            BitsAndBytes.setLeadingBits(data, i);
             IP_V6_NETWORK_MASK_DATA[i] =
-                    new NetworkMaskData(IPVersion.IPV6, i);
+                    new NetworkMaskData<>(new IPv6(data));
         }
     }
 
@@ -133,8 +136,8 @@ public final class Network<T extends IP<T>>
         Objects.requireNonNull(inIP, "ip is null");
         this.prefix = requireValidPrefix(inIP.getIPVersion(), inPrefix);
 
-        final NetworkMaskData maskData =
-                getNetworkMaskData(inIP.getIPVersion())[this.prefix];
+        final NetworkMaskData<T> maskData =
+                getNetworkMaskData(inIP.getIPVersion(), prefix);
 
         this.ipAddress = inIP.and(
                 maskData.subnetMask
@@ -146,7 +149,7 @@ public final class Network<T extends IP<T>>
     private static <U extends IP<U>> U ipBroadcastFor(final U startAddress,
                                                    final int prefix) {
             return startAddress.add(
-                    getNetworkMaskData(startAddress.getIPVersion())[prefix]
+                    getNetworkMaskData(startAddress.getIPVersion(), prefix)
                             .inverseSubnetMask
                             .address);
     }
@@ -252,7 +255,9 @@ public final class Network<T extends IP<T>>
      * @param prefix    the bit length of the prefix.
      * @return the network mask as an IP, for example {@code 255.255.255.0 }.
      */
-    public static IP getSubnetMask(final IPVersion version, final int prefix) {
+    public static IP<?> getSubnetMask(
+            final IPVersion version,
+            final int prefix) {
         Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
         return getNetworkMaskData(
                 version,
@@ -267,7 +272,7 @@ public final class Network<T extends IP<T>>
      * @return the inverse network mask as an IP, for
      * example {@code 0.0.0.255 }.
      */
-    public static IP getInverseSubnetMask(final IPVersion version,
+    public static IP<?> getInverseSubnetMask(final IPVersion version,
                                           final int prefix) {
         Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
         return getNetworkMaskData(
@@ -282,7 +287,7 @@ public final class Network<T extends IP<T>>
      * @return the prefix size in bits.
      * @throws IllegalArgumentException if it's not a legal netMask.
      */
-    public static int getPrefix(final IP netMask) {
+    public static int getPrefix(final IP<?> netMask) {
         final NetworkMaskData[] data =
                 getNetworkMaskData(netMask.getIPVersion());
         for (int i = 0; i < data.length; i++) {
@@ -314,17 +319,22 @@ public final class Network<T extends IP<T>>
     /** Get the network mask buffer array for this IP version.
      * @param version the IP version to get the mask data for.
      * @param prefixBits the prefix size in bits.
+     * @param <U> the IP type of the address.
      * @return the network mask data for the ip version and prefix.
      * */
-    private static NetworkMaskData getNetworkMaskData(
+    private static <U extends IP<U>> NetworkMaskData<U> getNetworkMaskData(
             final IPVersion version,
             final int prefixBits) {
         Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
-        if (prefixBits < 0 || prefixBits > version.getAddressBits()) {
-            throw new IllegalArgumentException("Prefix is illegal: "
-                    + prefixBits);
+        requireValidPrefix(version, prefixBits);
+        switch (version) {
+            case IPV4:
+                return IP_V4_NETWORK_MASK_DATA[prefixBits];
+            case IPV6:
+                return IP_V6_NETWORK_MASK_DATA[prefixBits];
+            default:
+                throw new IllegalStateException();
         }
-        return getNetworkMaskData(version)[prefixBits];
     }
 
     /**
@@ -373,7 +383,7 @@ public final class Network<T extends IP<T>>
         // two complement negation: this is (- startIP)
         final T firstNegated = inStartIP.invert().add(1);
         // example: for a.b.c.0-a.b.c.255 we now have 0.0.0.255
-        final T net = (T) endIPExclusive.add(firstNegated.address);
+        final T net = endIPExclusive.add(firstNegated.address);
         // the ip count as a byte array integer. For our example, this is 256.
         byte[] ipcount = net.address;
         // the increment byte array for adding the just processed network
@@ -443,7 +453,8 @@ public final class Network<T extends IP<T>>
         nets.sort(
                 (o1, o2) -> o2.getPrefix() - o1.getPrefix());
 
-        for (int i = 0; i < nets.size();) {
+        int increment = 0;
+        for (int i = 0; i < nets.size(); i += increment) {
             boolean contained = false;
 
             for (int j = i + 1; j < nets.size(); j++) {
@@ -455,9 +466,10 @@ public final class Network<T extends IP<T>>
 
             if (contained) {
                 nets.remove(i);
+                increment = 0;
             } else {
                 result.add(nets.get(i));
-                i++;
+                increment = 1;
             }
         }
 
@@ -508,8 +520,8 @@ public final class Network<T extends IP<T>>
      * @return the network mask of {@code this} network as an {@link IP} object.
      * @see #getSubnetMask(IPVersion, int)
      */
-    public IP getSubnetMask() {
-        return getSubnetMask(getAddress().getIPVersion(), getPrefix());
+    public T getSubnetMask() {
+        return (T) getSubnetMask(getAddress().getIPVersion(), getPrefix());
     }
 
     /**
@@ -634,7 +646,7 @@ public final class Network<T extends IP<T>>
 
         for (T curIP = getAddress();
              contains(curIP);
-             curIP = (T) curIP.add(incrementBytes)) {
+             curIP = curIP.add(incrementBytes)) {
             Network<T> test = new Network<>(curIP, length);
             resultCollection.add(test);
         }
@@ -698,66 +710,26 @@ public final class Network<T extends IP<T>>
         return ipAddress.toString() + "/" + prefix;
     }
 
-    /** Pre-calculated network masks for one {@link IPVersion} flavor. */
-    private static class NetworkMaskData {
+    /** Pre-calculated network masks for one {@link IPVersion} flavor.
+     * @param <T> the IP address type this mask data is for.
+     **/
+    private static class NetworkMaskData<T extends IP<T>> {
 
         /** The network mask as an IP object.
          * Example: {@code 255.255.255.0}. */
-        private IP subnetMask;
+        private final T subnetMask;
+
         /** The inverse network mask as an IP object.
          * Example: {@code 0.0.0.255}. */
-        private IP inverseSubnetMask;
+        private final T inverseSubnetMask;
 
         /** Constructor for a network mask in bits.
-         * @param ipVersion the ip version to create the network masks for.
-         * @param prefix the prefix length of the network mask in bits.
+         * @param inSubnetMask the IP having a subnetmask,
+         *                     for example {@code 255.255.0.0}.
          * */
-        NetworkMaskData(final IPVersion ipVersion, final int prefix) {
-            byte[] data = new byte[ipVersion.getAddressBytes()];
-            setLeadingBits(data, prefix);
-            switch (ipVersion) {
-                case IPV4:
-                    subnetMask = new IPv4(data);
-                    inverse(data);
-                    inverseSubnetMask = new IPv4(data);
-                    break;
-                case IPV6:
-                    subnetMask = new IPv6(data);
-                    inverse(data);
-                    inverseSubnetMask = new IPv6(data);
-                    break;
-                default:
-                    throw new IllegalStateException();
-            }
-        }
-
-        /** Sets a number of leading bits to 1.
-         * @param data the array where to set the first {@code bits} to one.
-         * @param bits the number of bits to set to one.
-         */
-        static void setLeadingBits(final byte[] data, final int bits) {
-            int i = 0;
-            int remainingBits;
-            for (remainingBits = bits;
-                 remainingBits >= BITS_PER_BYTE;
-                 remainingBits -= BITS_PER_BYTE) {
-                data[i++] = (byte) BYTE_MASK;
-            }
-
-            if (remainingBits != 0) {
-                data[i] = (byte)
-                    (BYTE_MASK
-                        << (BITS_PER_BYTE - remainingBits));
-            }
-        }
-
-        /** Flips the bits in all bytes.
-         * @param data the array which bytes to be inverted.
-         * */
-        static void inverse(final byte[] data) {
-            for (int i = 0; i < data.length; i++) {
-                data[i] ^= BYTE_MASK;
-            }
+        NetworkMaskData(final T inSubnetMask) {
+            subnetMask = inSubnetMask;
+            inverseSubnetMask = subnetMask.invert();
         }
     }
 

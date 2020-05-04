@@ -15,11 +15,11 @@ public class BitsAndBytesTest {
 
     @Test
     public void newArrayOf() {
-        byte[] actual = BitsAndBytes.newArrayOf(3, (byte)12);
+        byte[] actual = BitsAndBytes.newArrayOf(3, (byte) 12);
         byte[] expected = new byte[3];
-        expected[0] = (byte)12;
-        expected[1] = (byte)12;
-        expected[2] = (byte)12;
+        expected[0] = (byte) 12;
+        expected[1] = (byte) 12;
+        expected[2] = (byte) 12;
         assertArrayEquals(expected, actual);
     }
 
@@ -46,7 +46,7 @@ public class BitsAndBytesTest {
     @Test
     public void getLowestBitSetWithHighestBitSet() {
         byte[] array = new byte[2];
-        array[0] = (byte)0x80;
+        array[0] = (byte) 0x80;
         int actual = BitsAndBytes.getLowestBitSet(array);
         assertEquals(15, actual);
     }
@@ -54,7 +54,7 @@ public class BitsAndBytesTest {
     @Test
     public void getLowestBitSetWithTwoBitsSet() {
         byte[] array = new byte[2];
-        array[0] = (byte)0x80;
+        array[0] = (byte) 0x80;
         array[1] = 1;
         int actual = BitsAndBytes.getLowestBitSet(array);
         assertEquals(0, actual);
@@ -63,8 +63,8 @@ public class BitsAndBytesTest {
     @Test
     public void getLowestBitSetWithAllBitsSet() {
         byte[] array = new byte[2];
-        array[0] = (byte)0xff;
-        array[1] = (byte)0xff;
+        array[0] = (byte) 0xff;
+        array[1] = (byte) 0xff;
         int actual = BitsAndBytes.getLowestBitSet(array);
         assertEquals(0, actual);
     }
@@ -92,7 +92,7 @@ public class BitsAndBytesTest {
     @Test
     public void getHighestBitSetWithHighestBitSet() {
         byte[] array = new byte[2];
-        array[0] = (byte)0x80;
+        array[0] = (byte) 0x80;
         int actual = BitsAndBytes.getHighestBitSet(array);
         assertEquals(15, actual);
     }
@@ -100,7 +100,7 @@ public class BitsAndBytesTest {
     @Test
     public void getHighestBitSetWithTwoBitsSet() {
         byte[] array = new byte[2];
-        array[0] = (byte)0x80;
+        array[0] = (byte) 0x80;
         array[1] = 1;
         int actual = BitsAndBytes.getHighestBitSet(array);
         assertEquals(15, actual);
@@ -109,8 +109,8 @@ public class BitsAndBytesTest {
     @Test
     public void getHighestBitSetWithAllBitsSet() {
         byte[] array = new byte[2];
-        array[0] = (byte)0xff;
-        array[1] = (byte)0xff;
+        array[0] = (byte) 0xff;
+        array[1] = (byte) 0xff;
         int actual = BitsAndBytes.getHighestBitSet(array);
         assertEquals(15, actual);
     }
@@ -186,49 +186,49 @@ public class BitsAndBytesTest {
     @Test
     public void toIntWithZ() {
         Assertions.assertThrows(IllegalArgumentException.class, () ->
-            BitsAndBytes.toInt('Z')
+                BitsAndBytes.toInt('Z')
         );
     }
 
     @Test
     public void appendHexWith0() throws IOException {
         StringBuilder actual = new StringBuilder();
-        BitsAndBytes.appendHex(actual, (byte)0, (byte)0);
+        BitsAndBytes.appendHex(actual, (byte) 0, (byte) 0);
         assertEquals("0", actual.toString());
     }
 
     @Test
     public void appendHexWith100() throws IOException {
         StringBuilder actual = new StringBuilder();
-        BitsAndBytes.appendHex(actual, (byte)1, (byte)0);
+        BitsAndBytes.appendHex(actual, (byte) 1, (byte) 0);
         assertEquals("100", actual.toString());
     }
 
     @Test
     public void appendHexWith1FF() throws IOException {
         StringBuilder actual = new StringBuilder();
-        BitsAndBytes.appendHex(actual, (byte)1, (byte)255);
+        BitsAndBytes.appendHex(actual, (byte) 1, (byte) 255);
         assertEquals("1ff", actual.toString());
     }
 
     @Test
     public void appendHexWithLeadingZerosWith0() throws IOException {
         StringBuilder actual = new StringBuilder();
-        BitsAndBytes.appendHexWithLeadingZeros(actual, (byte)0, (byte)0);
+        BitsAndBytes.appendHexWithLeadingZeros(actual, (byte) 0, (byte) 0);
         assertEquals("0000", actual.toString());
     }
 
     @Test
     public void appendHexWithLeadingZerosWith0102() throws IOException {
         StringBuilder actual = new StringBuilder();
-        BitsAndBytes.appendHexWithLeadingZeros(actual, (byte)1, (byte)2);
+        BitsAndBytes.appendHexWithLeadingZeros(actual, (byte) 1, (byte) 2);
         assertEquals("0102", actual.toString());
     }
 
     @Test
     public void appendHexWithLeadingZerosith1FF() throws IOException {
         StringBuilder actual = new StringBuilder();
-        BitsAndBytes.appendHexWithLeadingZeros(actual, (byte)1, (byte)255);
+        BitsAndBytes.appendHexWithLeadingZeros(actual, (byte) 1, (byte) 255);
         assertEquals("01ff", actual.toString());
     }
 
@@ -236,7 +236,7 @@ public class BitsAndBytesTest {
     public void equalsWithMaskWithMatch() throws IOException {
         byte[] left = {1, 2, 3};
         byte[] right = {1, 2, 4};
-        byte[] mask = {(byte)0xff, (byte)0xff, (byte)0xf8};
+        byte[] mask = {(byte) 0xff, (byte) 0xff, (byte) 0xf8};
         boolean result = BitsAndBytes.equalsWithMask(left, right, mask);
         assertTrue(result);
     }
@@ -245,8 +245,21 @@ public class BitsAndBytesTest {
     public void equalsWithMaskWithMismatch() throws IOException {
         byte[] left = {1, 2, 3};
         byte[] right = {1, 2, 4};
-        byte[] mask = {(byte)0xff, (byte)0xff, (byte)0xff};
+        byte[] mask = {(byte) 0xff, (byte) 0xff, (byte) 0xff};
         boolean result = BitsAndBytes.equalsWithMask(left, right, mask);
         assertFalse(result);
+    }
+
+    @Test
+    public void setLeadingBits() {
+        byte[] data = new byte[3];
+        BitsAndBytes.setLeadingBits(data, 0);
+        assertArrayEquals(new byte[]{0, 0, 0}, data);
+        BitsAndBytes.setLeadingBits(data, 1);
+        assertArrayEquals(new byte[]{(byte)0x80, 0, 0}, data);
+        BitsAndBytes.setLeadingBits(data, 2);
+        assertArrayEquals(new byte[]{(byte)0xC0, 0, 0}, data);
+        BitsAndBytes.setLeadingBits(data, 23);
+        assertArrayEquals(new byte[]{(byte)0xFF, (byte)0xFF, (byte)0xFE}, data);
     }
 }
