@@ -11,7 +11,7 @@ public class IPParsersTest {
 
     @Test
     public void testParseStringIPV4() {
-        IP ip = IPParsers.DOTTED_DECIMAL.parse("1.2.3.4");
+        IP<?> ip = IPParsers.DOTTED_DECIMAL.parse("1.2.3.4");
         assertArrayEquals(new byte[]{1, 2, 3, 4}, ip.getBytes());
 
         // zero

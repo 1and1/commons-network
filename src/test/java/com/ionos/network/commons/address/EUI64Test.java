@@ -15,7 +15,7 @@ public class EUI64Test {
     @Test
     public void testConvertMac() {
         final MAC mac = new MAC("6C:88:14:6F:D8:91");
-        final IP ip = EUI64.convertMac(mac);
+        final IP<?> ip = EUI64.convertMac(mac);
         assertEquals(new IPv6("fe80:0:0:0:6e88:14ff:fe6f:d891"), ip);
     }
 

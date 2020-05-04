@@ -93,7 +93,7 @@ public class IPv4Test {
 
     @Test
     public void testGetIPv4Version() {
-        IP ip = new IPv4("192.168.0.1");
+        IP<?> ip = new IPv4("192.168.0.1");
         assertEquals(IPVersion.IPV4, ip.getIPVersion());
     }
 
@@ -123,16 +123,16 @@ public class IPv4Test {
 
     @Test
     public void testEqualsWithMatch() {
-        IP ip1 = new IPv4("192.168.0.1");
-        IP ip2 = new IPv4("192.168.0.1");
+        IP<?> ip1 = new IPv4("192.168.0.1");
+        IP<?> ip2 = new IPv4("192.168.0.1");
 
         assertEquals(ip1, ip2);
     }
 
     @Test
     public void testEqualsWithMismatch() {
-        IP ip1 = new IPv4("192.168.0.1");
-        IP ip2 = new IPv4("192.168.0.2");
+        IP<?> ip1 = new IPv4("192.168.0.1");
+        IP<?> ip2 = new IPv4("192.168.0.2");
 
         assertNotEquals(ip1, ip2);
         assertNotEquals(null, ip1);
@@ -140,8 +140,8 @@ public class IPv4Test {
 
     @Test
     public void testEqualsWithMismatchIPVersion() {
-        IP ip1 = new IPv4("192.168.0.1");
-        IP ip2 = new IPv6("2001:7f8::9be8:0:1");
+        IP<?> ip1 = new IPv4("192.168.0.1");
+        IP<?> ip2 = new IPv6("2001:7f8::9be8:0:1");
 
         assertNotEquals(ip1, ip2);
         assertNotEquals(ip2, ip1);
@@ -149,14 +149,14 @@ public class IPv4Test {
 
     @Test
     public void testEqualsWithOtherClass() {
-        IP ip1 = new IPv4("192.168.0.1");
+        IP<?> ip1 = new IPv4("192.168.0.1");
 
         assertNotEquals("foobar", ip1);
     }
 
     @Test
     public void testToInetAddress() {
-        IP ip1 = new IPv4("192.168.0.1");
+        IP<?> ip1 = new IPv4("192.168.0.1");
         InetAddress inetAddress = ip1.toInetAddress();
 
         assertArrayEquals(inetAddress.getAddress(), ip1.getBytes());

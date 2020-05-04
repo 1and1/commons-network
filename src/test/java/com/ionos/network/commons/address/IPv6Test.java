@@ -51,7 +51,7 @@ public class IPv6Test {
 
     @Test
     public void testGetIPv6Version() {
-        IP ip = new IPv6("2001:7f8::9be8:0:1");
+        IP<?> ip = new IPv6("2001:7f8::9be8:0:1");
         assertEquals(IPVersion.IPV6, ip.getIPVersion());
     }
 
@@ -68,16 +68,16 @@ public class IPv6Test {
 
     @Test
     public void testEqualsWithMatch() {
-        IP ip1 = new IPv6("::");
-        IP ip2 = new IPv6("::");
+        IP<?> ip1 = new IPv6("::");
+        IP<?> ip2 = new IPv6("::");
 
         assertEquals(ip1, ip2);
     }
 
     @Test
     public void testEqualsWithMismatch() {
-        IP ip1 = new IPv6("ffff::");
-        IP ip2 = new IPv6("fffe::");
+        IP<?> ip1 = new IPv6("ffff::");
+        IP<?> ip2 = new IPv6("fffe::");
 
         assertNotEquals(ip1, ip2);
         assertNotEquals(null, ip1);
@@ -85,8 +85,8 @@ public class IPv6Test {
 
     @Test
     public void testEqualsWithMismatchIPVersion() {
-        IP ip1 = new IPv4("192.168.0.1");
-        IP ip2 = new IPv6("2001:7f8::9be8:0:1");
+        IP<?> ip1 = new IPv4("192.168.0.1");
+        IP<?> ip2 = new IPv6("2001:7f8::9be8:0:1");
 
         assertNotEquals(ip1, ip2);
         assertNotEquals(ip2, ip1);
@@ -94,15 +94,15 @@ public class IPv6Test {
 
     @Test
     public void testEqualsWithOtherClass() {
-        IP ip1 = new IPv6("fffe::");
+        IP<?> ip1 = new IPv6("fffe::");
 
         assertNotEquals("foobar", ip1);
     }
 
     @Test
     public void testCompareIpv4ToIpv6() {
-        IP ip1 = new IPv4("192.168.0.1");
-        IP ip2 = new IPv6("2001:7f8::9be8:0:1");
+        IP<?> ip1 = new IPv4("192.168.0.1");
+        IP<?> ip2 = new IPv6("2001:7f8::9be8:0:1");
 
         assertEquals(1, ip1.compareTo(ip2));
         assertEquals(-1, ip2.compareTo(ip1));
@@ -110,7 +110,7 @@ public class IPv6Test {
 
     @Test
     public void testToInetAddress() {
-        IP ip1 = new IPv6("fffe::");
+        IP<?> ip1 = new IPv6("fffe::");
         InetAddress inetAddress = ip1.toInetAddress();
 
         assertArrayEquals(inetAddress.getAddress(), ip1.getBytes());
@@ -135,7 +135,7 @@ public class IPv6Test {
         try (
                 InputStream inputStream = Files.newInputStream(Paths.get("src/test/resources/ipv6_fffe"));
                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
-            IP ip = (IP)objectInputStream.readObject();
+            IP<?> ip = (IP)objectInputStream.readObject();
             assertEquals(new IPv6("fffe::"), ip);
         }
     }
