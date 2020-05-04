@@ -27,10 +27,10 @@ final class NetworkIPSpliterator<T extends IP> implements Spliterator<T> {
 
     @Override
     public boolean tryAdvance(final Consumer<? super T> consumer) {
-        if (currentIP.compareTo(network.getAddressEnd()) <= 0) {
+        if (currentIP.compareTo(network.getBroadcast()) <= 0) {
             consumer.accept(currentIP);
             currentIP = (T) currentIP.add(1);
-            return currentIP.compareTo(network.getAddressEnd()) <= 0;
+            return currentIP.compareTo(network.getBroadcast()) <= 0;
         }
         return false;
     }

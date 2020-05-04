@@ -34,34 +34,37 @@ public final class IPParsers {
         }
     }
 
-    private static void throwExpected(
+    private static IllegalArgumentException throwExpected(
             final String component,
             final String address) {
-        throw new IllegalArgumentException("Expected '"
+        return new IllegalArgumentException("Expected '"
                 + component + "' in address '"
                 + address + "', but couldn't find");
     }
 
-    private static void throwOutOfRange(
+    private static IllegalArgumentException throwOutOfRange(
             final String component,
             final String address) {
-        throw new IllegalArgumentException("Component '"
+        return new IllegalArgumentException("Component '"
                 + component + "' of address '"
                 + address + "' is out of range");
     }
 
-    private static void throwMalformed(final String address) {
-        throw new IllegalArgumentException("Address or address part '"
+    private static IllegalArgumentException throwMalformed(
+            final String address) {
+        return new IllegalArgumentException("Address or address part '"
                 + address + "' is malformed");
     }
 
-    private static void throwWrongNumberOfComponents(final String address) {
-        throw new IllegalArgumentException("Address '"
+    private static IllegalArgumentException throwWrongNumberOfComponents(
+            final String address) {
+        return new IllegalArgumentException("Address '"
                 + address + "' has wrong number of components");
     }
 
-    private static void throwAddressFormatUnknown(final String address) {
-        throw new IllegalArgumentException("Address '"
+    private static IllegalArgumentException throwAddressFormatUnknown(
+            final String address) {
+        return new IllegalArgumentException("Address '"
                 + address + "' has an unknown format");
     }
 
@@ -99,7 +102,7 @@ public final class IPParsers {
                 }
             }
             if (result == null) {
-                throwAddressFormatUnknown(address);
+                throw throwAddressFormatUnknown(address);
             }
             return result;
         }
@@ -127,8 +130,7 @@ public final class IPParsers {
             if (parser != null) {
                 return parser.parse(address);
             } else {
-                throwAddressFormatUnknown(address);
-                return null;
+                throw throwAddressFormatUnknown(address);
             }
         }
 
@@ -138,8 +140,7 @@ public final class IPParsers {
             if (parser != null) {
                 return parser.parseAsBytes(address);
             } else {
-                throwAddressFormatUnknown(address);
-                return null;
+                throw throwAddressFormatUnknown(address);
             }
         }
     };
@@ -155,7 +156,7 @@ public final class IPParsers {
             StringTokenizer stringTokenizer = new StringTokenizer(address, ".");
             if (stringTokenizer.countTokens()
                     != IPVersion.IPV4.getAddressBytes()) {
-                throwWrongNumberOfComponents(address);
+                throw throwWrongNumberOfComponents(address);
             }
             byte[] result = new byte[IPVersion.IPV4.getAddressBytes()];
 
@@ -164,7 +165,7 @@ public final class IPParsers {
                 int val = Integer.parseInt(component);
 
                 if (val < 0 || val > BYTE_MASK) {
-                    throwOutOfRange(component, address);
+                    throw throwOutOfRange(component, address);
                 }
                 result[i] = (byte) val;
             }
@@ -187,20 +188,20 @@ public final class IPParsers {
             String component = stringTokenizer.nextToken();
             if (component.length() == 0
                     || component.length() > IPV6_BLOCK_MAX) {
-                throwOutOfRange(component, address);
+                throw throwOutOfRange(component, address);
             }
             if (expectNumber) {
                 if (component.equals(":")) {
-                    throwMalformed(address);
+                    throw throwMalformed(address);
                 }
                 int val = Integer.parseInt(component, HEX_RADIX);
                 if (val < 0 || val > USHORT_MAX_VALUE) {
-                    throwOutOfRange(component, address);
+                    throw throwOutOfRange(component, address);
                 }
                 result[i++] = (byte) (val >>> BITS_PER_BYTE);
                 result[i++] = (byte) val;
             } else if (!component.equals(":")) {
-                throwMalformed(address);
+                throw throwMalformed(address);
             }
             expectNumber = !expectNumber;
         }
@@ -220,7 +221,7 @@ public final class IPParsers {
         public byte[] parseAsBytes(final String address) {
             byte[] result = parseColonHexVariableLength(address);
             if (result.length != IPVersion.IPV6.getAddressBytes()) {
-                throwWrongNumberOfComponents(address);
+                throw throwWrongNumberOfComponents(address);
             }
             return result;
         }
@@ -287,13 +288,13 @@ public final class IPParsers {
         public byte[] parseAsBytes(final String address) {
             int lastColon = address.lastIndexOf(':');
             if (lastColon == -1) {
-                throwExpected(":", address);
+                throw throwExpected(":", address);
             }
             byte[] ipv6Part = parseColonHexVariableLength(
                     address.substring(0, lastColon));
             if (ipv6Part.length != IPVersion.IPV6.getAddressBytes()
                     - IPVersion.IPV4.getAddressBytes()) {
-                throwWrongNumberOfComponents(address);
+                throw throwWrongNumberOfComponents(address);
             }
 
             byte[] ipv4Part = DOTTED_DECIMAL.parseAsBytes(
@@ -331,11 +332,11 @@ public final class IPParsers {
         public byte[] parseAsBytes(final String address) {
             int doubleColon = address.indexOf("::");
             if (doubleColon == -1) {
-                throwExpected("::", address);
+                throw throwExpected("::", address);
             }
             int lastColon = address.lastIndexOf(':');
             if (lastColon == -1) {
-                throwExpected(":", address);
+                throw throwExpected(":", address);
             }
             byte[] leftV6Components = parseColonHexVariableLength(
                     address.substring(0, doubleColon));

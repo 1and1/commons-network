@@ -100,7 +100,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     /**
      * First IP in the network.
      *
-     * @see #ipEnd
+     * @see #ipBroadcast
      * @see #getAddress()
      */
     private T ipAddress;
@@ -109,9 +109,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * Last IP in the network.
      *
      * @see #ipAddress
-     * @see #getAddressEnd()
+     * @see #getBroadcast()
      */
-    private transient T ipEnd;
+    private transient T ipBroadcast;
 
     /**
      * Creates an instance.
@@ -124,12 +124,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     public Network(final T inIP,
                    final int inPrefix) {
         Objects.requireNonNull(inIP, "ip is null");
-        if (inPrefix > inIP.getIPVersion().getAddressBits()
-                || inPrefix < 0) {
-            throw new IllegalArgumentException(
-                    "illegal network prefix " + inPrefix);
-        }
-        this.prefix = inPrefix;
+        this.prefix = requireValidPrefix(inIP.getIPVersion(), inPrefix);
 
         final NetworkMaskData maskData =
                 getNetworkMaskData(inIP.getIPVersion())[this.prefix];
@@ -138,11 +133,11 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
                 maskData.subnetMask
                         .address);
 
-        this.ipEnd = ipEndFor(ipAddress, prefix);
+        this.ipBroadcast = ipBroadcastFor(ipAddress, prefix);
     }
 
-    private static <U extends IP> U ipEndFor(final U startAddress,
-                                             final int prefix) {
+    private static <U extends IP> U ipBroadcastFor(final U startAddress,
+                                                   final int prefix) {
             return (U) startAddress.add(
                     getNetworkMaskData(startAddress.getIPVersion())[prefix]
                             .inverseSubnetMask
@@ -197,6 +192,21 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
 
     }
 
+    private static int requireValidPrefix(
+            final IPVersion ipVersion,
+            final int prefix) {
+        if (prefix < 0) {
+            throw new IllegalArgumentException("Prefix " + prefix
+            + "is < 0");
+        }
+        if (prefix > ipVersion.getAddressBits()) {
+            throw new IllegalArgumentException("Prefix " + prefix
+                    + "is > "
+                    + ipVersion.getAddressBits());
+        }
+        return prefix;
+    }
+
     /** Constructs a new network from a network prefix and a network mask.
      * @param networkAddress the network prefix to use.
      *                       Example {@code 192.168.0.0}.
@@ -237,7 +247,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      */
     public static IP getSubnetMask(final IPVersion version, final int prefix) {
         Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
-        return getNetworkMaskData(version, prefix).subnetMask;
+        return getNetworkMaskData(
+                version,
+                requireValidPrefix(version, prefix)).subnetMask;
     }
 
     /**
@@ -251,7 +263,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     public static IP getInverseSubnetMask(final IPVersion version,
                                           final int prefix) {
         Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
-        return getNetworkMaskData(version, prefix).inverseSubnetMask;
+        return getNetworkMaskData(
+                version,
+                requireValidPrefix(version, prefix)).inverseSubnetMask;
     }
 
     /**
@@ -511,12 +525,14 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     }
 
     /**
-     * Returns the last IP of {@code this} network.
+     * Returns the broadcast IP of {@code this} network.
      *
-     * @return the last IP of this network (inclusive).
+     * @return the broadcast IP of this network (inclusive).
+     * Example: For a {@code 192.168.4.0/24} network this would be
+     * {@code 192.168.4.255}.
      */
-    public T getAddressEnd() {
-        return ipEnd;
+    public T getBroadcast() {
+        return ipBroadcast;
     }
 
     /** Get the IP version of this network.
@@ -618,7 +634,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * Try to avoid the usage of this method for performance reasons.
      * There could be more of IPs in a network than your computer can process.
      *
-     * @return iterator over the IP addresses within {@code this} network.
+     * @return iterator over the IP addresses within {@code this} network. The
+     * iterator starts at the {@linkplain #getAddress() start address} and
+     * ends at the {@linkplain #getBroadcast() broadcast address}.
      * @see #stream()
      */
     @Override
@@ -631,7 +649,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * <br>
      * Try to avoid the usage of this method for performance reasons.
      * There could be more of IPs in a network than your computer can process.
-     * @return a stream of IPs.
+     * @return a stream of IPs. The
+     * iterator starts at the {@linkplain #getAddress() start address} and
+     * ends at the {@linkplain #getBroadcast() broadcast address}.
      * @see #iterator()
      */
     public Stream<IP> stream() {
@@ -754,7 +774,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
             throw new IllegalStateException();
         }
 
-        prefix = s.readInt();
-        ipEnd = ipEndFor(ipAddress, prefix);
+        prefix = requireValidPrefix(ipAddress.getIPVersion(), s.readInt());
+        ipBroadcast = ipBroadcastFor(ipAddress, prefix);
     }
 }

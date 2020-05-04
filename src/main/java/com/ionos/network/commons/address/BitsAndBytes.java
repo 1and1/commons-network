@@ -166,8 +166,9 @@ final class BitsAndBytes {
                 && value <= HEXADECIMAL_MAX_DIGIT) {
             return (char) ('a' - HEXADECIMAL_A_VALUE + value);
         } else {
-            throw new IllegalArgumentException("Value "
-                    + value + " can not be mapped to hex");
+            throw new IllegalArgumentException("Integer '"
+                    + value + "' is not in the range [0-15] and"
+                    + " can not be mapped to hex");
         }
     }
 
@@ -184,8 +185,9 @@ final class BitsAndBytes {
         } else if (hexDigit >= 'A' && hexDigit <= 'F') {
             return hexDigit - 'A' + HEXADECIMAL_A_VALUE;
         } else {
-            throw new IllegalArgumentException("Value "
-                    + hexDigit + " can not be interpreted as hex");
+            throw new IllegalArgumentException("Char '"
+                    + hexDigit + "' is not in the set [0-9a-fA-F] and"
+                    + " can not be interpreted as hex");
         }
     }
 

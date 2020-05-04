@@ -44,7 +44,7 @@ public class NetworkTest {
 
         final Network n3 = new Network(new IPv4("192.168.0.42"), new IPv4("255.255.255.0"));
         assertEquals("192.168.0.0", n3.getAddress().toString());
-        assertEquals("192.168.0.255", n3.getAddressEnd().toString());
+        assertEquals("192.168.0.255", n3.getBroadcast().toString());
         assertEquals(24, n3.getPrefix());
 
         try {
@@ -498,7 +498,7 @@ public class NetworkTest {
         Network network = new Network(new IPv4("192.168.1.2"), 24);
         assertEquals(24, network.getPrefix());
         assertEquals(new IPv4("192.168.1.0"), network.getAddress());
-        assertEquals(new IPv4("192.168.1.255"), network.getAddressEnd());
+        assertEquals(new IPv4("192.168.1.255"), network.getBroadcast());
         assertEquals(new IPv4("255.255.255.0"), network.getSubnetMask());
     }
 

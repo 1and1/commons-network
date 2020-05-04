@@ -12,6 +12,7 @@ final class NetworkIPIterator<T extends IP> implements Iterator<T> {
 
     /** The network to iterate in. */
     private final Network<T> network;
+
     /** The current IP. */
     private T current;
 
@@ -26,7 +27,7 @@ final class NetworkIPIterator<T extends IP> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        return current.compareTo(network.getAddressEnd()) <= 0;
+        return current.compareTo(network.getBroadcast()) <= 0;
     }
 
     @Override
