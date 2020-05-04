@@ -641,7 +641,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      */
     @Override
     public Iterator<T> iterator() {
-        return new NetworkIPIterator(this);
+        return new NetworkIPIterator<>(this);
     }
 
     /**
@@ -654,8 +654,8 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * ends at the {@linkplain #getBroadcast() broadcast address}.
      * @see #iterator()
      */
-    public Stream<IP> stream() {
-        return StreamSupport.stream(new NetworkIPSpliterator(this), false);
+    public Stream<T> stream() {
+        return StreamSupport.stream(new NetworkIPSpliterator<>(this), false);
     }
 
     @Override
