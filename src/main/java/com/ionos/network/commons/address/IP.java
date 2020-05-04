@@ -190,7 +190,7 @@ public abstract class IP<T extends IP>
      */
     @Override
     public String toString() {
-        return defaultAddressFormat().format(this);
+        return defaultAddressFormat().format((T) this);
     }
 
     /**
