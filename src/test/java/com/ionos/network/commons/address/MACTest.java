@@ -37,7 +37,6 @@ public class MACTest {
     private MAC mac2;
 
     @BeforeEach
-    @Test
     public void init() {
         mac1 = new MAC(MAC1_STRING);
         mac2 = new MAC(MAC2_STRING);
