@@ -335,9 +335,7 @@ public final class IPParsers {
                 throw throwExpected("::", address);
             }
             int lastColon = address.lastIndexOf(':');
-            if (lastColon == -1) {
-                throw throwExpected(":", address);
-            }
+
             byte[] leftV6Components = parseColonHexVariableLength(
                     address.substring(0, doubleColon));
             byte[] rightV6Components;
