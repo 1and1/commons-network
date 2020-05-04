@@ -41,7 +41,8 @@ import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
  * @param <T> the IP address type this network is defined for.
  * @author Stephan Fuhrmann
  **/
-public final class Network<T extends IP> implements Iterable<T>, Serializable {
+public final class Network<T extends IP<T>>
+        implements Iterable<T>, Serializable {
     /** The version number of this class. */
     private static final long serialVersionUID = 123816891688169L;
 
@@ -121,7 +122,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @throws IllegalArgumentException if the prefix size
      * does not match the IP protocol version.
      */
-    public Network(final T inIP,
+    public Network(final IP<T> inIP,
                    final int inPrefix) {
         Objects.requireNonNull(inIP, "ip is null");
         this.prefix = requireValidPrefix(inIP.getIPVersion(), inPrefix);
@@ -129,16 +130,16 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
         final NetworkMaskData maskData =
                 getNetworkMaskData(inIP.getIPVersion())[this.prefix];
 
-        this.ipAddress = (T) inIP.and(
+        this.ipAddress = inIP.and(
                 maskData.subnetMask
                         .address);
 
         this.ipBroadcast = ipBroadcastFor(ipAddress, prefix);
     }
 
-    private static <U extends IP> U ipBroadcastFor(final U startAddress,
+    private static <U extends IP<U>> U ipBroadcastFor(final U startAddress,
                                                    final int prefix) {
-            return (U) startAddress.add(
+            return startAddress.add(
                     getNetworkMaskData(startAddress.getIPVersion())[prefix]
                             .inverseSubnetMask
                             .address);
@@ -158,7 +159,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @param <U> the type of IP address to get the network part for.
      * @return the network part as an IP, in the above example {@code 1.2.3.4}.
      * */
-    private static <U extends IP> U networkPartOf(
+    private static <U extends IP<U>> U networkPartOf(
             final String networkWithPrefix) {
         Objects.requireNonNull(networkWithPrefix, "network is null");
         final int index = networkWithPrefix.indexOf('/');
@@ -338,8 +339,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @throws IllegalArgumentException if inStartIP is larger than
      * inEndIP, or the IP versions don't match.
      */
-    public static <T extends IP> List<Network<T>> rangeFrom(final T inStartIP,
-                                          final T inEndIP) {
+    public static <T extends IP<T>> List<Network<T>> rangeFrom(
+            final T inStartIP,
+            final T inEndIP) {
         Objects.requireNonNull(inStartIP, "start IP is null");
         Objects.requireNonNull(inEndIP, "end IP is null");
         if (inStartIP.compareTo(inEndIP) > 0) {
@@ -425,7 +427,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @return the list of networks without one network containing the other.
      * @see #mergeNeighbors(Collection)
      */
-    public static <T extends IP> Set<Network<T>> mergeContaining(
+    public static <T extends IP<T>> Set<Network<T>> mergeContaining(
             final Collection<Network<T>> networks) {
         List<Network<T>> nets = new ArrayList<>(networks);
         Set<Network<T>> result = new HashSet<>();
@@ -467,7 +469,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @return a new network list with neighbor networks merged.
      * @see #mergeContaining(Collection)
      */
-    public static <U extends IP> List<Network<U>> mergeNeighbors(
+    public static <U extends IP<U>> List<Network<U>> mergeNeighbors(
             final Collection<Network<U>> networks) {
         final List<Network<U>> result = new ArrayList<>(networks);
         result.sort(NETWORK_START_COMPARATOR);
@@ -574,8 +576,14 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * do not contain ip addresses of different versions (IPV4 vs. IPV6).
      * This method will return {@code false} in such a case.
      */
-    public boolean contains(final T ip) {
+    public boolean contains(final IP<?> ip) {
         Objects.requireNonNull(ip, "IP is null");
+
+        // different IP version?
+        if (ip.length() != ip.length()) {
+            return false;
+        }
+
         byte[] netMask = getSubnetMask().address;
         byte[] ipBytes = ip.address;
         byte[] networkBytes = getAddress().address;

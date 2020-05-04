@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  * Try not to use this for performance issues.
  * @param <T> the type of IP address this iterator is returning.
  */
-final class NetworkIPIterator<T extends IP> implements Iterator<T> {
+final class NetworkIPIterator<T extends IP<T>> implements Iterator<T> {
 
     /** The network to iterate in. */
     private final Network<T> network;

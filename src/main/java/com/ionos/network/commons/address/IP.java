@@ -23,7 +23,7 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
  * @author Stephan Fuhrmann
  *
  **/
-public abstract class IP<T extends IP>
+public abstract class IP<T extends IP<T>>
         extends AbstractAddress
         implements Address, Serializable {
     /** The version number of this class. */

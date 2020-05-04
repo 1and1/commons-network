@@ -129,7 +129,7 @@ public class NetworkTest {
 
     @Test
     public void testContainsDifferentVersion() {
-        final Network<IP> n1 = new Network<>(new IPv6("::"), (byte) 0);
+        final Network<IPv6> n1 = new Network<>(new IPv6("::"), (byte) 0);
         final IPv4 ip1 = new IPv4("192.168.0.42");
         assertFalse(n1.contains(ip1));
     }
@@ -364,8 +364,8 @@ public class NetworkTest {
     public void testMergeContaining() {
         Set<Network<IPv4>> set = Network.mergeContaining(
                 Arrays.asList(
-                        new Network<>("172.16.0.0/31"),
-                        new Network<>("172.16.0.0/32")));
+                        new Network<IPv4>("172.16.0.0/31"),
+                        new Network<IPv4>("172.16.0.0/32")));
         assertEquals(
                 Collections.singleton(
                         new Network<>("172.16.0.0/31")),
@@ -374,8 +374,8 @@ public class NetworkTest {
         set = Network.mergeContaining(
                 Arrays.asList(
                         new Network<>("172.16.0.0/31"),
-                new Network<>("172.16.0.0/32"),
-                new Network<>("172.16.0.0/24")));
+                new Network<IPv4>("172.16.0.0/32"),
+                new Network<IPv4>("172.16.0.0/24")));
         assertEquals(
                 Collections.singleton(
                         new Network<>("172.16.0.0/24")),
@@ -383,11 +383,11 @@ public class NetworkTest {
 
         set = Network.mergeContaining(
                 Arrays.asList(
-                        new Network<>("172.16.0.0/31"),
-                        new Network<>("172.16.0.0/32"),
-                        new Network<>("172.16.0.0/24"),
-                        new Network<>("10.128.0.0/16"),
-                        new Network<>("10.128.0.0/17")));
+                        new Network<IPv4>("172.16.0.0/31"),
+                        new Network<IPv4>("172.16.0.0/32"),
+                        new Network<IPv4>("172.16.0.0/24"),
+                        new Network<IPv4>("10.128.0.0/16"),
+                        new Network<IPv4>("10.128.0.0/17")));
         assertEquals(
                 new HashSet<>(
                         Arrays.asList(
@@ -397,17 +397,17 @@ public class NetworkTest {
 
         set = Network.mergeContaining(
                 Arrays.asList(
-                        new Network<>("172.16.0.0/31"),
-                        new Network<>("172.16.0.0/32"),
-                        new Network<>("172.16.0.0/24"),
-                        new Network<>("10.128.0.0/16"),
-                        new Network<>("10.128.0.0/17"),
-                        new Network<>("127.0.0.0/8"),
-                        new Network<>("127.0.0.0/24"),
-                        new Network<>("127.0.0.128/25"),
-                        new Network<>("127.5.0.0/16"),
-                        new Network<>("127.0.0.0/32"),
-                        new Network<>("172.8.5.128/25")));
+                        new Network<IPv4>("172.16.0.0/31"),
+                        new Network<IPv4>("172.16.0.0/32"),
+                        new Network<IPv4>("172.16.0.0/24"),
+                        new Network<IPv4>("10.128.0.0/16"),
+                        new Network<IPv4>("10.128.0.0/17"),
+                        new Network<IPv4>("127.0.0.0/8"),
+                        new Network<IPv4>("127.0.0.0/24"),
+                        new Network<IPv4>("127.0.0.128/25"),
+                        new Network<IPv4>("127.5.0.0/16"),
+                        new Network<IPv4>("127.0.0.0/32"),
+                        new Network<IPv4>("172.8.5.128/25")));
         assertEquals(
                 new HashSet<>(
                         Arrays.asList(
@@ -419,18 +419,18 @@ public class NetworkTest {
 
         set = Network.mergeContaining(
                 Arrays.asList(
-                        new Network<>("172.16.0.0/31"),
-                        new Network<>("172.16.0.0/32"),
-                        new Network<>("172.16.0.0/24"),
-                        new Network<>("10.128.0.0/16"),
-                        new Network<>("10.128.0.0/17"),
-                        new Network<>("127.0.0.0/8"),
-                        new Network<>("127.0.0.0/24"),
-                        new Network<>("127.0.0.128/25"),
-                        new Network<>("127.5.0.0/16"),
-                        new Network<>("127.0.0.0/32"),
+                        new Network<IPv4>("172.16.0.0/31"),
+                        new Network<IPv4>("172.16.0.0/32"),
+                        new Network<IPv4>("172.16.0.0/24"),
+                        new Network<IPv4>("10.128.0.0/16"),
+                        new Network<IPv4>("10.128.0.0/17"),
+                        new Network<IPv4>("127.0.0.0/8"),
+                        new Network<IPv4>("127.0.0.0/24"),
+                        new Network<IPv4>("127.0.0.128/25"),
+                        new Network<IPv4>("127.5.0.0/16"),
+                        new Network<IPv4>("127.0.0.0/32"),
                         new Network<>("172.8.5.128/25"),
-                        new Network<>("172.16.0.0/31")));
+                        new Network<IPv4>("172.16.0.0/31")));
         assertEquals(
                 new HashSet<>(
                         Arrays.asList(
@@ -442,14 +442,17 @@ public class NetworkTest {
 
     @Test
     public void testMergeNeighbors() {
-        List<Network<IPv4>> list = Network.mergeNeighbors(Arrays.asList(new Network<>("172.16.0.0/32"), new Network<>("172.16.0.1/32")));
+        List<Network<IPv4>> list = Network.mergeNeighbors(
+                Arrays.asList(
+                        new Network<IPv4>("172.16.0.0/32"),
+                        new Network<>("172.16.0.1/32")));
         assertEquals(Collections.singletonList(new Network<>("172.16.0.0/31")), list);
 
         list = Network.mergeNeighbors(
                 Arrays.asList(
                         new Network<IPv4>("172.16.0.0/24"),
-                        new Network<IPv4>("172.16.0.1/24"),
-                        new Network<IPv4>("172.16.0.5/24")));
+                        new Network<>("172.16.0.1/24"),
+                        new Network<>("172.16.0.5/24")));
         assertEquals(
                 Arrays.asList(
                         new Network<IPv4>("172.16.0.0/23"),
@@ -459,8 +462,8 @@ public class NetworkTest {
         list = Network.mergeNeighbors(
                 Arrays.asList(
                         new Network<IPv4>("172.16.0.4/24"),
-                        new Network<IPv4>("172.16.0.100/24"),
-                        new Network<IPv4>("172.16.0.5/24")));
+                        new Network<>("172.16.0.100/24"),
+                        new Network<>("172.16.0.5/24")));
         assertEquals(
                 Arrays.asList(
                         new Network<IPv4>("172.16.0.4/23"),
@@ -470,12 +473,12 @@ public class NetworkTest {
         list = Network.mergeNeighbors(
                 Arrays.asList(
                         new Network<IPv4>("172.16.0.0/20"),
-                        new Network<IPv4>("172.16.0.16/24"),
-                        new Network<IPv4>("172.16.0.17/24")));
+                        new Network<>("172.16.0.16/24"),
+                        new Network<>("172.16.0.17/24")));
         assertEquals(
                 Arrays.asList(
                         new Network<IPv4>("172.16.0.0/20"),
-                        new Network<IPv4>("172.16.0.16/23")),
+                        new Network<>("172.16.0.16/23")),
                 list);
 
         list = Network.mergeNeighbors(
@@ -555,7 +558,7 @@ public class NetworkTest {
 
     @Test
     public void testGetters() {
-        Network<IP> network = new Network<>(new IPv4("192.168.1.2"), 24);
+        Network<IPv4> network = new Network<IPv4>(new IPv4("192.168.1.2"), 24);
         assertEquals(24, network.getPrefix());
         assertEquals(new IPv4("192.168.1.0"), network.getAddress());
         assertEquals(new IPv4("192.168.1.255"), network.getBroadcast());
@@ -564,7 +567,7 @@ public class NetworkTest {
 
     @Test
     public void testStreamWithCount() {
-        Network<IP> network = new Network<>(new IPv4("192.168.1.0"), 24);
+        Network<IPv4> network = new Network<>(new IPv4("192.168.1.0"), 24);
         assertEquals(256, network.stream().count());
     }
 
@@ -572,17 +575,17 @@ public class NetworkTest {
     @Test
     @Disabled
     public void testStreamWithBigCount() {
-        Network<IP> network = new Network<>(new IPv6("::"), 64);
+        Network<IPv6> network = new Network<>(new IPv6("::"), 64);
         assertEquals(Long.MAX_VALUE, network.stream().count());
     }
 
     @Test
     public void testStreamWithFindFirst() {
-        Network<IP> network = new Network<>(new IPv4("192.168.1.0"), 24);
+        Network<IPv4> network = new Network<>(new IPv4("192.168.1.0"), 24);
         assertEquals(Optional.of(new IPv4("192.168.1.0")), network.stream().findFirst());
     }
 
-    private static <T extends IP> List<T> toIps(Network<T> network) {
+    private static <T extends IP<T>> List<T> toIps(Network<T> network) {
         List<T> list = new ArrayList<>();
         Iterator<T> iterator = network.iterator();
         iterator.forEachRemaining(list::add);
@@ -591,13 +594,13 @@ public class NetworkTest {
 
     @Test
     public void testStreamWithCollectSmall() {
-        Network<IP> network = new Network<>(new IPv4("192.168.1.0"), 31);
+        Network<IPv4> network = new Network<>(new IPv4("192.168.1.0"), 31);
         assertEquals(toIps(network), network.stream().collect(Collectors.toList()));
     }
 
     @Test
     public void testStreamWithCollect() {
-        Network<IP> network = new Network<>(new IPv4("192.168.1.0"), 24);
+        Network<IPv4> network = new Network<>(new IPv4("192.168.1.0"), 24);
         assertEquals(toIps(network), network.stream().collect(Collectors.toList()));
     }
 
@@ -609,13 +612,13 @@ public class NetworkTest {
 
     @Test
     public void testToStringWithIPv4() {
-        Network<IP> network = new Network<>(new IPv4("192.168.1.0"), 20);
+        Network<IPv4> network = new Network<>(new IPv4("192.168.1.0"), 20);
         assertEquals("192.168.0.0/20", network.toString());
     }
 
     @Test
     public void testToStringWithIPv6() {
-        Network<IP> network = new Network<>(new IPv6("::"), 20);
+        Network<IPv6> network = new Network<>(new IPv6("::"), 20);
         assertEquals("0:0:0:0:0:0:0:0/20", network.toString());
     }
 

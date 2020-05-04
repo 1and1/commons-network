@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * in a {@linkplain Network}.
  * @param <T> the type of IP address to return.
  * */
-final class NetworkIPSpliterator<T extends IP> implements Spliterator<T> {
+final class NetworkIPSpliterator<T extends IP<T>> implements Spliterator<T> {
 
     /** The number of bits a {@linkplain Long} has. */
     private static final int BIT_SIZE_LONG = 64;
