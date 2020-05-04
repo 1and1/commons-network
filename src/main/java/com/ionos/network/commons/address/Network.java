@@ -368,10 +368,10 @@ public final class Network<T extends IP<T>>
 
         final List<Network<T>> result = new ArrayList<>();
 
-        final T endIPExclusive = (T) inEndIP.add(1);
+        final T endIPExclusive = inEndIP.add(1);
 
         // two complement negation: this is (- startIP)
-        final T firstNegated = (T) inStartIP.invert().add(1);
+        final T firstNegated = inStartIP.invert().add(1);
         // example: for a.b.c.0-a.b.c.255 we now have 0.0.0.255
         final T net = (T) endIPExclusive.add(firstNegated.address);
         // the ip count as a byte array integer. For our example, this is 256.
@@ -406,13 +406,13 @@ public final class Network<T extends IP<T>>
                 final int bitOfs = currentBit & BitsAndBytes.BIT_MASK_TRIPLE;
                 last = cur;
                 increment[byteOfs] |= (1 << bitOfs);
-                cur = (T) cur.add(increment);
+                cur = cur.add(increment);
                 increment[byteOfs] &= ~(1 << bitOfs);
 
                 // two complement negation: this is (- startIP)
-                final T curNegated = (T) cur.invert().add(1);
+                final T curNegated = cur.invert().add(1);
                 // example: for a.b.c.0-a.b.c.255 we now have 0.0.0.255
-                T curNetnet = (T) endIPExclusive.add(curNegated.address);
+                T curNetnet = endIPExclusive.add(curNegated.address);
                 // the ip count as a byte array integer.
                 // For our example, this is 256.
                 ipcount = curNetnet.address;
