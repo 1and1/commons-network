@@ -38,7 +38,7 @@ final class NetworkIPIterator<T extends IP<T>> implements Iterator<T> {
             throw new NoSuchElementException("Already at end of network");
         }
 
-        current = (T) current.add(1);
+        current = current.add(1);
         return result;
     }
 
