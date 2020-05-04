@@ -580,7 +580,7 @@ public final class Network<T extends IP<T>>
         Objects.requireNonNull(ip, "IP is null");
 
         // different IP version?
-        if (ip.length() != ip.length()) {
+        if (ipAddress.length() != ip.length()) {
             return false;
         }
 
