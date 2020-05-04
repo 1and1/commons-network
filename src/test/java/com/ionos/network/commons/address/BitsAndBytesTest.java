@@ -251,6 +251,24 @@ public class BitsAndBytesTest {
     }
 
     @Test
+    public void equalsWithMaskWithDifferentMaskSize() throws IOException {
+        byte[] left = {1, 2, 3};
+        byte[] right = {1, 2, 3};
+        byte[] mask = {(byte) 0xff, (byte) 0xff};
+        boolean result = BitsAndBytes.equalsWithMask(left, right, mask);
+        assertFalse(result);
+    }
+
+    @Test
+    public void equalsWithMaskWithDifferentRightSize() throws IOException {
+        byte[] left = {1, 2, 3};
+        byte[] right = {1, 2, 3, 4};
+        byte[] mask = {(byte) 0xff, (byte) 0xff};
+        boolean result = BitsAndBytes.equalsWithMask(left, right, mask);
+        assertFalse(result);
+    }
+
+    @Test
     public void setLeadingBits() {
         byte[] data = new byte[3];
         BitsAndBytes.setLeadingBits(data, 0);

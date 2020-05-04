@@ -100,6 +100,10 @@ public class IPParsersTest {
         });
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            IPParsers.RFC4291_3_COMPRESSED.parse("1234:127.128.129.253");
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             IPParsers.RFC4291_3_COMPRESSED.parse("hallo");
         });
     }
