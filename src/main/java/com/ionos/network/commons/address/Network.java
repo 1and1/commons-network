@@ -435,7 +435,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
         nets.sort(
                 (o1, o2) -> o2.getPrefix() - o1.getPrefix());
 
-        for (int i = 0; i < nets.size(); ) {
+        for (int i = 0; i < nets.size();) {
             boolean contained = false;
 
             for (int j = i + 1; j < nets.size(); j++) {
