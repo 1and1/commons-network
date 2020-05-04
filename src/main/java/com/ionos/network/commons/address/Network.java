@@ -89,9 +89,9 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      *     Address Allocation for Private Internets</a>
      */
     private static final Network<IPv4>[] RFC_1918_NETWORKS = new Network[]{
-            new Network(IPParsers.DOTTED_DECIMAL.parse("10.0.0.0"), 8),
-            new Network(IPParsers.DOTTED_DECIMAL.parse("172.16.0.0"), 12),
-            new Network(IPParsers.DOTTED_DECIMAL.parse("192.168.0.0"), 16)
+            new Network<>(IPParsers.DOTTED_DECIMAL.parse("10.0.0.0"), 8),
+            new Network<>(IPParsers.DOTTED_DECIMAL.parse("172.16.0.0"), 12),
+            new Network<>(IPParsers.DOTTED_DECIMAL.parse("192.168.0.0"), 16)
     };
 
     /** The prefix size in bits. */
@@ -230,7 +230,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
     public static boolean isRFC1918(final IPv4 ip) {
         boolean result = false;
         if (ip != null) {
-            for (final Network privateNetwork : RFC_1918_NETWORKS) {
+            for (final Network<IPv4> privateNetwork : RFC_1918_NETWORKS) {
                 if (privateNetwork.contains(ip)) {
                     result = true;
                 }
@@ -329,6 +329,8 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      *
      * @param inStartIP the first IP address of the range, inclusive.
      * @param inEndIP   the end IP address of the range, inclusive.
+     * @param <T> the IP type that both IP addresses and the resulting
+     *           networks are in.
      * @return the list of Networks with the guaranteed size greater or
      * equal 1. The order of the networks is in ascending IP order.
      * @throws NullPointerException if one of the arguments
@@ -336,8 +338,8 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @throws IllegalArgumentException if inStartIP is larger than
      * inEndIP, or the IP versions don't match.
      */
-    public static List<Network> rangeFrom(final IP inStartIP,
-                                          final IP inEndIP) {
+    public static <T extends IP> List<Network<T>> rangeFrom(final T inStartIP,
+                                          final T inEndIP) {
         Objects.requireNonNull(inStartIP, "start IP is null");
         Objects.requireNonNull(inEndIP, "end IP is null");
         if (inStartIP.compareTo(inEndIP) > 0) {
@@ -348,30 +350,30 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
             throw new IllegalArgumentException(
                     "IP versions of start and end do not match");
         }
-        if (inStartIP.equals(inEndIP)) {
+        if (inStartIP.equals(inEndIP)) { //NOSONAR
             return Collections.singletonList(
-                    new Network(inStartIP,
+                    new Network<T>(inStartIP,
                             inStartIP.getIPVersion().getAddressBits()));
         }
         // ip address bit width
         final int adrBits = inStartIP.getIPVersion().getAddressBits();
 
-        final List<Network> result = new ArrayList<>();
+        final List<Network<T>> result = new ArrayList<>();
 
-        final IP endIPExclusive = inEndIP.add(1);
+        final T endIPExclusive = (T) inEndIP.add(1);
 
         // two complement negation: this is (- startIP)
-        final IP firstNegated = inStartIP.invert().add(1);
+        final T firstNegated = (T) inStartIP.invert().add(1);
         // example: for a.b.c.0-a.b.c.255 we now have 0.0.0.255
-        final IP net = endIPExclusive.add(firstNegated.address);
+        final T net = (T) endIPExclusive.add(firstNegated.address);
         // the ip count as a byte array integer. For our example, this is 256.
         byte[] ipcount = net.address;
         // the increment byte array for adding the just processed network
         final byte[] increment = new byte[ipcount.length];
 
         // current ip position
-        IP cur = inStartIP;
-        IP last = null;
+        T cur = inStartIP;
+        T last = null;
 
         // go thru the IPs and add the biggest possible network.
         while (cur.compareTo(inEndIP) <= 0
@@ -387,7 +389,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
                 currentBit = ipCountHigh;
             }
 
-            result.add(new Network(cur, adrBits - currentBit));
+            result.add(new Network<T>(cur, adrBits - currentBit));
 
             // book keeping work
             if (currentBit < adrBits) {
@@ -396,13 +398,13 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
                 final int bitOfs = currentBit & BitsAndBytes.BIT_MASK_TRIPLE;
                 last = cur;
                 increment[byteOfs] |= (1 << bitOfs);
-                cur = cur.add(increment);
+                cur = (T) cur.add(increment);
                 increment[byteOfs] &= ~(1 << bitOfs);
 
                 // two complement negation: this is (- startIP)
-                final IP curNegated = cur.invert().add(1);
+                final T curNegated = (T) cur.invert().add(1);
                 // example: for a.b.c.0-a.b.c.255 we now have 0.0.0.255
-                IP curNetnet = endIPExclusive.add(curNegated.address);
+                T curNetnet = (T) endIPExclusive.add(curNegated.address);
                 // the ip count as a byte array integer.
                 // For our example, this is 256.
                 ipcount = curNetnet.address;
@@ -419,13 +421,14 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * others.
      *
      * @param networks the input networks to be merged.
+     * @param <T> the IP sub type the networks are in.
      * @return the list of networks without one network containing the other.
      * @see #mergeNeighbors(Collection)
      */
-    public static Set<Network> mergeContaining(
-            final Collection<Network> networks) {
-        Network[] nets = networks.toArray(new Network[0]);
-        Set<Network> result = new HashSet<>();
+    public static <T extends IP> Set<Network<T>> mergeContaining(
+            final Collection<Network<T>> networks) {
+        Network<T>[] nets = networks.toArray(new Network[0]);
+        Set<Network<T>> result = new HashSet<>();
 
         // sort the networks by their size. this way we only need
         // to compare O(n*lg n) times
@@ -472,13 +475,13 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
         final List<Network<U>> result = new ArrayList<>(networks);
         result.sort(NETWORK_START_COMPARATOR);
         for (int i = 0; i < result.size() - 1; i++) {
-            Network left = result.get(i);
-            Network right = result.get(i + 1);
+            Network<U> left = result.get(i);
+            Network<U> right = result.get(i + 1);
 
             if (left.getPrefix() != right.getPrefix()) {
                 continue;
             }
-            Network joint = new Network(left.getAddress(),
+            Network<U> joint = new Network<>(left.getAddress(),
                     left.getPrefix() - 1);
             if (joint.contains(left) && joint.contains(right)) {
                 result.remove(i + 1);
@@ -550,7 +553,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      * @return {@code true} if the specified network is
      * included in {@code this} network, otherwise {@code false}
      */
-    public boolean contains(final Network network) {
+    public boolean contains(final Network<?> network) {
         Objects.requireNonNull(network, "Network is null");
         byte[] thisNetMask = getSubnetMask().address;
         byte[] thisNetworkBytes = getAddress().address;
@@ -621,7 +624,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
         for (T curIP = getAddress();
              contains(curIP);
              curIP = (T) curIP.add(incrementBytes)) {
-            Network test = new Network(curIP, length);
+            Network<T> test = new Network<>(curIP, length);
             resultCollection.add(test);
         }
 
@@ -667,7 +670,7 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
             return true;
         }
         if (o instanceof Network) {
-            final Network ian = (Network) o;
+            final Network<?> ian = (Network) o;
             return (ipAddress.equals(ian.ipAddress))
                     && (prefix == ian.prefix);
         }

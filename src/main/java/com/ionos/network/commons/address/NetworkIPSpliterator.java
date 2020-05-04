@@ -46,15 +46,15 @@ final class NetworkIPSpliterator<T extends IP> implements Spliterator<T> {
                 throw new IllegalStateException();
             }
 
-            Network left = split.get(0);
-            Network right = split.get(1);
+            Network<T> left = split.get(0);
+            Network<T> right = split.get(1);
             // currentIP already in second half
             if (right.contains(currentIP)) {
                 return null;
             }
 
             network = left;
-            return new NetworkIPSpliterator(right);
+            return new NetworkIPSpliterator<>(right);
         }
         return null;
     }
