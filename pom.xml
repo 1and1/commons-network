@@ -4,7 +4,7 @@
 
   <groupId>com.oneandone</groupId>
   <artifactId>commons-network</artifactId>
-  <version>0.12.1-SNAPSHOT</version>
+  <version>0.13.0</version>
   <packaging>jar</packaging>
 
   <name>commons-network</name>
@@ -32,7 +32,7 @@
     <url>https://github.com/1and1/commons-network</url>
     <connection>scm:git:git@github.com:1and1/commons-network.git</connection>
     <developerConnection>scm:git:git@github.com:1and1/commons-network.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>commons-network-0.13.0</tag>
   </scm>
 
   <properties>
