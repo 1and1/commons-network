@@ -427,32 +427,29 @@ public final class Network<T extends IP> implements Iterable<T>, Serializable {
      */
     public static <T extends IP> Set<Network<T>> mergeContaining(
             final Collection<Network<T>> networks) {
-        Network<T>[] nets = networks.toArray(new Network[0]);
+        List<Network<T>> nets = new ArrayList<>(networks);
         Set<Network<T>> result = new HashSet<>();
 
         // sort the networks by their size. this way we only need
         // to compare O(n*lg n) times
-        Arrays.sort(nets,
+        nets.sort(
                 (o1, o2) -> o2.getPrefix() - o1.getPrefix());
 
-        for (int i = 0; i < nets.length; i++) {
+        for (int i = 0; i < nets.size(); ) {
             boolean contained = false;
 
-            if (nets[i] == null) {
-                continue;
-            }
-            for (int j = i + 1; j < nets.length; j++) {
-                if (i != j
-                        && nets[j] != null
-                        && nets[j].contains(nets[i])) {
-                    nets[i] = null;
+            for (int j = i + 1; j < nets.size(); j++) {
+                if (nets.get(j).contains(nets.get(i))) {
                     contained = true;
                     break;
                 }
             }
 
-            if (!contained) {
-                result.add(nets[i]);
+            if (contained) {
+                nets.remove(i);
+            } else {
+                result.add(nets.get(i));
+                i++;
             }
         }
 
