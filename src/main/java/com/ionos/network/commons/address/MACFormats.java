@@ -8,14 +8,6 @@ package com.ionos.network.commons.address;
  * */
 public final class MACFormats {
 
-
-    /**
-     * Private constructor. No instance allowed.
-     */
-    private MACFormats() {
-        // no instance allowed
-    }
-
     /**
      * Returns a single byte hex representation of the MAC.
      * <br>
@@ -32,4 +24,11 @@ public final class MACFormats {
      */
     public static final AddressFormat<MAC> CISCO_CUSTOM_FORMAT =
             new HexadecimalAddressFormat<>('.', 4);
+
+    /**
+     * Private constructor. No instance allowed.
+     */
+    private MACFormats() {
+        // no instance allowed
+    }
 }

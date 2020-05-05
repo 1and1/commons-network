@@ -9,10 +9,6 @@ import java.util.Arrays;
  **/
 final class BitsAndBytes {
 
-    /** No instance allowed. */
-    private BitsAndBytes() {
-    }
-
     /** Max value for an unsigned 16 bit value.
      * */
     static final int USHORT_MAX_VALUE = 0xffff;
@@ -41,6 +37,10 @@ final class BitsAndBytes {
 
     /** The bits to mask a nibble. */
     static final int BIT_MASK_NIBBLE = 0xf;
+
+    /** No instance allowed. */
+    private BitsAndBytes() {
+    }
 
     /** Creates a new result with the given length and fill byte.
      * @param length the length of the desired array.
