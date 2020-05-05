@@ -3,7 +3,9 @@ package com.ionos.network.commons.address;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static com.ionos.network.commons.address.MACParsers.*;
+import static com.ionos.network.commons.address.MACParsers.DEFAULT;
+import static com.ionos.network.commons.address.MACParsers.COLON_SEPARATED_HEX_FORMAT;
+import static com.ionos.network.commons.address.MACParsers.CISCO_CUSTOM_FORMAT;
 
 /** JUnit test for {@link MACParsers}.
  * @author Stephan Fuhrmann
