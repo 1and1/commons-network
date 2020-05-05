@@ -82,7 +82,8 @@ public final class IPParsers {
             new AbstractIPv4Parser() {
                 @Override
                 public byte[] parseAsBytes(final String address) {
-                    StringTokenizer stringTokenizer = new StringTokenizer(address, ".");
+                    StringTokenizer stringTokenizer = new StringTokenizer(
+                            address, ".");
                     if (stringTokenizer.countTokens()
                             != IPVersion.IPV4.getAddressBytes()) {
                         throw throwWrongNumberOfComponents(address);
