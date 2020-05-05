@@ -7,27 +7,28 @@ Commons Network
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1d90f8dfca404cedbc74cb9f11b702ea)](https://www.codacy.com/manual/Stephan-FuhrmannOrganization/commons-network?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=1and1/commons-network&amp;utm_campaign=Badge_Grade)
 
+
 A library of IP network representation classes, like
-  * IP address (IPv4, IPv6),
-  * MAC address,
-  * IP network using the CIDR method ([Classless Inter-Domain Routing](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)).
+* IP address (IPv4, IPv6),
+* MAC address,
+* IP network using the CIDR method ([Classless Inter-Domain Routing](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)).
 
 ## Prerequisites
 
-  * Java 8 or later
-  * Maven 3.6 or later
+* Java 8 or later
+* Maven 3.6 or later
  
 ## Design Goals
 
 The following are the key design goals:
-  * Test-coverage: Have well-tested classes. Test coverage is at the moment at 95% line-coverage.
-  * Immutability: Have immutable classes where possible to support usage in a multi-threaded environment.
-  * Performance: Have simple, well-performing implementations.
-  * Simplicity: Have simple implementations where possible.
-  * No dependencies: Do not require dependencies for the core cases.
-  * Fail-fast: If you enter illegal data, you'll get an exception. The invariant
+* Test-coverage: Have well-tested classes. Test coverage is at the moment at 95% line-coverage.
+* Immutability: Have immutable classes where possible to support usage in a multi-threaded environment.
+* Performance: Have simple, well-performing implementations.
+* Simplicity: Have simple implementations where possible.
+* No dependencies: Do not require dependencies for the core cases.
+* Fail-fast: If you enter illegal data, you'll get an exception. The invariant
   of all objects is to contain no illegal or null data.
-  * No I/O: In contrast to the [InetAddress](https://docs.oracle.com/javase/7/docs/api/java/net/InetAddress.html) class
+* No I/O: In contrast to the [InetAddress](https://docs.oracle.com/javase/7/docs/api/java/net/InetAddress.html) class
 in JDK, these classes are just model classes.
 
 Usage
