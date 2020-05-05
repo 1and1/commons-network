@@ -19,4 +19,5 @@ cache:
 
 
 after_success:
-  - mvn -DrepoToken=${coveralls_token} clean test jacoco:report coveralls:report --projects=commons-network
+  - mvn clean test jacoco:report coveralls:report
+  - CODACY_PROJECT_TOKEN=${coveralls_token} bash <(curl -Ls https://coverage.codacy.com/get.sh)
