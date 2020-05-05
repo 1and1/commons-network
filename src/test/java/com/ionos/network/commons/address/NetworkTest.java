@@ -220,37 +220,68 @@ public class NetworkTest {
     }
 
     @Test
-    public void testRangeFrom() {
-
+    public void testRangeFromWithIPv6OneNetworkSlash32() {
         // start + stop are the same -> one /32
         List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("192.168.1.0"), new IPv4("192.168.1.0"));
         assertEquals(Collections.singletonList(new Network<>("192.168.1.0/32")), listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("192.168.1.0"), new IPv4("192.168.1.15"));
-        assertEquals(Collections.singletonList(new Network<>("192.168.1.0/28")), listIPv4);
+    @Test
+    public void testRangeFromWithIPv4OneNetworkSlash28() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(
+                new IPv4("192.168.1.0"),
+                new IPv4("192.168.1.15"));
+        assertEquals(Collections.singletonList(
+                new Network<>("192.168.1.0/28")),
+                listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("192.168.1.0"), new IPv4("192.168.1.16"));
-        assertEquals(Arrays.asList(new Network("192.168.1.0/28"), new Network("192.168.1.16/32")), listIPv4);
+    @Test
+    public void testRangeFromWithIPv4TwoNetworks() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(
+                new IPv4("192.168.1.0"),
+                new IPv4("192.168.1.16"));
+        assertEquals(
+                Arrays.asList(
+                        new Network("192.168.1.0/28"),
+                        new Network("192.168.1.16/32")),
+                listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("192.168.1.0"), new IPv4("192.168.2.16"));
-        assertEquals(Arrays.asList(new Network("192.168.1.0/24"), new Network("192.168.2.0/28"), new Network("192.168.2.16/32")), listIPv4);
+    @Test
+    public void testRangeFromWithIPv4ThreeNetworks() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("192.168.1.0"), new IPv4("192.168.2.16"));
+        assertEquals(Arrays.asList(
+                new Network("192.168.1.0/24"),
+                new Network("192.168.2.0/28"),
+                new Network("192.168.2.16/32")),
+                listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.2.16"));
+    @Test
+    public void testRangeFromWithIPv4FiveNetworks2() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.2.16"));
         assertEquals(Arrays.asList(
                 new Network("192.168.1.32/27"),
                 new Network("192.168.1.64/26"),
                 new Network("192.168.1.128/25"),
                 new Network("192.168.2.0/28"),
                 new Network("192.168.2.16/32")), listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.2.15"));
+    @Test
+    public void testRangeFromWithIPv4FourNetworks() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.2.15"));
         assertEquals(Arrays.asList(
                 new Network("192.168.1.32/27"),
                 new Network("192.168.1.64/26"),
                 new Network("192.168.1.128/25"),
                 new Network("192.168.2.0/28")), listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.3.16"));
+    @Test
+    public void testRangeFromWithIPv4SixNetworks() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.3.16"));
         assertEquals(Arrays.asList(
                 new Network("192.168.1.32/27"),
                 new Network("192.168.1.64/26"),
@@ -259,8 +290,11 @@ public class NetworkTest {
                 new Network("192.168.3.0/28"),
                 new Network("192.168.3.16/32")
         ), listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.2.32"));
+    @Test
+    public void testRangeFromWithIPv4FiveNetworks() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("192.168.1.32"), new IPv4("192.168.2.32"));
         assertEquals(Arrays.asList(
                 new Network("192.168.1.32/27"),
                 new Network("192.168.1.64/26"),
@@ -268,13 +302,19 @@ public class NetworkTest {
                 new Network("192.168.2.0/27"),
                 new Network("192.168.2.32/32")
         ), listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("255.255.255.254"), new IPv4("255.255.255.255"));
+    @Test
+    public void testRangeFromWithIPv4Slash31() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("255.255.255.254"), new IPv4("255.255.255.255"));
         assertEquals(Collections.singletonList(
                 new Network("255.255.255.254/31")
         ), listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("0.0.0.0"), new IPv4("255.255.255.254"));
+    @Test
+    public void testRangeFromWithIPv4Slash1to32() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("0.0.0.0"), new IPv4("255.255.255.254"));
         assertEquals(Arrays.asList(
                 new Network("0.0.0.0/1"),
                 new Network("128.0.0.0/2"),
@@ -309,40 +349,57 @@ public class NetworkTest {
                 new Network("255.255.255.252/31"),
                 new Network("255.255.255.254/32")
         ), listIPv4);
+    }
 
-
-        listIPv4 = Network.rangeFrom(new IPv4("0.0.0.0"), new IPv4("127.255.255.255"));
+    @Test
+    public void testRangeFromWithIPv4SlashOne() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("0.0.0.0"), new IPv4("127.255.255.255"));
         assertEquals(Collections.singletonList(
                 new Network("0.0.0.0/1")
         ), listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("1.1.1.32"), new IPv4("1.1.1.32"));
+    @Test
+    public void testRangeFromWithIPv4HostRoute() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("1.1.1.32"), new IPv4("1.1.1.32"));
         assertEquals(Collections.singletonList(
                 new Network("1.1.1.32/32")
         ), listIPv4);
+    }
 
-        listIPv4 = Network.rangeFrom(new IPv4("255.255.255.255"), new IPv4("255.255.255.255"));
+    @Test
+    public void testRangeFromWithIPv4BroadcastIP() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("255.255.255.255"), new IPv4("255.255.255.255"));
         assertEquals(Collections.singletonList(
                 new Network("255.255.255.255/32")
         ), listIPv4);
+    }
 
-
-        listIPv4 = Network.rangeFrom(new IPv4("0.0.0.0"), new IPv4("255.255.255.255"));
+    @Test
+    public void testRangeFromWithIPv4EveryIP() {
+        List<Network<IPv4>> listIPv4 = Network.rangeFrom(new IPv4("0.0.0.0"), new IPv4("255.255.255.255"));
         assertEquals(Collections.singletonList(
                 new Network("0.0.0.0/0")
         ), listIPv4);
+    }
 
-        /* IPV6 checks */
-        List<Network<IPv6>> listIPv6;
-        listIPv6 = Network.rangeFrom(new IPv6("2001:08d8:01fe:0001:0000:0000:0000:0000"),
+    @Test
+    public void testRangeFromWithIPv6First() {
+        List<Network<IPv6>> listIPv6 = Network.rangeFrom(new IPv6("2001:08d8:01fe:0001:0000:0000:0000:0000"),
                 new IPv6("2001:08d8:01fe:0001:ffff:ffff:ffff:ffff"));
         assertEquals(Collections.singletonList(new Network("2001:08d8:01fe:0001:0000:0000:0000:0000/64")), listIPv6);
+    }
 
-        listIPv6 = Network.rangeFrom(new IPv6("2001:08d8:01fe:0000:0000:0000:0000:0000"),
+    @Test
+    public void testRangeFromWithIPv6Second() {
+        List<Network<IPv6>> listIPv6 = Network.rangeFrom(new IPv6("2001:08d8:01fe:0000:0000:0000:0000:0000"),
                 new IPv6("2001:08d8:01fe:0001:ffff:ffff:ffff:ffff"));
         assertEquals(Collections.singletonList(new Network("2001:08d8:01fe:0000:0000:0000:0000:0000/63")), listIPv6);
+    }
 
-        listIPv6 = Network.rangeFrom(new IPv6("2001:08d8:01fe:0000:0000:0000:0000:0020"),
+    @Test
+    public void testRangeFromWithIPv6AndMultipleResults() {
+        List<Network<IPv6>> listIPv6 = Network.rangeFrom(new IPv6("2001:08d8:01fe:0000:0000:0000:0000:0020"),
                 new IPv6("2001:08d8:01fe:0000:0000:0000:0001:001f"));
         assertEquals(Arrays.asList(
                 new Network("2001:08d8:01fe:0000:0000:0000:0000:0020/123"),
