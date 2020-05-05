@@ -142,14 +142,14 @@ public class BitsAndBytesTest {
     @Test
     public void toHexDigitWithNegative() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            char actual = BitsAndBytes.toHexDigit(-1);
+            BitsAndBytes.toHexDigit(-1);
         });
     }
 
     @Test
     public void toHexDigitWith16() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            char actual = BitsAndBytes.toHexDigit(16);
+            BitsAndBytes.toHexDigit(16);
         });
     }
 

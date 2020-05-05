@@ -191,7 +191,7 @@ public final class IPParsers {
                 throw throwOutOfRange(component, address);
             }
             if (expectNumber) {
-                if (component.equals(":")) {
+                if (":".equals(component)) {
                     throw throwMalformed(address);
                 }
                 int val = Integer.parseInt(component, HEX_RADIX);
@@ -200,7 +200,7 @@ public final class IPParsers {
                 }
                 result[i++] = (byte) (val >>> BITS_PER_BYTE);
                 result[i++] = (byte) val;
-            } else if (!component.equals(":")) {
+            } else if (!":".equals(component)) {
                 throw throwMalformed(address);
             }
             expectNumber = !expectNumber;
