@@ -1,5 +1,6 @@
 Commons Network
 ============
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/62af5e13ff6448c4b7690968ffc8ae49)](https://app.codacy.com/manual/Stephan-FuhrmannOrganization/commons-network?utm_source=github.com&utm_medium=referral&utm_content=1and1/commons-network&utm_campaign=Badge_Grade_Settings)
 [![Travis CI](https://travis-ci.org/1and1/commons-network.svg?branch=master)](https://travis-ci.org/1and1/commons-network)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.oneandone/commons-network/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.oneandone/commons-network)
 [![javadoc](https://javadoc.io/badge2/com.oneandone/commons-network/javadoc.svg)](https://javadoc.io/doc/com.oneandone/commons-network)
