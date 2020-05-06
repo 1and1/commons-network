@@ -21,6 +21,7 @@ public final class IPFormats {
     /** IP formatter in dotted decimal notation, like {@code 172.20.0.11}.
      * @see <a href="https://en.wikipedia.org/wiki/Dot-decimal_notation">
      *     Dot-decimal notation</a>
+     * @see IPParsers#DOTTED_DECIMAL
      * */
     public static final AddressFormat<IPv4> DOTTED_DECIMAL =
             new AbstractAddressFormat<IPv4>() {
