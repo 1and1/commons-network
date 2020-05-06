@@ -7,13 +7,6 @@ package com.ionos.network.commons.address;
  * */
 public final class MACParsers {
 
-    /**
-     * Private constructor. No instance allowed.
-     */
-    private MACParsers() {
-        // no instance allowed
-    }
-
     private abstract static class AbstractMacParser
             implements AddressParser<MAC> {
         public MAC parse(final String address) {
@@ -62,4 +55,11 @@ public final class MACParsers {
                     4,
                     MAC::new,
                     MAC.MAC_LENGTH);
+
+    /**
+     * Private constructor. No instance allowed.
+     */
+    private MACParsers() {
+        // no instance allowed
+    }
 }

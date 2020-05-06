@@ -38,6 +38,15 @@ final class BitsAndBytes {
     /** The bits to mask a nibble. */
     static final int BIT_MASK_NIBBLE = 0xf;
 
+    /** Maximum decimal value for one digit. */
+    static final int DECIMAL_MAX_DIGIT = 9;
+
+    /** Hexadecimal value of 'A'. */
+    static final int HEXADECIMAL_A_VALUE = 10;
+
+    /** Maximum value for a hexadecimal digit. */
+    static final int HEXADECIMAL_MAX_DIGIT = 15;
+
     /** No instance allowed. */
     private BitsAndBytes() {
     }
@@ -146,13 +155,6 @@ final class BitsAndBytes {
         }
         to.append(BitsAndBytes.toHexDigit(lower & BIT_MASK_NIBBLE));
     }
-
-    /** Maximum decimal value for one digit. */
-    static final int DECIMAL_MAX_DIGIT = 9;
-    /** Hexadecimal value of 'A'. */
-    static final int HEXADECIMAL_A_VALUE = 10;
-    /** Maximum value for a hexadecimal digit. */
-    static final int HEXADECIMAL_MAX_DIGIT = 15;
 
     /** Convert the passed in value to a hex digit.
      * @param value a value between 0 and 15 (inclusive).

@@ -642,7 +642,7 @@ public final class Network<T extends IP<T>>
         incrementBytes[byteOfs] = (byte) (1 << bitOfs);
 
         List<Network<T>> resultCollection =
-                new java.util.ArrayList<>(1 << iterateBitLength);
+                new ArrayList<>(1 << iterateBitLength);
 
         for (T curIP = getAddress();
              contains(curIP);

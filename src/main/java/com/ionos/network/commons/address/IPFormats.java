@@ -78,35 +78,6 @@ public final class IPFormats {
             COLON_SEPARATED_ZEROED_HEXTETS =
             new HexadecimalAddressFormat<>(':', 4);
 
-    /** Find the maximum run of zero bytes in the address.
-     * @param address the address to find the maximum sequence in.
-     * @return a two-element array of offset and length in bytes. Can both be
-     * {@code -1} if no zero bnytes are found.
-     * */
-    private static int[] findCompressionOffsetAndLength(final byte[] address) {
-        // offset of longest 0-run
-        int maxOfs = -1;
-        // length of longest 0-run
-        int maxLen = -1;
-        for (int i = 0; i < address.length; i += 2) {
-            int curLen = 0;
-            for (int j = 0; i + j < address.length; j += 2) {
-                if (address[i + j] == 0
-                        && address[i + j + 1] == 0) {
-                    curLen += 2;
-                } else {
-                    break;
-                }
-            }
-
-            if (curLen > maxLen) {
-                maxOfs = i;
-                maxLen = curLen;
-            }
-        }
-        return new int[] {maxOfs, maxLen};
-    }
-
     /** Canonical IPv6 formatter. This is the compressed
      * colon-separated notation in lower case.
      * Example: {@code ::ffff:1111:5555:f:44:aa:0}.
@@ -195,4 +166,33 @@ public final class IPFormats {
                         return toAppendTo;
                     }
             };
+
+    /** Find the maximum run of zero bytes in the address.
+     * @param address the address to find the maximum sequence in.
+     * @return a two-element array of offset and length in bytes. Can both be
+     * {@code -1} if no zero bnytes are found.
+     * */
+    private static int[] findCompressionOffsetAndLength(final byte[] address) {
+        // offset of longest 0-run
+        int maxOfs = -1;
+        // length of longest 0-run
+        int maxLen = -1;
+        for (int i = 0; i < address.length; i += 2) {
+            int curLen = 0;
+            for (int j = 0; i + j < address.length; j += 2) {
+                if (address[i + j] == 0
+                        && address[i + j + 1] == 0) {
+                    curLen += 2;
+                } else {
+                    break;
+                }
+            }
+
+            if (curLen > maxLen) {
+                maxOfs = i;
+                maxLen = curLen;
+            }
+        }
+        return new int[] {maxOfs, maxLen};
+    }
 }
