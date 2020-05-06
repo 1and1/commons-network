@@ -21,7 +21,12 @@ public final class HexadecimalAddressFormat<T extends Address>
     /**
      * Constructor of an instance.
      * @param inSeparator the character to separate the parts with.
+     *                    Example: {@code ab:cd:ef:12:34:45}
+     *                    has the separator character {@code ':'}.
      * @param inSeparatorInterval the number of hex digits that form the parts.
+     *                            Example:
+     *                            {@code ab:cd:ef:12:34:45} has the
+     *                            separator interval {@code 2}.
      * @throws IllegalArgumentException if the
      * {@code separatorInterval is equal or less than 0}.
      */

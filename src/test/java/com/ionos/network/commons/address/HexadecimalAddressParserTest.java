@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** JUnit test for {@link HexadecimalAddressParser}.
  * @author Stephan Fuhrmann
@@ -31,7 +30,7 @@ public class HexadecimalAddressParserTest {
     public void parseWithWrongLengthAndMac() {
         AddressParser<MAC> parser = new HexadecimalAddressParser<MAC>(':', 2, adr -> new MAC(adr), 5);
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            MAC actual = parser.parse("11:22:33:44:55:66");
+            parser.parse("11:22:33:44:55:66");
         });
     }
 
@@ -39,14 +38,14 @@ public class HexadecimalAddressParserTest {
     public void parseWithWrongSeparatorAndMac() {
         AddressParser<MAC> parser = new HexadecimalAddressParser<MAC>('*', 2, adr -> new MAC(adr), 6);
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            MAC actual = parser.parse("11:22:33:44:55:66");
+            parser.parse("11:22:33:44:55:66");
         });
     }
 
     @Test
     public void parseWithWrongSeparatorinterval() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            AddressParser<MAC> parser = new HexadecimalAddressParser<MAC>('*', 0, adr -> new MAC(adr), 6);
+            new HexadecimalAddressParser<MAC>('*', 0, adr -> new MAC(adr), 6);
         });
     }
 }

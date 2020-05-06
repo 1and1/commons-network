@@ -20,33 +20,18 @@ public final class EUI64 {
     private static final IPv6 LINK_LOCAL =
             IPParsers.IPV6.parse("FE80::"); //NOSONAR
 
-    /** Private constructor preventing instantiation. */
-    private EUI64() {
-    }
-
-    /**
-     * Converts the given MAC into a link local address using EUI-64
-     * conversion and IP prefix {@link #LINK_LOCAL}.
-     *
-     * @param mac the MAC address to be taken.
-     * @return a new IPv6 Address calculated from the MAC address
-     * using EUI-64 mechanism
-     * @throws NullPointerException     if one of the parameters is null
-     * @throws IllegalArgumentException if the IP address is not IPv6
-     */
-    public static IPv6 convertMac(final MAC mac) {
-        return convertMac(mac, LINK_LOCAL);
-    }
-
     /** Length of the network prefix. */
     private static final int PREFIX_LENGTH = 8;
 
     /** Offset of the OUI part in the MAC address. */
     private static final int MAC_OUI_OFFSET = 0;
+
     /** Offset of the NIC part in the MAC address. */
     private static final int MAC_NIC_OFFSET = 3;
+
     /** Length of the OUI part in the MAC address. */
     private static final int MAC_OUI_LENGTH = 3;
+
     /** Length of the NIC part in the MAC address. */
     private static final int MAC_NIC_LENGTH = 3;
 
@@ -73,6 +58,24 @@ public final class EUI64 {
 
     /** Special word in EUI 64. */
     private static final int EUI_SPECIAL = 0xfffe;
+
+    /** Private constructor preventing instantiation. */
+    private EUI64() {
+    }
+
+    /**
+     * Converts the given MAC into a link local address using EUI-64
+     * conversion and IP prefix {@link #LINK_LOCAL}.
+     *
+     * @param mac the MAC address to be taken.
+     * @return a new IPv6 Address calculated from the MAC address
+     * using EUI-64 mechanism
+     * @throws NullPointerException     if one of the parameters is null
+     * @throws IllegalArgumentException if the IP address is not IPv6
+     */
+    public static IPv6 convertMac(final MAC mac) {
+        return convertMac(mac, LINK_LOCAL);
+    }
 
     /**
      * Converts the given MAC into a link local address using EUI-64 conversion.

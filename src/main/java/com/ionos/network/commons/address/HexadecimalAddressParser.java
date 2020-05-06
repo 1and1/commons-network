@@ -29,9 +29,16 @@ public final class HexadecimalAddressParser<T extends Address>
     /**
      * Constructor of an instance.
      * @param inSeparator the character to separate the parts with.
+     *                    Example: {@code ':'}
+     *                    is the separator for MAC addresses.
      * @param inSeparatorInterval the number of hex digits that form the parts.
+     *                            Example:
+     *                            {@code 2} is the interval for fixed-length MAC
+     *                            addresses if you look
+     *                            at {@code ab:cd:ef:12:34:45}.
      * @param inFactory a factory to create a new instance of {@code T}
      *                  from a parsed byte array.
+     *                  Example: {@code MAC::new}.
      * @param inAddressLength the length of an address array in bytes.
      * @throws NullPointerException if {@code inFactory} is {@code null}.
      * @throws IllegalArgumentException if {@code inSeparatorInterval}
