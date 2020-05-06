@@ -2,7 +2,7 @@ Commons Network
 ============
 [![Travis CI](https://travis-ci.org/1and1/commons-network.svg?branch=master)](https://travis-ci.org/1and1/commons-network)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1d90f8dfca404cedbc74cb9f11b702ea)](https://www.codacy.com/manual/Stephan-FuhrmannOrganization/commons-network?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=1and1/commons-network&amp;utm_campaign=Badge_Grade)
-[![Coverage Status](https://coveralls.io/repos/github/1and1/commons-network/badge.svg)](https://coveralls.io/github/1and1/commons-network) 
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/1d90f8dfca404cedbc74cb9f11b702ea)](https://www.codacy.com/manual/Stephan-FuhrmannOrganization/commons-network?utm_source=github.com&utm_medium=referral&utm_content=1and1/commons-network&utm_campaign=Badge_Coverage)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.oneandone/commons-network/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.oneandone/commons-network)
 [![javadoc](https://javadoc.io/badge2/com.oneandone/commons-network/javadoc.svg)](https://javadoc.io/doc/com.oneandone/commons-network)
 [![ReleaseDate](https://img.shields.io/github/release-date/1and1/commons-network)](https://github.com/1and1/commons-network/releases)
