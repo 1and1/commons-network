@@ -100,20 +100,25 @@ public final class IPFormats {
                     int maxOfs = -1;
                     // length of longest 0-run
                     int maxLen = -1;
+                    // start offset of current run
+                    int curOfs = -1;
+                    // length of current run
+                    int curLen = 0;
                     for (int i = 0; i < address.length; i += 2) {
-                        int curLen = 0;
-                        for (int j = 0; i + j < address.length; j += 2) {
-                            if (address[i + j] == 0
-                                    && address[i + j + 1] == 0) {
-                                curLen += 2;
-                            } else {
-                                break;
+                        if (address[i] == 0
+                                    && address[i + 1] == 0) {
+                            if (curOfs == -1) {
+                                curOfs = i;
                             }
-                        }
+                            curLen += 2;
 
-                        if (curLen > maxLen) {
-                            maxOfs = i;
-                            maxLen = curLen;
+                            if (curLen > maxLen) {
+                                maxOfs = curOfs;
+                                maxLen = curLen;
+                            }
+                        } else {
+                           curLen = 0;
+                           curOfs = -1;
                         }
                     }
                     return new int[] {maxOfs, maxLen};
