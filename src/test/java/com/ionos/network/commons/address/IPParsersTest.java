@@ -60,7 +60,7 @@ public class IPParsersTest {
 
     @Test
     public void testParseStringIPV6Type3() {
-        IP ip = IPParsers.RFC4291_3_FULL.parse("0000:1111:2222:3333:4444:5555:127.128.129.130");
+        IP<?> ip = IPParsers.RFC4291_3_FULL.parse("0000:1111:2222:3333:4444:5555:127.128.129.130");
         assertArrayEquals(new byte[]{0x00, 0x00, 0x11, 0x11, 0x22, 0x22, 0x33, 0x33, 0x44, 0x44, 0x55, 0x55, 0x7f, (byte) 0x80, (byte) 0x81, (byte) 0x82}, ip.getBytes());
         ip = IPParsers.RFC4291_3_FULL.parse("0000:1111:2222:3333:4444:5556:127.1.1.255");
         assertArrayEquals(new byte[]{0x00, 0x00, 0x11, 0x11, 0x22, 0x22, 0x33, 0x33, 0x44, 0x44, 0x55, 0x56, 0x7f, (byte) 0x01, (byte) 0x1, (byte) 0xff}, ip.getBytes());
@@ -110,7 +110,7 @@ public class IPParsersTest {
 
     @Test
     public void testParseStringIPV6() {
-        IP ip = IPParsers.RFC4291_1.parse("0000:1111:2222:3333:4444:5555:6666:7777");
+        IP<?> ip = IPParsers.RFC4291_1.parse("0000:1111:2222:3333:4444:5555:6666:7777");
         assertArrayEquals(new byte[]{0x00, 0x00, 0x11, 0x11, 0x22, 0x22, 0x33, 0x33, 0x44, 0x44, 0x55, 0x55, 0x66, 0x66, 0x77, 0x77}, ip.getBytes());
 
         // zero
