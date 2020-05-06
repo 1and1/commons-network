@@ -14,7 +14,7 @@ os:
 install: mvn install
 
 cache:
-    directories:
+  directories:
     - $HOME/.m2
 
 
