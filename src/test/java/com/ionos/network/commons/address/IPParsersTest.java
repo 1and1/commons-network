@@ -188,7 +188,23 @@ public class IPParsersTest {
         });
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            IPParsers.RFC4291_2.parse("12345:::");
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            IPParsers.RFC4291_2.parse("foo");
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            IPParsers.IPV6.parse("foo");
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             IPParsers.DEFAULT.parse(":::1");
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            IPParsers.DEFAULT.parse("hello");
         });
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {

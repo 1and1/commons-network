@@ -28,10 +28,9 @@ public final class IPParsers {
                 boolean dot = address.contains(".");
                 if (dot) {
                     return DOTTED_DECIMAL;
+                } else {
+                    throw throwAddressFormatUnknown(address);
                 }
-            }
-            if (result == null) {
-                throw throwAddressFormatUnknown(address);
             }
             return result;
         }
