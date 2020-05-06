@@ -19,5 +19,5 @@ cache:
 
 
 after_success:
-  - mvn clean test jacoco:report coveralls:report
+  - mvn clean test jacoco:report
   - bash <(curl -Ls https://coverage.codacy.com/get.sh)
