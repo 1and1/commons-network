@@ -38,6 +38,12 @@ public class IPFormatsTest {
     @Test
     public void testRFC_5952() {
         // now to IPv6
+        // long 0 sequence is left
+        assertEquals("a::a:0:0:c",
+                RFC_5952.format(new IPv6("a::a:0:0:c")));
+        // long 0 sequence is right
+        assertEquals("a:0:0:a::c",
+                RFC_5952.format(new IPv6("a:0:0:a::c")));
         // right compression
         assertEquals("abcd:1234:ffff:1234:9999:1234::",
                 RFC_5952.format(new IPv6("abcd:1234:ffff:1234:9999:1234:0000:0000")));
