@@ -90,10 +90,12 @@ public final class IPFormats {
             new AbstractAddressFormat<IPv6>() {
                 /** Find the maximum run of zero bytes in the address.
                  * @param address the address to find the maximum sequence in.
-                 * @return a two-element array of offset and length in bytes. Can both be
+                 * @return a two-element array of offset and length in bytes.
+                 * Can both be
                  * {@code -1} if no zero bnytes are found.
                  * */
-                private int[] findCompressionOffsetAndLength(final byte[] address) {
+                private int[] findCompressionOffsetAndLength(
+                        final byte[] address) {
                     // offset of longest 0-run
                     int maxOfs = -1;
                     // length of longest 0-run
