@@ -7,10 +7,6 @@ import static com.ionos.network.commons.address.BitsAndBytes.BYTE_MASK;
 /** Provides address {@linkplain Comparator} instances. */
 public final class AddressComparators {
 
-    private AddressComparators() {
-        // no instance
-    }
-
     /**
      * Compares the addresses component by component. Each component is
      * regarded as being an <em>unsigned</em> byte.
@@ -34,4 +30,8 @@ public final class AddressComparators {
                 }
                 return 0;
             };
+
+    private AddressComparators() {
+        // no instance
+    }
 }

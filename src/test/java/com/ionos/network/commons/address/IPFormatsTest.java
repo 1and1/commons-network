@@ -1,7 +1,10 @@
 package com.ionos.network.commons.address;
 
 import org.junit.jupiter.api.Test;
-import static com.ionos.network.commons.address.IPFormats.*;
+import static com.ionos.network.commons.address.IPFormats.DOTTED_DECIMAL;
+import static com.ionos.network.commons.address.IPFormats.RFC_5952;
+import static com.ionos.network.commons.address.IPFormats.COLON_SEPARATED_ZEROED_HEXTETS;
+import static com.ionos.network.commons.address.IPFormats.SYSTEM_ID_NOTATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /** JUnit test for {@link IPFormats}.

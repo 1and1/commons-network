@@ -13,11 +13,6 @@ import static com.ionos.network.commons.address.BitsAndBytes.appendHex;
  **/
 public final class IPFormats {
 
-    /** No instance allowed. */
-    private IPFormats() {
-        // no instance allowed
-    }
-
     /** IP formatter in dotted decimal notation, like {@code 172.20.0.11}.
      * @see <a href="https://en.wikipedia.org/wiki/Dot-decimal_notation">
      *     Dot-decimal notation</a>
@@ -203,4 +198,9 @@ public final class IPFormats {
                         return toAppendTo;
                     }
             };
+
+    /** No instance allowed. */
+    private IPFormats() {
+        // no instance allowed
+    }
 }
