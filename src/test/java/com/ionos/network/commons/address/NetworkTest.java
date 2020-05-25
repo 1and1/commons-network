@@ -628,10 +628,16 @@ public class NetworkTest {
         assertEquals(256, network.stream().count());
     }
 
-    // this test is disabled since in Java 8 this can take very long
+
     @Test
-    @Disabled
     public void testStreamWithBigCount() {
+        String javaVersionString = System.getProperty("java.version");
+
+        // disabled  for Java 8-9 since this can take very long
+        if (javaVersionString.matches("1\\.[4-9]\\..*")) {
+            return;
+        }
+
         Network<IPv6> network = new Network<>(new IPv6("::"), 64);
         assertEquals(Long.MAX_VALUE, network.stream().count());
     }
