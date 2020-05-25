@@ -42,16 +42,20 @@ public abstract class IP<T extends IP<T>>
     /**
      * Gets the IP version used in the given IP address class.
      * @param ipClass the class to determine the IPversion for.
+     * @param <U> the IP class that the passed-in class is in.
      * @return the IP version of this address.
      */
-    public static <U extends IP<U>> IPVersion getIPVersion(Class<U> ipClass) {
+    public static <U extends IP<U>> IPVersion getIPVersion(
+            final Class<U> ipClass) {
         IPVersion result;
         if (IPv4.class.isAssignableFrom(ipClass)) {
             result = IPVersion.IPV4;
         } else if (IPv6.class.isAssignableFrom(ipClass)) {
             result = IPVersion.IPV6;
         } else {
-            throw new IllegalArgumentException("Class not suitable for IP addresses: " + ipClass.getCanonicalName());
+            throw new IllegalArgumentException(
+                    "Class not suitable for IP addresses: "
+                    + ipClass.getCanonicalName());
         }
         return result;
     }

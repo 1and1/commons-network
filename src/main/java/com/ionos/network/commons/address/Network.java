@@ -272,6 +272,8 @@ public final class Network<T extends IP<T>>
      * of network bits.
      * @param ipClass the IP class to get the inverse network mask for.
      * @param prefix    the bit length of the prefix.
+     * @param <U> the IP class to get the inverse subnet mask for.
+     *           Can be {@linkplain IPv4} or {@linkplain IPv6}.
      * @return the inverse network mask as an IP, for
      * example {@code 0.0.0.255 }.
      */
@@ -523,7 +525,7 @@ public final class Network<T extends IP<T>>
      * Returns the network mask of {@code this} network.
      *
      * @return the network mask of {@code this} network as an {@link IP} object.
-     * @see #getSubnetMask(Class, int) 
+     * @see #getSubnetMask(Class, int)
      */
     public T getSubnetMask() {
         return getSubnetMask((Class<T>) getAddress().getClass(), getPrefix());
