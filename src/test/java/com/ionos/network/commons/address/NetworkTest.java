@@ -512,8 +512,7 @@ public class NetworkTest {
                         new Network<>("172.16.0.5/24")));
         assertEquals(
                 Arrays.asList(
-                        new Network<IPv4>("172.16.0.0/23"),
-                        new Network<IPv4>("172.16.0.5/24")),
+                        new Network<IPv4>("172.16.0.0/24")),
                 list);
 
         list = Network.mergeNeighbors(
@@ -523,8 +522,7 @@ public class NetworkTest {
                         new Network<>("172.16.0.5/24")));
         assertEquals(
                 Arrays.asList(
-                        new Network<IPv4>("172.16.0.4/23"),
-                        new Network<IPv4>("172.16.0.100/24")),
+                        new Network<IPv4>("172.16.0.0/24")),
                 list);
 
         list = Network.mergeNeighbors(
@@ -534,8 +532,7 @@ public class NetworkTest {
                         new Network<>("172.16.0.17/24")));
         assertEquals(
                 Arrays.asList(
-                        new Network<IPv4>("172.16.0.0/20"),
-                        new Network<>("172.16.0.16/23")),
+                        new Network<IPv4>("172.16.0.0/20")),
                 list);
 
         list = Network.mergeNeighbors(

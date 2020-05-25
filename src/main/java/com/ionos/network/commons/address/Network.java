@@ -484,8 +484,10 @@ public final class Network<T extends IP<T>>
     }
 
     /**
-     * Merges a list of networks joining neighbor networks of the same size
-     * to one bigger network. Example: {@code 192.168.0.0/25}
+     * Merges a list of networks joining neighbor networks.
+     * Joining happens when either two same-sized neighbors
+     * are in the list, or when one network contains the other.
+     * Example: {@code 192.168.0.0/25}
      * and {@code 192.168.0.128/25} will
      * be merged to {@code 192.168.0.0/24}.
      *
@@ -496,29 +498,50 @@ public final class Network<T extends IP<T>>
      */
     public static <U extends IP<U>> List<Network<U>> mergeNeighbors(
             final Collection<Network<U>> networks) {
-        final List<Network<U>> result = new ArrayList<>(networks);
-        result.sort(NETWORK_START_COMPARATOR);
-        for (int i = 0; i < result.size() - 1; i++) {
-            Network<U> left = result.get(i);
-            Network<U> right = result.get(i + 1);
+        List<Network<U>> from = new ArrayList<>(networks.size());
+        final List<Network<U>> to = new ArrayList<>(networks);
+        to.sort(NETWORK_START_COMPARATOR);
+        boolean reduction;
+        do {
+            from.clear();
+            from.addAll(to);
+            to.clear();
+            reduction = false;
+            for (int i = 0; i < from.size(); i++) {
+                Network<U> left = from.get(i);
+                boolean merged = false;
+                if (i + 1 < from.size()) {
+                    Network<U> right = from.get(i + 1);
 
-            if (left.getPrefix() != right.getPrefix()) {
-                continue;
-            }
-            Network<U> joint = new Network<>(left.getAddress(),
-                    left.getPrefix() - 1);
-            if (joint.contains(left) && joint.contains(right)) {
-                result.remove(i + 1);
-                result.remove(i);
-                result.add(i, joint);
-                // rescan this so we can join recursively
-                i -= 2;
-                if (i < -1) {
-                    i = -1;
+                    // left contains right
+                    if (left.getPrefix() <= right.getPrefix()
+                            && left.contains(right)) {
+                        to.add(left);
+                        merged = true;
+                    }
+
+                    if (!merged && left.getPrefix() == right.getPrefix()
+                            && left.getBroadcast()
+                            .add(1).equals(right.ipAddress)) {
+                        Network<U> joint = new Network<>(left.getAddress(),
+                                left.getPrefix() - 1);
+                        if (joint.contains(left) && joint.contains(right)) {
+                            to.add(joint);
+                            merged = true;
+                        }
+                    }
+                }
+
+                if (merged) {
+                    from.remove(i + 1);
+                    reduction = true;
+                } else {
+                    to.add(left);
                 }
             }
-        }
-        return result;
+
+        } while (reduction);
+        return to;
     }
 
     /**
