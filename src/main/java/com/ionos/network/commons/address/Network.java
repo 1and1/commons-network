@@ -533,7 +533,7 @@ public final class Network<T extends IP<T>>
                 }
 
                 if (merged) {
-                    from.remove(i + 1);
+                    from.remove(i + 1); //NOSONAR
                     reduction = true;
                 } else {
                     to.add(left);
