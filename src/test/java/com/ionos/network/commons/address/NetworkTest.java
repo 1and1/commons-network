@@ -554,19 +554,19 @@ public class NetworkTest {
 
     @Test
     public void testGetSubnetMask() {
-        assertEquals(new IPv4("255.255.255.0"), Network.getSubnetMask(IPVersion.IPV4, 24));
-        assertEquals(new IPv6("ffff:ff00:0:0:0:0:0:0"), Network.getSubnetMask(IPVersion.IPV6, 24));
+        assertEquals(new IPv4("255.255.255.0"), Network.getSubnetMask(IPv4.class, 24));
+        assertEquals(new IPv6("ffff:ff00:0:0:0:0:0:0"), Network.getSubnetMask(IPv6.class, 24));
     }
 
     @Test
     public void testGetInverseSubnetMask() {
-        assertEquals(new IPv4("0.0.0.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 24));
-        assertEquals(new IPv6("0:ff:ffff:ffff:ffff:ffff:ffff:ffff"), Network.getInverseSubnetMask(IPVersion.IPV6, 24));
-        assertEquals(new IPv4("255.255.255.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 0));
-        assertEquals(new IPv4("0.255.255.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 8));
-        assertEquals(new IPv4("0.0.255.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 16));
-        assertEquals(new IPv4("0.0.0.255"), Network.getInverseSubnetMask(IPVersion.IPV4, 24));
-        assertEquals(new IPv4("0.0.0.0"), Network.getInverseSubnetMask(IPVersion.IPV4, 32));
+        assertEquals(new IPv4("0.0.0.255"), Network.getInverseSubnetMask(IPv4.class, 24));
+        assertEquals(new IPv6("0:ff:ffff:ffff:ffff:ffff:ffff:ffff"), Network.getInverseSubnetMask(IPv6.class, 24));
+        assertEquals(new IPv4("255.255.255.255"), Network.getInverseSubnetMask(IPv4.class, 0));
+        assertEquals(new IPv4("0.255.255.255"), Network.getInverseSubnetMask(IPv4.class, 8));
+        assertEquals(new IPv4("0.0.255.255"), Network.getInverseSubnetMask(IPv4.class, 16));
+        assertEquals(new IPv4("0.0.0.255"), Network.getInverseSubnetMask(IPv4.class, 24));
+        assertEquals(new IPv4("0.0.0.0"), Network.getInverseSubnetMask(IPv4.class, 32));
     }
 
     @Test

@@ -33,7 +33,7 @@ import static com.ionos.network.commons.address.BitsAndBytes.BITS_PER_BYTE;
  * <li>{@code 255.255.255.0} is the subnet mask for this network returned
  * by {@link #getSubnetMask()}</li>
  * <li>{@code 0.0.0.255} is the inverse network mask for this network,
- * see {@link #getInverseSubnetMask(IPVersion, int)}</li>
+ * see {@link #getInverseSubnetMask(Class, int)}</li>
  * </ul>
  *
  * Objects of the Network class are immutable!
@@ -251,15 +251,18 @@ public final class Network<T extends IP<T>>
 
     /**
      * Get the network mask for a IP version and a number of network bits.
-     * @param version the IP version to get the network mask for.
+     * @param ipClass the IP class to get the network mask for.
      * @param prefix    the bit length of the prefix.
+     * @param <U> the IP class to get the subnet mask for.
+     *           Can be {@linkplain IPv4} or {@linkplain IPv6}.
      * @return the network mask as an IP, for example {@code 255.255.255.0 }.
      */
-    public static IP<?> getSubnetMask(
-            final IPVersion version,
+    public static <U extends IP<U>> U getSubnetMask(
+            final Class<U> ipClass,
             final int prefix) {
-        Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
-        return getNetworkMaskData(
+        Objects.requireNonNull(ipClass, ERROR_IP_VERSION_NOT_NULL);
+        IPVersion version = IP.getIPVersion(ipClass);
+        return (U) getNetworkMaskData(
                 version,
                 requireValidPrefix(version, prefix)).subnetMask;
     }
@@ -267,15 +270,17 @@ public final class Network<T extends IP<T>>
     /**
      * Get the inverse network mask for a IP version and a number
      * of network bits.
-     * @param version the IP version to get the network mask for.
+     * @param ipClass the IP class to get the inverse network mask for.
      * @param prefix    the bit length of the prefix.
      * @return the inverse network mask as an IP, for
      * example {@code 0.0.0.255 }.
      */
-    public static IP<?> getInverseSubnetMask(final IPVersion version,
+    public static <U extends IP<U>> U getInverseSubnetMask(
+                                          final Class<U> ipClass,
                                           final int prefix) {
-        Objects.requireNonNull(version, ERROR_IP_VERSION_NOT_NULL);
-        return getNetworkMaskData(
+        Objects.requireNonNull(ipClass, ERROR_IP_VERSION_NOT_NULL);
+        IPVersion version = IP.getIPVersion(ipClass);
+        return (U) getNetworkMaskData(
                 version,
                 requireValidPrefix(version, prefix)).inverseSubnetMask;
     }
@@ -518,10 +523,10 @@ public final class Network<T extends IP<T>>
      * Returns the network mask of {@code this} network.
      *
      * @return the network mask of {@code this} network as an {@link IP} object.
-     * @see #getSubnetMask(IPVersion, int)
+     * @see #getSubnetMask(Class, int) 
      */
     public T getSubnetMask() {
-        return (T) getSubnetMask(getAddress().getIPVersion(), getPrefix());
+        return getSubnetMask((Class<T>) getAddress().getClass(), getPrefix());
     }
 
     /**
