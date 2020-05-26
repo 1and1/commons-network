@@ -180,7 +180,7 @@ public class NetworkTest {
     }
 
     @Test
-    public void testSplitMiddle() {
+    public void testSplitWithSlash14ToSlash16() {
         Network<IPv4> n;
         List<Network<IPv4>> test;
 
@@ -195,7 +195,7 @@ public class NetworkTest {
     }
 
     @Test
-    public void testSplitEnd() {
+    public void testSplitWithSlash31ToSlash32() {
         Network<IPv4> n;
         List<Network<IPv4>> test;
 
@@ -208,11 +208,10 @@ public class NetworkTest {
     }
 
     @Test
-    public void testSplitEnd2() {
+    public void testSplitEndWithNoChange() {
         Network<IPv4> n;
         List<Network<IPv4>> test;
 
-        // two IPs
         n = new Network<>(new IPv4("192.168.2.16"), 32);
         test = n.split(32);
         assertEquals(1, test.size());

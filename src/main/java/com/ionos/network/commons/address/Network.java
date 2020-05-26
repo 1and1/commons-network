@@ -517,10 +517,13 @@ public final class Network<T extends IP<T>>
     /** Do one reduction step over the list of networks.
      * @param from the input list of networks. Read-only. Needs to be sorted.
      * @param to the empty list of network that gets filled by this method.
+     * @param <U> the IP type of the networks processed.
      * @return {@code true} if the list from was reduced somehow.
      * @see #mergeNeighbors(Collection)
      * */
-    private static <U extends IP<U>> boolean mergeNeighborsTryReduce(List<Network<U>> from, List<Network<U>> to) {
+    private static <U extends IP<U>> boolean mergeNeighborsTryReduce(
+            final List<Network<U>> from,
+            final List<Network<U>> to) {
         boolean reduction = false;
         boolean skip = false;
         for (int i = 0; i < from.size(); i++) {
@@ -664,32 +667,36 @@ public final class Network<T extends IP<T>>
     /**
      * Split the network up into smaller parts.
      *
-     * @param length the prefix length of the smaller parts in bits,
+     * @param targetPrefix the target prefix length of the smaller
+     *               parts in bits,
      *               must be smaller than the original size.
      *               Example: A network with a prefix of
      *               24 can be split into two networks
      *               of the size 25 or
      *               four networks of the size 26.
-     * @return a collection of networks.
+     * @return a collection of networks, each being a
+     * {@code IP/targetPrefix} network.
+     * @throws IllegalArgumentException if the targetPrefix parameter
+     * does not match the ip version.
      */
-    public List<Network<T>> split(final int length) {
+    public List<Network<T>> split(final int targetPrefix) {
         // +++ stfu 2007-10-30: this should return an iterator instead
         IPVersion ipVersion = getIPVersion();
 
-        if (prefix > length) {
+        if (prefix > targetPrefix) {
             throw new IllegalArgumentException(
                     "Splitting not allowed to bigger networks");
         }
-        if (length < 0 || length > ipVersion.getAddressBits()) {
+        if (targetPrefix < 0 || targetPrefix > ipVersion.getAddressBits()) {
             throw new IllegalArgumentException(
                     "Too big for this kind of address type");
         }
-        int iterateBitLength = length - prefix;
+        int iterateBitLength = targetPrefix - prefix;
         byte[] incrementBytes = new byte[ipVersion.getAddressBytes()];
         int byteOfs = incrementBytes.length - 1
-                - ((ipVersion.getAddressBits() - length)
+                - ((ipVersion.getAddressBits() - targetPrefix)
                 >> BitsAndBytes.BIT_SHIFT_BYTE);
-        int bitOfs = (ipVersion.getAddressBits() - length)
+        int bitOfs = (ipVersion.getAddressBits() - targetPrefix)
                 & BitsAndBytes.BIT_MASK_TRIPLE;
         incrementBytes[byteOfs] = (byte) (1 << bitOfs);
 
@@ -699,8 +706,8 @@ public final class Network<T extends IP<T>>
         for (T curIP = getAddress();
              contains(curIP);
              curIP = curIP.add(incrementBytes)) {
-            Network<T> test = new Network<>(curIP, length);
-            resultCollection.add(test);
+            Network<T> current = new Network<>(curIP, targetPrefix);
+            resultCollection.add(current);
         }
 
         return resultCollection;
