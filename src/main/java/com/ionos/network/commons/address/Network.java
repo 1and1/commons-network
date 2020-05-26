@@ -498,50 +498,72 @@ public final class Network<T extends IP<T>>
      */
     public static <U extends IP<U>> List<Network<U>> mergeNeighbors(
             final Collection<Network<U>> networks) {
-        List<Network<U>> from = new ArrayList<>(networks.size());
-        final List<Network<U>> to = new ArrayList<>(networks);
-        to.sort(NETWORK_START_COMPARATOR);
+        final List<Network<U>> from = new ArrayList<>(networks);
+        final List<Network<U>> to = new ArrayList<>(networks.size());
+        from.sort(NETWORK_START_COMPARATOR);
         boolean reduction;
         do {
-            from.clear();
-            from.addAll(to);
             to.clear();
-            reduction = false;
-            for (int i = 0; i < from.size(); i++) {
-                Network<U> left = from.get(i);
-                boolean merged = false;
-                if (i + 1 < from.size()) {
-                    Network<U> right = from.get(i + 1);
+            reduction = mergeNeighborsTryReduce(from, to);
+            if (reduction) {
+                // prepare for next iteration
+                from.clear();
+                from.addAll(to);
+            }
+        } while (reduction);
+        return to;
+    }
 
-                    // left contains right
-                    if (left.getPrefix() <= right.getPrefix()
-                            && left.contains(right)) {
-                        to.add(left);
-                        merged = true;
-                    }
+    /** Do one reduction step over the list of networks.
+     * @param from the input list of networks. Read-only. Needs to be sorted.
+     * @param to the empty list of network that gets filled by this method.
+     * @return {@code true} if the list from was reduced somehow.
+     * @see #mergeNeighbors(Collection)
+     * */
+    private static <U extends IP<U>> boolean mergeNeighborsTryReduce(List<Network<U>> from, List<Network<U>> to) {
+        boolean reduction = false;
+        boolean skip = false;
+        for (int i = 0; i < from.size(); i++) {
+            Network<U> left = from.get(i);
+            boolean merged = false;
 
-                    if (!merged && left.getPrefix() == right.getPrefix()
-                            && left.getBroadcast()
-                            .add(1).equals(right.ipAddress)) {
-                        Network<U> joint = new Network<>(left.getAddress(),
-                                left.getPrefix() - 1);
-                        if (joint.contains(left) && joint.contains(right)) {
-                            to.add(joint);
-                            merged = true;
-                        }
-                    }
+            // the network to add after this iteration
+            Network<U> add = left;
+
+            if (skip) {
+                // left was a right network that got reduced
+                skip = false;
+                continue;
+            }
+
+            if (i + 1 < from.size()) {
+                Network<U> right = from.get(i + 1);
+                // left contains right
+                if (left.getPrefix() <= right.getPrefix()
+                        && left.contains(right)) {
+                    add = left;
+                    merged = true;
                 }
 
-                if (merged) {
-                    from.remove(i + 1); //NOSONAR
-                    reduction = true;
-                } else {
-                    to.add(left);
+                if (!merged && left.getPrefix() == right.getPrefix()
+                        && left.getBroadcast()
+                        .add(1).equals(right.ipAddress)) {
+                    Network<U> joint = new Network<>(left.getAddress(),
+                            left.getPrefix() - 1);
+                    if (joint.contains(left) && joint.contains(right)) {
+                        add = joint;
+                        merged = true;
+                    }
                 }
             }
 
-        } while (reduction);
-        return to;
+            to.add(add);
+            if (merged) {
+                skip = true;
+                reduction = true;
+            }
+        }
+        return reduction;
     }
 
     /**
