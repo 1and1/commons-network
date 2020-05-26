@@ -186,7 +186,7 @@ public class NetworkTest {
 
         // four IPs
         n = new Network<>(new IPv4("89.12.0.0"), 14);
-        test = n.split((short) 16);
+        test = n.split(16);
         assertEquals(4, test.size());
         assertEquals(new Network("89.12.0.0/16"), test.get(0));
         assertEquals(new Network("89.13.0.0/16"), test.get(1));
@@ -201,7 +201,7 @@ public class NetworkTest {
 
         // two IPs
         n = new Network<>(new IPv4("192.168.2.16"), 31);
-        test = n.split((short) 32);
+        test = n.split(32);
         assertEquals(2, test.size());
         assertEquals(new Network("192.168.2.16/32"), test.get(0));
         assertEquals(new Network("192.168.2.17/32"), test.get(1));
@@ -214,7 +214,7 @@ public class NetworkTest {
 
         // two IPs
         n = new Network<>(new IPv4("192.168.2.16"), 32);
-        test = n.split((short) 32);
+        test = n.split(32);
         assertEquals(1, test.size());
         assertEquals(new Network("192.168.2.16/32"), test.get(0));
     }
