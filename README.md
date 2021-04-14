@@ -1,6 +1,7 @@
 Commons Network
 ============
 [![Java CI](https://github.com/1and1/commons-network/actions/workflows/maven.yml/badge.svg)](https://github.com/1and1/commons-network/actions/workflows/maven.yml)
+[![Coverage](https://raw.githubusercontent.com/1and1/commons-network/master/.github/badges/jacoco.svg)](https://javadoc.io/doc/com.oneandone/commons-network)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.oneandone/commons-network/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.oneandone/commons-network)
 [![javadoc](https://javadoc.io/badge2/com.oneandone/commons-network/javadoc.svg)](https://javadoc.io/doc/com.oneandone/commons-network)
 [![ReleaseDate](https://img.shields.io/github/release-date/1and1/commons-network)](https://github.com/1and1/commons-network/releases)
