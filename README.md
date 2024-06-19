@@ -7,6 +7,8 @@ Commons Network
 [![ReleaseDate](https://img.shields.io/github/release-date/1and1/commons-network)](https://github.com/1and1/commons-network/releases)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+*This project has been set to read-only since there is no longer an active maintainer in the organization.*
+
 A library of IP network representation classes, like
 *   IP address (IPv4, IPv6),
 *   MAC address,
